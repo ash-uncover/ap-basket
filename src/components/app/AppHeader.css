@@ -1,0 +1,8 @@
+.app-header {
+
+}
+
+#fd-shellbar-profile-popover {
+    width: auto;
+    transform: translate3d(-30px, 42px, 0px);
+}

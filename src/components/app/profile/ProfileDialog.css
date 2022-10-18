@@ -1,0 +1,25 @@
+.profile-dialog {
+  & .fd-dialog__content {
+    width: 500px;
+    max-width: 500px;
+
+    & .fd-dialog__content-centered {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    & .fd-form-item.fd-form-item--horizontal {
+      & .fd-form-label {
+        width: 0;
+        flex-grow: 1;
+        text-align: right;
+      }
+      & .fd-input {
+        width: 0;
+        flex-grow: 3;
+      }
+    }
+  }
+}
+

@@ -1,0 +1,53 @@
+{
+  "OK": "OK",
+  "loading": {
+    "default": "Loading...",
+    "data": "Loading data..."
+  },
+  "app": {
+    "header": {
+      "user": {
+        "menu": {
+          "profile": "Profile",
+          "settings": "Settings",
+          "signout": "Sign Out"
+        }
+      }
+    },
+    "profile": {
+      "dialog": {
+        "title": "Profile Information",
+        "fields": {
+          "firstName": "First Name:",
+          "lastName": "Last Name:",
+          "email": "Email:"
+        }
+      }
+    },
+    "settings": {
+      "dialog": {
+        "title": "User Settings",
+        "fields": {
+          "language": "Choose Language:",
+          "theme": "Choose Theme:"
+        }
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome to AMSAP Basket",
+      "submit": "Sign in",
+      "fields": {
+        "username": {
+          "name": "Username",
+          "placeholder": ""
+        },
+        "password": {
+          "name": "Password",
+          "placeholder": ""
+        }
+      }
+    }
+  }
+}

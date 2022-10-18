@@ -1,0 +1,5 @@
+.settings-dialog {
+    & .fd-dialog__content {
+        height: 500px;
+    }
+}

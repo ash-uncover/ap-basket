@@ -1,0 +1,39 @@
+{
+  "OK": "OK",
+  
+  "loading": {
+    "default": "Chargement...",
+    "data": "Chargement des données..."
+  },
+  "app": {
+    "header": {
+      "user": {
+        "menu": {
+          "profile": "Profil",
+          "settings": "Paramètres",
+          "signout": "Déconnexion"
+        }
+      }
+    },
+    "profile": {
+      "dialog": {
+        "title": "Information de l'utilisateur",
+        "fields": {
+          "name": "Nom:",
+          "email": "Adresse mail:",
+          "roles": "Rôles:",
+          "groups": "Groupes:"
+        }
+      }
+    },
+    "settings": {
+      "dialog": {
+        "title": "Paramètres de l'utilisateur",
+        "fields": {
+          "language": "Langue:",
+          "theme": "Theme:"
+        }
+      }
+    }
+  }
+}
