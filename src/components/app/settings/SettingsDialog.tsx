@@ -2,9 +2,16 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-import appSelectors from 'store/app/app.selectors'
+import {
+  Button,
+  Dialog,
+  Select,
+  FormGroup,
+  FormItem,
+  FormLabel,
+} from 'fundamental-react'
 
-import { Select, SelectItem } from 'components/fiori/Select'
+import appSelectors from 'store/app/app.selectors'
 
 import { Themes } from 'lib/theme'
 import { Languages } from 'lib/language'
@@ -14,7 +21,10 @@ import { changeTheme } from 'services/theme.service'
 
 import './SettingsDialog.css'
 
-const SettingsDialog = ({ onClose }) => {
+const SettingsDialog = ({
+  show,
+  onClose
+}) => {
 
   // Hooks //
 
@@ -26,99 +36,61 @@ const SettingsDialog = ({ onClose }) => {
 
   // Events //
 
-  const onThemeChange = (theme) => {
-    changeTheme(dispatch, theme)
+  const onLanguageChange = (event, language) => {
+    changeLanguage(dispatch, language.key)
   }
 
-  const onLanguageChange = (language) => {
-    changeLanguage(dispatch, language)
+  const onThemeChange = (event, theme) => {
+    changeTheme(dispatch, theme.key)
   }
 
   // Rendering //
 
   return (
-    <section className='settings-dialog fd-dialog-docs-static fd-dialog fd-dialog--active'>
-      <div
-        className='fd-dialog__content'
-        role='dialog'
-        aria-modal='true'
-        aria-labelledby='settings-dialog-title'
-      >
+    <Dialog
+      className='settings-dialog'
+      actions={[(
+        <Button
+          option='emphasized'
+          onClick={onClose}
+        >
+          {t('OK')}
+        </Button>
+      )]}
+      show={show}
+      title={t('app.settings.dialog.title')}
+    >
 
-        <header className='fd-dialog__header fd-bar fd-bar--header'>
-          <div className='fd-bar__left'>
-            <div className='fd-bar__element'>
-              <h2
-                id='settings-dialog-title'
-                className='fd-title fd-title--h5'
-              >
-                {t('app.settings.dialog.title')}
-              </h2>
-            </div>
-          </div>
-        </header>
+      <FormGroup>
+        <FormItem>
+          <FormLabel>
+            {t('app.settings.dialog.fields.language')}
+          </FormLabel>
+          <Select
+            aria-label='Primary'
+            selectedKey={language}
+            options={Languages.map(({ id, name }) => ({ key: id, text: name }))}
+            onSelect={onLanguageChange}
+          />
+        </FormItem>
+      </FormGroup>
 
-        <div className='fd-dialog__body'>
-          <div className='fd-container fd-form-layout-grid-container'>
+      <FormGroup>
+        <FormItem>
+          <FormLabel>
+            {t('app.settings.dialog.fields.theme')}
+          </FormLabel>
+          <Select
+            aria-label='Primary'
+            selectedKey={theme}
+            options={Themes.map(({ id, name }) => ({ key: id, text: name }))}
+            onSelect={onThemeChange}
+          />
+        </FormItem>
+      </FormGroup>
 
-            <div className='fd-row'>
-              <label
-                className="fd-form-label"
-                id="formSelectLabel"
-              >
-                {t('app.settings.dialog.fields.language')}
-              </label>
-              <Select>
-                {Languages.map(({ id, name }) => (
-                  <SelectItem
-                    key={id}
-                    id={id}
-                    title={name}
-                    selected={id === language}
-                    onSelect={() => onLanguageChange(id)}
-                  />
-                ))}
-              </Select>
-            </div>
+    </Dialog>
 
-            <div className='fd-row'>
-              <label
-                id="formSelectLabel"
-                className="fd-form-label"
-              >
-                {t('app.settings.dialog.fields.theme')}
-              </label>
-              <Select>
-                {Themes.map(({ id, name }) => (
-                  <SelectItem
-                    key={id}
-                    id={id}
-                    title={name}
-                    selected={id === theme}
-                    onSelect={() => onThemeChange(id)}
-                  />
-                ))}
-              </Select>
-            </div>
-
-          </div>
-        </div>
-
-        <footer className='fd-dialog__footer fd-bar fd-bar--footer'>
-          <div className='fd-bar__right'>
-            <div className='fd-bar__element'>
-              <button
-                className='fd-dialog__decisive-button fd-button fd-button--compact fd-button--emphasized'
-                onClick={onClose}
-              >
-                {t('OK')}
-              </button>
-            </div>
-          </div>
-        </footer>
-
-      </div>
-    </section >
   )
 }
 

@@ -17,7 +17,10 @@ import UsersSelectors from 'store/rest/users/users.selectors'
 
 import './ProfileDialog.css'
 
-const ProfileDialog = ({ onClose }) => {
+const ProfileDialog = ({
+  show,
+  onClose
+}) => {
 
   // Hooks //
 
@@ -41,7 +44,7 @@ const ProfileDialog = ({ onClose }) => {
           {t('OK')}
         </Button>
       )]}
-      show={true}
+      show={show}
       title={t('app.profile.dialog.title')}
     >
       <div className='fd-dialog__content-centered'

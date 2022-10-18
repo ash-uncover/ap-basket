@@ -9,11 +9,12 @@ import {
   Shellbar,
 } from 'fundamental-react'
 
+import { logout } from 'lib/helpers/auth.helper'
+
 import UsersSelectors from 'store/rest/users/users.selectors'
 import AuthSelectors from 'store/auth/auth.selectors'
 
 import './AppHeader.css'
-import { logout } from 'lib/helpers/auth.helper'
 
 const AppHeader = () => {
 
@@ -83,16 +84,14 @@ const AppHeader = () => {
           callback: onSignOut
         }]}
       />
-      {showProfileDialog ?
-        <ProfileDialog
-          onClose={onCloseProfileDialog}
-        />
-        : null}
-      {showSettingsDialog ?
-        <SettingsDialog
-          onClose={onCloseSettingsDialog}
-        />
-        : null}
+      <ProfileDialog
+        show={showProfileDialog}
+        onClose={onCloseProfileDialog}
+      />
+      <SettingsDialog
+        show={showSettingsDialog}
+        onClose={onCloseSettingsDialog}
+      />
     </>
   )
 }
