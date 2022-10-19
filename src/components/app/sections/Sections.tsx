@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux'
 import AuthSelectors from 'store/auth/auth.selectors'
 import DataStates from 'lib/constants/DataStates'
 import { useSection, useSectionMembers } from 'lib/helpers/sections.helper'
+import { useNavigate } from 'react-router-dom'
 
 const Sections = ({ }) => {
 
@@ -64,6 +65,13 @@ const SectionTile = ({ id }) => {
   // Hooks //
 
   const section = useSection(id)
+  const navigate = useNavigate()
+
+  // Events //
+
+  const onClick = () => {
+    navigate(`/sections/${id}`);
+  }
 
   // Rendering //
 
@@ -86,7 +94,7 @@ const SectionTile = ({ id }) => {
     }
     default: {
       return (
-        <Tile onClick={() => { }}>
+        <Tile onClick={onClick}>
           <Tile.Header subtitle='Tile Subtitle'>
             {section.data.name}
           </Tile.Header>
