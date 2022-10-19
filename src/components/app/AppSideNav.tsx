@@ -13,6 +13,7 @@ import AuthSelectors from 'store/auth/auth.selectors'
 import './AppSideNav.css'
 import DataStates from 'lib/constants/DataStates'
 import { useSection } from 'lib/helpers/sections.helper'
+import VerticalNavigation, { VerticalNavigationItem } from 'components/fiori/VerticalNavigation'
 
 const AppSideNav = ({ }) => {
 
@@ -21,47 +22,35 @@ const AppSideNav = ({ }) => {
   const navigate = useNavigate()
 
   const location = useLocation()
-  const pathname = location.pathname.split('/').filter(p => !!p)[0] || 'home'
 
-  const onItemSelect = (event, item) => {
-    event.preventDefault()
-    event.stopPropagation()
-    const path = `/${item !== 'home' ? item : ''}`
-    navigate(path)
+  const onItemSelect = (item) => {
+    console.log(item)
+    navigate(item)
   }
 
   // Rendering //
 
   return (
-    <SideNav
-      onItemSelect={onItemSelect}
-      selectedId={pathname}
-      skipLink={{ href: '', label: '' }}
+    <VerticalNavigation
+      label=''
+      itemsLabel=''
     >
-      <SideNav.List
-        data-sample='Sample'
-      >
-        <SideNav.ListItem
-          glyph='home'
-          id='home'
-          name='Home'
-          url='/'
-        />
-        <SideNav.ListItem
-          glyph='company-view'
-          id='sections'
-          name='Sections'
-          expanded={true}
-          url='/sections'
-        >
-          <SectionsSideNav />
-        </SideNav.ListItem>
-      </SideNav.List>
-    </SideNav>
+      <VerticalNavigationItem
+        id='/'
+        glyph='home'
+        selected={location.pathname === '/'}
+        text={'Home'}
+        onItemSelect={onItemSelect}
+      />
+      <SectionsSideNav
+        onItemSelect={onItemSelect}
+      />
+    </VerticalNavigation>
   )
 }
 
-const SectionsSideNav = ({ }) => {
+const SectionsSideNav = ({ onItemSelect }) => {
+
   // Hooks //
 
   const userId = useSelector(AuthSelectors.userId)
@@ -74,7 +63,13 @@ const SectionsSideNav = ({ }) => {
     case DataStates.FETCHING:
     case DataStates.FETCHING_FIRST: {
       return (
-        <div>loading</div>
+        <VerticalNavigationItem
+          key='/sections-loading'
+          id='/sections'
+          glyph='company-view'
+          selected={location.pathname === '/sections'}
+          text={'Sections'}
+        />
       )
     }
     case DataStates.FAILURE: {
@@ -84,19 +79,39 @@ const SectionsSideNav = ({ }) => {
     }
     default: {
       return (
-        <SideNav.List level={2}>
-          {members.data.map(member => <SectionSideNav key={member.data.id} id={member.data.sectionId} />)}
-        </SideNav.List>
+        <VerticalNavigationItem
+          key='/sections'
+          id='/sections'
+          glyph='company-view'
+          expanded={true}
+          selected={location.pathname === '/sections'}
+          text={'Sections'}
+          onItemSelect={onItemSelect}
+        >
+          {members.data.map((member) => {
+            return (
+              <SectionSideNav
+                key={member.data.sectionId}
+                id={member.data.sectionId}
+                onItemSelect={onItemSelect}
+              />
+            )
+          })}
+        </VerticalNavigationItem>
       )
     }
   }
 }
 
-const SectionSideNav = ({ id }) => {
+const SectionSideNav = ({ id, onItemSelect }) => {
 
   // Hooks //
 
   const section = useSection(id)
+  const location = useLocation()
+
+  // Events //
+
 
   // Rendering //
 
@@ -114,12 +129,14 @@ const SectionSideNav = ({ id }) => {
       )
     }
     default: {
+      const href = `/sections/${id}`
       return (
-        <SideNav.ListItem
-          id={`sections/${id}`}
-          glyph='group'
-          name={section.data.name}
-          url={`sections/${id}`}
+        <VerticalNavigationItem
+          key={href}
+          id={href}
+          selected={location.pathname === href}
+          text={section.data.name}
+          onItemSelect={onItemSelect}
         />
       )
     }
