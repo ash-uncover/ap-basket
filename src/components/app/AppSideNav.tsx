@@ -1,19 +1,17 @@
 import React from 'react'
 
-import {
-  SideNav,
-} from 'fundamental-react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-
+import { useSection } from 'lib/helpers/sections.helper'
 import { useUserMembers } from 'lib/helpers/users.helper'
 
 import AuthSelectors from 'store/auth/auth.selectors'
 
-import './AppSideNav.css'
+import { VerticalNavigation, VerticalNavigationItem } from 'components/fiori/VerticalNavigation'
+
 import DataStates from 'lib/constants/DataStates'
-import { useSection } from 'lib/helpers/sections.helper'
-import VerticalNavigation, { VerticalNavigationItem } from 'components/fiori/VerticalNavigation'
+
+import './AppSideNav.css'
 
 const AppSideNav = ({ }) => {
 
@@ -24,7 +22,6 @@ const AppSideNav = ({ }) => {
   const location = useLocation()
 
   const onItemSelect = (item) => {
-    console.log(item)
     navigate(item)
   }
 
@@ -115,6 +112,8 @@ const SectionSideNav = ({ id, onItemSelect }) => {
 
   // Rendering //
 
+  const href = `/sections/${id}`
+
   switch (section.dataStatus) {
     case DataStates.NEVER:
     case DataStates.FETCHING:
@@ -129,7 +128,6 @@ const SectionSideNav = ({ id, onItemSelect }) => {
       )
     }
     default: {
-      const href = `/sections/${id}`
       return (
         <VerticalNavigationItem
           key={href}
