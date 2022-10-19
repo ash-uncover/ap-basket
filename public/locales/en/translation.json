@@ -1,5 +1,6 @@
 {
   "OK": "OK",
+  "ERROR": "Error",
   "loading": {
     "default": "Loading...",
     "data": "Loading data..."
@@ -13,6 +14,12 @@
           "signout": "Sign Out"
         }
       }
+    },
+    "sections": {
+      "none": "No sections",
+      "title": "Sections",
+      "members_one": "{{count}} Member",
+      "members_other": "{{count}} Members"
     },
     "profile": {
       "dialog": {

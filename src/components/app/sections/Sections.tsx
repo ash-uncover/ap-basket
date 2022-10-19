@@ -1,4 +1,12 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+
+import { useSection, useSectionMembers } from 'lib/helpers/sections.helper'
+import { useUserMembers } from 'lib/helpers/users.helper'
+
+import AuthSelectors from 'store/auth/auth.selectors'
 
 import {
   BusyIndicator,
@@ -6,17 +14,15 @@ import {
   Title,
 } from 'fundamental-react'
 
-import './Sections.css'
-import { useUserMembers } from 'lib/helpers/users.helper'
-import { useSelector } from 'react-redux'
-import AuthSelectors from 'store/auth/auth.selectors'
 import DataStates from 'lib/constants/DataStates'
-import { useSection, useSectionMembers } from 'lib/helpers/sections.helper'
-import { useNavigate } from 'react-router-dom'
+
+import './Sections.css'
 
 const Sections = ({ }) => {
 
   // Hooks //
+
+  const { t } = useTranslation()
 
   const userId = useSelector(AuthSelectors.userId)
   const members = useUserMembers(userId)
@@ -29,18 +35,18 @@ const Sections = ({ }) => {
       case DataStates.FETCHING:
       case DataStates.FETCHING_FIRST: {
         return (
-          <div>loading</div>
+          <div>{t('loading.default')}</div>
         )
       }
       case DataStates.FAILURE: {
         return (
-          <div>error</div>
+          <div>{t('ERROR')}</div>
         )
       }
       default: {
         if (members.data.length === 0) {
           return (
-            <div>no sections</div>
+            <div>{t('app.sections.noneR')}</div>
           )
         }
         return members.data.map(member => <SectionTile key={member.data.id} id={member.data.sectionId} />)
@@ -51,7 +57,7 @@ const Sections = ({ }) => {
   return (
     <div className='app-content sections'>
       <Title level={1}>
-        Sections
+        {t('app.sections.title')}
       </Title>
       <div className='sections-container'>
         {renderSections()}
@@ -63,6 +69,8 @@ const Sections = ({ }) => {
 const SectionTile = ({ id }) => {
 
   // Hooks //
+
+  const { t } = useTranslation()
 
   const section = useSection(id)
   const navigate = useNavigate()
@@ -81,7 +89,7 @@ const SectionTile = ({ id }) => {
     case DataStates.FETCHING_FIRST: {
       return (
         <Tile>
-          <Tile.Content title='Tile Title'>
+          <Tile.Content>
             <BusyIndicator show size='m' />
           </Tile.Content>
         </Tile>
@@ -95,11 +103,10 @@ const SectionTile = ({ id }) => {
     default: {
       return (
         <Tile onClick={onClick}>
-          <Tile.Header subtitle='Tile Subtitle'>
+          <Tile.Header>
             {section.data.name}
           </Tile.Header>
-          <Tile.Content title='Tile Title'>
-            <p>Tile Description</p>
+          <Tile.Content>
           </Tile.Content>
           <SectionTileFooter id={id} />
         </Tile>
@@ -112,6 +119,8 @@ const SectionTileFooter = ({ id }) => {
 
   // Hooks //
 
+  const { t } = useTranslation()
+
   const members = useSectionMembers(id)
 
   // Rendering //
@@ -122,7 +131,7 @@ const SectionTileFooter = ({ id }) => {
     case DataStates.FETCHING_FIRST: {
       return (
         <Tile.Footer>
-            <BusyIndicator show size='xs' />
+          <BusyIndicator show size='xs' />
         </Tile.Footer>
       )
     }
@@ -134,7 +143,7 @@ const SectionTileFooter = ({ id }) => {
     default: {
       return (
         <Tile.Footer>
-          {members.data.length} Members
+          {t('app.sections.members', { count: members.data.length })}
         </Tile.Footer>
       )
     }
