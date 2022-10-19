@@ -1,4 +1,4 @@
-import Section from 'components/app/sections/Section'
+import Section from 'components/app/section/Section'
 import React from 'react'
 import { useParams } from 'react-router-dom'
 
@@ -8,8 +8,6 @@ const RouteSection = () => {
 
   const params = useParams()
   const sectionId = params.sectionId
-
-  console.log('SECTION')
 
   // Rendering //
 

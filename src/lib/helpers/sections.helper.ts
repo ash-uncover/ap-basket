@@ -1,4 +1,4 @@
-import DataStates from "lib/constants/DataStates"
+import DataStates, { mergeDataStates } from "lib/constants/DataStates"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import RestService from "services/rest.service"
@@ -7,6 +7,8 @@ import MembersSelectors from "store/rest/members/members.selectors"
 import { MemberState } from "store/rest/members/members.state"
 import SectionsSelectors from "store/rest/sections/sections.selectors"
 import SectionsSlice from "store/rest/sections/sections.slice"
+import { UserState } from "store/rest/users/users.state"
+import { useUser } from "./users.helper"
 
 export const getSection = async (dispatch, token:string, id:string) => {
   dispatch(SectionsSlice.actions.getSectionRequest({ id }))

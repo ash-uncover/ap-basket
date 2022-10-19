@@ -11,7 +11,11 @@ import {
 
 import DataStates from 'lib/constants/DataStates'
 
-import './Sections.css'
+import { useUser } from 'lib/helpers/users.helper'
+
+import './Section.css'
+import SectionMembers from 'components/app/section/SectionMembers'
+import Table from 'components/fiori/Table'
 
 const Section = ({ id }) => {
 
@@ -43,39 +47,6 @@ const Section = ({ id }) => {
             {t('app.section.title', { name: section.data.name })}
           </Title>
           <SectionMembers id={id} />
-        </div>
-      )
-    }
-  }
-}
-
-const SectionMembers = ({ id }) => {
-
-  // Hooks //
-
-  const { t } = useTranslation()
-
-  const members = useSectionMembers(id)
-
-  // Rendering //
-
-  switch (members.status) {
-    case DataStates.NEVER:
-    case DataStates.FETCHING:
-    case DataStates.FETCHING_FIRST: {
-      return (
-        <BusyIndicator show size='l' />
-      )
-    }
-    case DataStates.FAILURE: {
-      return (
-        <div>error</div>
-      )
-    }
-    default: {
-      return (
-        <div className=''>
-          {members.data.map((member) => member.data.userId)}
         </div>
       )
     }
