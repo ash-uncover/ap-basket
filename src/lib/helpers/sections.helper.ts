@@ -1,4 +1,5 @@
 import DataStates from "lib/constants/DataStates"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import RestService from "services/rest.service"
 import AuthSelectors from "store/auth/auth.selectors"
@@ -39,9 +40,11 @@ export const useSection = (id:string) => {
   const dispatch = useDispatch()
   const token = useSelector(AuthSelectors.token)
   const section = useSelector(SectionsSelectors.section(id))
-  if ([DataStates.NEVER, DataStates.OUTDATED].includes(section.dataStatus)) {
-    getSection(dispatch, token, id)
-  }
+  useEffect(() => {
+    if ([DataStates.NEVER, DataStates.OUTDATED].includes(section.dataStatus)) {
+      getSection(dispatch, token, id)
+    }
+  }, [section.dataStatus])
   return section
 }
 
@@ -49,10 +52,12 @@ export const useSectionMembers = (id:string): { data:MemberState[], status:strin
   const dispatch = useDispatch()
   const token = useSelector(AuthSelectors.token)
   const section = useSelector(SectionsSelectors.section(id))
-  if ([DataStates.NEVER, DataStates.OUTDATED].includes(section.membersStatus)) {
-    getSectionMembers(dispatch, token, id)
-  }
   const members = useSelector(MembersSelectors.sectionMembers(id))
+  useEffect(() => {
+    if ([DataStates.NEVER, DataStates.OUTDATED].includes(section.membersStatus)) {
+      getSectionMembers(dispatch, token, id)
+    }
+  }, [section.membersStatus])
   return {
     data: members,
     status: section.membersStatus,

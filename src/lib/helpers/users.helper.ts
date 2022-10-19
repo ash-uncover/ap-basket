@@ -1,4 +1,5 @@
 import DataStates from 'lib/constants/DataStates'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import RestService from 'services/rest.service'
 import AuthSelectors from 'store/auth/auth.selectors'
@@ -39,9 +40,11 @@ export const useUser = (userId: string) => {
   const dispatch = useDispatch()
   const token = useSelector(AuthSelectors.token)
   const user = useSelector(UsersSelectors.user(userId))
-  if ([DataStates.NEVER, DataStates.OUTDATED].includes(user.dataStatus)) {
-    getUser(dispatch, token, userId)
-  }
+  useEffect(() => {
+    if ([DataStates.NEVER, DataStates.OUTDATED].includes(user.dataStatus)) {
+      getUser(dispatch, token, userId)
+    }
+  }, [user.dataStatus])
   return user
 }
 
@@ -49,10 +52,12 @@ export const useUserMembers = (userId: string): { data: MemberState[], status: s
   const dispatch = useDispatch()
   const token = useSelector(AuthSelectors.token)
   const user = useSelector(UsersSelectors.user(userId))
-  if ([DataStates.NEVER, DataStates.OUTDATED].includes(user.membersStatus)) {
-    getUserMembers(dispatch, token, userId)
-  }
   const members = useSelector(MembersSelectors.userMembers(userId))
+  useEffect(() => {
+    if ([DataStates.NEVER, DataStates.OUTDATED].includes(user.membersStatus)) {
+      getUserMembers(dispatch, token, userId)
+    }
+  }, [user.membersStatus])
   return {
     data: members,
     status: user.membersStatus,
