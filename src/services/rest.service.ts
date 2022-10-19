@@ -1,8 +1,6 @@
 import CONFIG from 'configuration'
 
-export const getAuth = async ({ username, password }) => {
-  const token = `${window.btoa(unescape(encodeURIComponent(`${username}:${password}`)))}`
-
+export const getAuth = async (token:string) => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/auth`
   const headers = new Headers()
   headers.set('accept', 'application/json')
@@ -15,17 +13,14 @@ export const getAuth = async ({ username, password }) => {
   try {
     const response = await fetch(url, request)
     const data = await response.json()
-    return {
-      token,
-      data
-    }
+    return data
 
   } catch (error) {
     throw new Error(error)
   }
 }
 
-export const deleteAuth = async (token) => {
+export const deleteAuth = async (token:string) => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/auth`
   const headers = new Headers()
   headers.set('accept', 'application/json')
@@ -43,8 +38,68 @@ export const deleteAuth = async (token) => {
   }
 }
 
-export const getUser = async (token, userId) => {
-  const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/users/${userId}`
+export const getSection = async (token:string, id:string) => {
+  const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/sections/${id}`
+  const headers = new Headers()
+  headers.set('accept', 'application/json')
+  headers.set('authorization', `Basic ${token}`)
+  const request: RequestInit = {
+    method: 'GET',
+    headers,
+  }
+
+  try {
+    const response = await fetch(url, request)
+    const data = await response.json()
+    return data
+
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const getSectionMembers = async (token:string, id:string) => {
+  const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/sections/${id}/members`
+  const headers = new Headers()
+  headers.set('accept', 'application/json')
+  headers.set('authorization', `Basic ${token}`)
+  const request: RequestInit = {
+    method: 'GET',
+    headers,
+  }
+
+  try {
+    const response = await fetch(url, request)
+    const data = await response.json()
+    return data
+
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const getUser = async (token:string, id:string) => {
+  const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/users/${id}`
+  const headers = new Headers()
+  headers.set('accept', 'application/json')
+  headers.set('authorization', `Basic ${token}`)
+  const request: RequestInit = {
+    method: 'GET',
+    headers,
+  }
+
+  try {
+    const response = await fetch(url, request)
+    const data = await response.json()
+    return data
+
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const getUserMembers = async (token:string, userId:string) => {
+  const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/users/${userId}/members`
   const headers = new Headers()
   headers.set('accept', 'application/json')
   headers.set('authorization', `Basic ${token}`)
@@ -69,9 +124,18 @@ const RestService = {
       get: getAuth,
       delete: deleteAuth,
     },
+    sections: {
+      get: getSection,
+      members: {
+        get: getSectionMembers,
+      },
+    },
     users: {
-      get: getUser
-    }
+      get: getUser,
+      members: {
+        get: getUserMembers,
+      },
+    },
   }
 }
 

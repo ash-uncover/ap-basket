@@ -2,21 +2,26 @@ import RestService from 'services/rest.service'
 import AuthSlice from 'store/auth/auth.slice'
 import { getUser } from 'lib/helpers/users.helper'
 
-export const login = async (dispatch, { username, password }) => {
+type loginArgs = {
+  username: string,
+  password?: string,
+  token?: string,
+}
+export const login = async (dispatch, { username, password, token }: loginArgs) => {
+  let currentToken = token
+  if (!currentToken) {
+    currentToken = `${window.btoa(unescape(encodeURIComponent(`${username}:${password}`)))}`
+  }
   dispatch(AuthSlice.actions.logonRequest(username))
 
   try {
-    const {
-      token,
-      data
-    } = await RestService.api.auth.get({ username, password })
-
-    const userData = await getUser(dispatch, token, data.userId)
+    const authData = await RestService.api.auth.get(currentToken)
+    const userData = await getUser(dispatch, currentToken, authData.userId)
 
     dispatch(AuthSlice.actions.logonSuccess({
-      userId: data.userId,
+      userId: authData.userId,
       username,
-      token,
+      token: currentToken,
       roles: userData.roles
     }))
 

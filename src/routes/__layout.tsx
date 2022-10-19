@@ -8,13 +8,19 @@ import {
 
 import RouteRoot from 'routes/index'
 import RouteLogin from 'routes/login/index'
+import RouteHome from 'routes/home/index'
+import RouteSections from 'routes/sections/index'
 
 const Root = () => {
   return (
     <Router>
       <Routes>
         <Route path='/login' element={<RouteLogin />} />
-        <Route path='*' element={<RouteRoot />} />
+        <Route path='/' element={<RouteRoot />}>
+          <Route path='' element={<RouteHome />} />
+          <Route path='sections' element={<RouteSections />} />
+          <Route path='*' element={<div>NOT FOUND</div>} />
+        </Route>
       </Routes>
     </Router>
   )

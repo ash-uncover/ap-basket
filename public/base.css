@@ -2,5 +2,11 @@ html, body, #reactroot {
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: hiddent;
+    overflow: hidden;
+}
+
+
+#reactroot {
+    display: flex;
+    flex-direction: column;
 }

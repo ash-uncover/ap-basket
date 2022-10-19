@@ -1,10 +1,20 @@
 import React from 'react'
 
+import {
+  Bar,
+} from 'fundamental-react'
+
+import './AppFooter.css'
+
 const AppFooter = () => {
   return (
-    <div>
-      FOOTER
-    </div>
+    <Bar
+      className='app-footer'
+      type='footer'
+      rightComponents={[
+        <div>provided by <span>aSH@uncover</span></div>,
+      ]}
+    />
   )
 }
 

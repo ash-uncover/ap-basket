@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-import ProfileDialog from 'components/app/profile/ProfileDialog'
-import SettingsDialog from 'components/app/settings/SettingsDialog'
+import ProfileDialog from 'components/app/dialogs/profile/ProfileDialog'
+import SettingsDialog from 'components/app/dialogs/settings/SettingsDialog'
 
 import {
   Shellbar,

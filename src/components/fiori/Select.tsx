@@ -65,8 +65,8 @@ export const Select = ({
 
 interface SelectItemProperties {
   selected?: boolean,
-  id: String,
-  title: String,
+  id: string,
+  title: string,
   onSelect: () => void
 }
 

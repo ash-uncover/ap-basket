@@ -1,12 +1,12 @@
-export type UsersSliceState = {
+export type SectionsSliceState = {
   dataStatus: string,
   dataError: string,
   data: {
-    [key: string]: UserState
+    [key: string]: SectionState
   },
 }
 
-export type UserState = {
+export type SectionState = {
   dataStatus: string,
   dataError: string,
   data: any,
@@ -14,6 +14,6 @@ export type UserState = {
   membersStatus: string,
   membersError: string,
 
-  participantsStatus: string,
-  participantsError: string,
+  eventsStatus: string,
+  eventsError: string,
 }

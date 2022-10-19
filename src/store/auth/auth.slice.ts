@@ -8,27 +8,46 @@ import AuthSliceState from 'store/auth/auth.state'
 
 // STATE //
 
+const ALPHA_BASKET_AUTH = 'alpha-basket-auth'
+const USE_LOCAL_STORAGE = true
+
+if (!USE_LOCAL_STORAGE) {
+  localStorage.setItem(ALPHA_BASKET_AUTH, null)
+}
+
+const store = ({ token, userId, username }) => {
+  localStorage.setItem(ALPHA_BASKET_AUTH, JSON.stringify({
+    userId,
+    username,
+    token
+  }))
+}
+
+const load = () => JSON.parse(localStorage.getItem(ALPHA_BASKET_AUTH))
+
+const storedState = USE_LOCAL_STORAGE ? load() : {}
+
 const initialState: AuthSliceState = {
+  roles: null,
+  token: null,
   userId: null,
   username: null,
-  token: null,
-  roles: [],
+  ...storedState,
 }
 
 // REDUCERS //
 
 // Logon //
 
-const logonRequest: CaseReducer<AuthSliceState, PayloadAction<String>> = (state, action) => {
+const logonRequest: CaseReducer<AuthSliceState, PayloadAction<string>> = (state, action) => {
   state.username = action.payload
-  state.token = null
-  state.roles = []
+  store(state)
 }
 type PayloadAuth = {
-  userId: String,
-  username: String,
-  token: String,
-  roles?: String[]
+  userId: string,
+  username: string,
+  token: string,
+  roles?: string[] | null
 }
 const logonSuccess: CaseReducer<AuthSliceState, PayloadAction<PayloadAuth>> = (state, action) => {
   const {
@@ -41,11 +60,13 @@ const logonSuccess: CaseReducer<AuthSliceState, PayloadAction<PayloadAuth>> = (s
   state.username = username
   state.token = token
   state.roles = roles
+  store(state)
 }
 const logonFailure: CaseReducer<AuthSliceState, PayloadAction<void>> = (state, action) => {
   state.username = null
   state.token = null
-  state.roles = []
+  state.roles = null
+  store(state)
 }
 
 // Logout //
@@ -53,12 +74,16 @@ const logonFailure: CaseReducer<AuthSliceState, PayloadAction<void>> = (state, a
 const logoutRequest: CaseReducer<AuthSliceState, PayloadAction<void>> = (state, action) => {
 }
 const logoutSuccess: CaseReducer<AuthSliceState, PayloadAction<void>> = (state, action) => {
+  state.userId = null
   state.token = null
-  state.roles = []
+  state.roles = null
+  store(state)
 }
 const logoutFailure: CaseReducer<AuthSliceState, PayloadAction<void>> = (state, action) => {
+  state.userId = null
   state.token = null
-  state.roles = []
+  state.roles = null
+  store(state)
 }
 
 // SLICE //

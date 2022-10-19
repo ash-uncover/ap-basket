@@ -1,9 +1,13 @@
 import React from 'react'
 
-const AppMain = () => {
+import './AppMain.css'
+
+const AppMain = ({
+  children
+}) => {
   return (
-    <main>
-      MAIN
+    <main className='app-main'>
+      {children}
     </main>
   )
 }

@@ -1,0 +1,12 @@
+.app-content.sections {
+    padding: 2rem;
+
+    & .sections-container {
+        margin-top: 2rem;
+        display: flex;
+        gap: 3rem;
+        align-items: flex-start;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
