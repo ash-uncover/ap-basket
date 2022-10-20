@@ -102,6 +102,41 @@ export const getUserMembersFailure: CaseReducer<UsersSliceState, PayloadAction<g
   }
 }
 
+// getUserParticipants //
+
+export type getUserParticipantsRequestPayload = {
+  id: string,
+}
+export const getUserParticipantsRequest: CaseReducer<UsersSliceState, PayloadAction<getUserParticipantsRequestPayload>> = (state, action) => {
+  state.data[action.payload.id] = {
+    ...(state.data[action.payload.id] || DEFAULT_USER),
+    participantsStatus: DataStates.FETCHING,
+    participantsError: null
+  }
+}
+export type getUserParticipantsSuccessPayload = {
+  id: string,
+  data: any,
+}
+export const getUserParticipantsSuccess: CaseReducer<UsersSliceState, PayloadAction<getUserParticipantsSuccessPayload>> = (state, action) => {
+  state.data[action.payload.id] = {
+    ...(state.data[action.payload.id] || DEFAULT_USER),
+    participantsStatus: DataStates.SUCCESS,
+    participantsError: null,
+  }
+}
+export type getUserParticipantsFailurePayload = {
+  id: string,
+  error: string,
+}
+export const getUserParticipantsFailure: CaseReducer<UsersSliceState, PayloadAction<getUserParticipantsFailurePayload>> = (state, action) => {
+  state.data[action.payload.id] = {
+    ...(state.data[action.payload.id] || DEFAULT_USER),
+    participantsStatus: DataStates.FAILURE,
+    participantsError: action.payload.error
+  }
+}
+
 // SLICE //
 
 const UsersSlice = createSlice({
@@ -116,6 +151,10 @@ const UsersSlice = createSlice({
     getUserMembersRequest,
     getUserMembersSuccess,
     getUserMembersFailure,
+
+    getUserParticipantsRequest,
+    getUserParticipantsSuccess,
+    getUserParticipantsFailure,
   },
 })
 

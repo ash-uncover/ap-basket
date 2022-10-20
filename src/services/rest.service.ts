@@ -118,6 +118,25 @@ export const getSession = async (token:string, id:string) => {
   }
 }
 
+export const getSessionParticipants = async (token:string, sessionId:string) => {
+  const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/sessions/${sessionId}/participants`
+  const headers = new Headers()
+  headers.set('accept', 'application/json')
+  headers.set('authorization', `Basic ${token}`)
+  const request: RequestInit = {
+    method: 'GET',
+    headers,
+  }
+
+  try {
+    const response = await fetch(url, request)
+    const data = await response.json()
+    return data
+
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 
 export const getUser = async (token:string, id:string) => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/users/${id}`
@@ -159,6 +178,26 @@ export const getUserMembers = async (token:string, userId:string) => {
   }
 }
 
+export const getUserParticipants = async (token:string, userId:string) => {
+  const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/users/${userId}/participants`
+  const headers = new Headers()
+  headers.set('accept', 'application/json')
+  headers.set('authorization', `Basic ${token}`)
+  const request: RequestInit = {
+    method: 'GET',
+    headers,
+  }
+
+  try {
+    const response = await fetch(url, request)
+    const data = await response.json()
+    return data
+
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 const RestService = {
   api: {
     auth: {
@@ -176,11 +215,17 @@ const RestService = {
     },
     sessions: {
       get: getSession,
+      participants: {
+        get: getSessionParticipants,
+      },
     },
     users: {
       get: getUser,
       members: {
         get: getUserMembers,
+      },
+      participants: {
+        get: getUserParticipants,
       },
     },
   }
