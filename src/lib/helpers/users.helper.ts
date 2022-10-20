@@ -5,6 +5,8 @@ import RestService from 'services/rest.service'
 import AuthSelectors from 'store/auth/auth.selectors'
 import MembersSelectors from 'store/rest/members/members.selectors'
 import { MemberState } from 'store/rest/members/members.state'
+import ParticipantsSelectors from 'store/rest/participants/participants.selectors'
+import { ParticipantState } from 'store/rest/participants/participants.state'
 import UsersSelectors from 'store/rest/users/users.selectors'
 import UsersSlice from 'store/rest/users/users.slice'
 
@@ -36,6 +38,20 @@ export const getUserMembers = async (dispatch, token: string, id: string) => {
   }
 }
 
+export const getUserParticipants = async (dispatch, token: string, id: string) => {
+  dispatch(UsersSlice.actions.getUserParticipantsRequest({ id }))
+
+  try {
+    const data = await RestService.api.users.participants.get(token, id)
+    dispatch(UsersSlice.actions.getUserParticipantsSuccess({ id, data }))
+    return data
+
+  } catch (error) {
+    dispatch(UsersSlice.actions.getUserParticipantsFailure({ id, error }))
+    throw error
+  }
+}
+
 export const useUser = (userId: string) => {
   const dispatch = useDispatch()
   const token = useSelector(AuthSelectors.token)
@@ -62,5 +78,22 @@ export const useUserMembers = (userId: string): { data: MemberState[], status: s
     data: members,
     status: user.membersStatus,
     error: user.membersError
+  }
+}
+
+export const useUserParticipants = (userId: string): { data: ParticipantState[], status: string, error: string } => {
+  const dispatch = useDispatch()
+  const token = useSelector(AuthSelectors.token)
+  const user = useSelector(UsersSelectors.user(userId))
+  const participants = useSelector(ParticipantsSelectors.userParticipants(userId))
+  useEffect(() => {
+    if ([DataStates.NEVER, DataStates.OUTDATED].includes(user.participantsStatus)) {
+      getUserParticipants(dispatch, token, userId)
+    }
+  }, [user.participantsStatus])
+  return {
+    data: participants,
+    status: user.participantsStatus,
+    error: user.participantsError
   }
 }
