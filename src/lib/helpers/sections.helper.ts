@@ -7,6 +7,8 @@ import MembersSelectors from "store/rest/members/members.selectors"
 import { MemberState } from "store/rest/members/members.state"
 import SectionsSelectors from "store/rest/sections/sections.selectors"
 import SectionsSlice from "store/rest/sections/sections.slice"
+import SessionsSelectors from "store/rest/sessions/sessions.selectors"
+import { SessionState } from "store/rest/sessions/sessions.state"
 import { UserState } from "store/rest/users/users.state"
 import { useUser } from "./users.helper"
 
@@ -38,6 +40,20 @@ export const getSectionMembers = async (dispatch, token:string, id:string) => {
   }
 }
 
+export const getSectionSessions = async (dispatch, token:string, id:string) => {
+  dispatch(SectionsSlice.actions.getSectionSessionsRequest({ id }))
+
+  try {
+    const data = await RestService.api.sections.sessions.get(token, id)
+    dispatch(SectionsSlice.actions.getSectionSessionsSuccess({ id, data }))
+    return data
+
+  } catch (error) {
+    dispatch(SectionsSlice.actions.getSectionSessionsFailure({ id, error }))
+    throw error
+  }
+}
+
 export const useSection = (id:string) => {
   const dispatch = useDispatch()
   const token = useSelector(AuthSelectors.token)
@@ -64,5 +80,22 @@ export const useSectionMembers = (id:string): { data:MemberState[], status:strin
     data: members,
     status: section.membersStatus,
     error: section.membersError
+  }
+}
+
+export const useSectionSessions = (id:string): { data:SessionState[], status:string, error:string } => {
+  const dispatch = useDispatch()
+  const token = useSelector(AuthSelectors.token)
+  const section = useSelector(SectionsSelectors.section(id))
+  const sessions = useSelector(SessionsSelectors.sectionSessions(id))
+  useEffect(() => {
+    if ([DataStates.NEVER, DataStates.OUTDATED].includes(section.sessionsStatus)) {
+      getSectionSessions(dispatch, token, id)
+    }
+  }, [section.sessionsStatus])
+  return {
+    data: sessions,
+    status: section.sessionsStatus,
+    error: section.sessionsError
   }
 }

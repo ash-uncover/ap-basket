@@ -8,7 +8,7 @@ const MembersSelectors = {
   member: (id: string) => (state: RootSliceState): MemberState => state.rest.members.data[id] || DEFAULT_MEMBER,
 
   sectionMembers: (id: string) => (state: RootSliceState): MemberState[] => {
-    return MembersSelectors.members(state).filter(m => m.data?.sectionId === id)
+    return MembersSelectors.members(state).filter(member => member.data?.sectionId === id)
   },
 
   userMembers: (id: string) => (state: RootSliceState): MemberState[] => {
