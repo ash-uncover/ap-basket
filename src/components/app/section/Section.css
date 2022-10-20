@@ -7,4 +7,10 @@
       border-bottom: none;
     }
   }
+  & .fd-object-list__item {
+    border: 1px solid grey;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+  }
 }
