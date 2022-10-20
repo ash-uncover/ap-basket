@@ -2,19 +2,23 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useSection, useSectionSessions } from 'lib/helpers/sections.helper'
+import { useSession } from 'lib/helpers/sessions.helper'
 
 import {
   BusyIndicator,
 } from 'fundamental-react'
-
-import { Table, TableRow, TableCell } from 'components/fiori/table/Table'
+import {
+  Table,
+  TableRow,
+  TableCell
+} from 'components/fiori/table/Table'
 
 import DataStates from 'lib/constants/DataStates'
 
-import './SectionSessions.css'
-import { useSession } from 'lib/helpers/sessions.helper'
+import './SectionTabSessions.css'
+import { Panel } from 'components/fiori/panel/Panel'
 
-const SectionSessions = ({ id }) => {
+const SectionTabSessions = ({ id }) => {
 
   // Hooks //
 
@@ -40,19 +44,44 @@ const SectionSessions = ({ id }) => {
     default: {
       return (
         <div className=''>
-          <Table
-            borderedVertical={true}
-            columns={[
-              { key: 'date', name: 'date' },
-            ]}
+          <Panel
+            expandable
+            expanded
+            title='Incoming Sessions'
           >
-            {sessions.data.map((session) => (
-              <SectionSession
-                key={session.data.id}
-                id={session.data.id}
-              />
-            ))}
-          </Table>
+            <Table
+              borderedVertical={true}
+              columns={[
+                { key: 'date', name: 'date' },
+              ]}
+            >
+              {sessions.data.map((session) => (
+                <SectionSession
+                  key={session.data.id}
+                  id={session.data.id}
+                />
+              ))}
+            </Table>
+          </Panel>
+          <Panel
+            expandable
+            title='Past Sessions'
+          >
+            <Table
+              borderedVertical={true}
+              columns={[
+                { key: 'date', name: 'date' },
+              ]}
+            >
+              {sessions.data.map((session) => (
+                <SectionSession
+                  key={session.data.id}
+                  id={session.data.id}
+                />
+              ))}
+            </Table>
+          </Panel>
+
         </div>
       )
     }
@@ -104,4 +133,4 @@ const SectionSession = ({ id }) => {
   }
 }
 
-export default SectionSessions
+export default SectionTabSessions

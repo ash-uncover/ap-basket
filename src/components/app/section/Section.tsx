@@ -14,10 +14,11 @@ import DataStates from 'lib/constants/DataStates'
 import { useUser } from 'lib/helpers/users.helper'
 
 import './Section.css'
-import SectionMembers from 'components/app/section/SectionMembers'
+import SectionTabMembers from 'components/app/section/SectionTabMembers'
 import Table from 'components/fiori/table/Table'
-import SectionSessions from './SectionSessions'
+import SectionTabSessions from './SectionTabSessions'
 import { IconTabBar } from 'components/fiori/icontabbar/IconTabBar'
+import SectionTabGeneral from './SectionTabGeneral'
 
 const SECTION_TAB = {
   GENERAL: {
@@ -55,24 +56,13 @@ const Section = ({ id }) => {
   const renderTab = () => {
     switch (selectedTab) {
       case SECTION_TAB.GENERAL.id: {
-        return (
-          <>
-          </>
-        )
+        return <SectionTabGeneral id={id} />
       }
       case SECTION_TAB.MEMBERS.id: {
-        return (
-          <>
-            <SectionMembers id={id} />
-          </>
-        )
+        return <SectionTabMembers id={id} />
       }
       case SECTION_TAB.SESSIONS.id: {
-        return (
-          <>
-            <SectionSessions id={id} />
-          </>
-        )
+        return <SectionTabSessions id={id} />
       }
       default: {
         return null;

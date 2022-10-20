@@ -1,22 +1,26 @@
 import React from 'react'
 import { useSectionMembers } from 'lib/helpers/sections.helper'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 import { useUser } from 'lib/helpers/users.helper'
+
+import AuthSelectors from 'store/auth/auth.selectors'
 
 import {
   BusyIndicator,
 } from 'fundamental-react'
+import {
+  Table,
+  TableRow,
+  TableCell
+} from 'components/fiori/table/Table'
 
 import DataStates from 'lib/constants/DataStates'
 
-import { Table, TableRow, TableCell } from 'components/fiori/table/Table'
+import './SectionTabMembers.css'
 
-import './SectionMembers.css'
-import { useSelector } from 'react-redux'
-import AuthSelectors from 'store/auth/auth.selectors'
-
-const SectionMembers = ({ id }) => {
+const SectionTabMembers = ({ id }) => {
 
   // Hooks //
 
@@ -144,4 +148,4 @@ const SectionMember = ({ id }) => {
   }
 }
 
-export default SectionMembers
+export default SectionTabMembers
