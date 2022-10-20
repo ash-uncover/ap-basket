@@ -7,6 +7,7 @@ import {
 import DataStates from 'lib/constants/DataStates'
 
 import { SessionsSliceState, SessionState } from 'store/rest/sessions/sessions.state'
+import { getSectionSessionsSuccessPayload } from '../sections/sections.slice'
 
 // STATE //
 
@@ -98,6 +99,19 @@ export const getSessionParticipantsFailure: CaseReducer<SessionsSliceState, Payl
   }
 }
 
+// getSectionSessions //
+
+export const getSectionSessionsSuccess: CaseReducer<SessionsSliceState, PayloadAction<getSectionSessionsSuccessPayload>> = (state, action) => {
+  action.payload.data.forEach(session => {
+    state.data[session.id] = {
+      ...(state.data[session.id] || DEFAULT_SESSION),
+      data: session,
+      dataStatus: DataStates.SUCCESS,
+      dataError: null
+    }
+  })
+}
+
 // SLICE //
 
 const SessionsSlice = createSlice({
@@ -113,6 +127,10 @@ const SessionsSlice = createSlice({
     getSessionParticipantsSuccess,
     getSessionParticipantsFailure,
   },
+
+  extraReducers: {
+    'sections/getSectionSessionsSuccess': getSectionSessionsSuccess,
+  }
 })
 
 export default SessionsSlice

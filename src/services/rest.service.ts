@@ -98,6 +98,27 @@ export const getSectionSessions = async (token:string, id:string) => {
   }
 }
 
+export const getSession = async (token:string, id:string) => {
+  const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/sessions/${id}`
+  const headers = new Headers()
+  headers.set('accept', 'application/json')
+  headers.set('authorization', `Basic ${token}`)
+  const request: RequestInit = {
+    method: 'GET',
+    headers,
+  }
+
+  try {
+    const response = await fetch(url, request)
+    const data = await response.json()
+    return data
+
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+
 export const getUser = async (token:string, id:string) => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/users/${id}`
   const headers = new Headers()
@@ -152,6 +173,9 @@ const RestService = {
       sessions: {
         get: getSectionSessions,
       },
+    },
+    sessions: {
+      get: getSession,
     },
     users: {
       get: getUser,

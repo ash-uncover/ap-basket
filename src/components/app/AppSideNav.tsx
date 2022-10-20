@@ -7,7 +7,7 @@ import { useUserMembers } from 'lib/helpers/users.helper'
 
 import AuthSelectors from 'store/auth/auth.selectors'
 
-import { VerticalNavigation, VerticalNavigationItem } from 'components/fiori/VerticalNavigation'
+import { VerticalNavigation, VerticalNavigationItem } from 'components/fiori/verticalnavigation/VerticalNavigation'
 
 import DataStates from 'lib/constants/DataStates'
 

@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import { createRoutesFromElements } from 'react-router-dom'
 
 /*
   <Table

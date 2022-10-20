@@ -22,7 +22,18 @@
       "members_other": "{{count}} Members"
     },
     "section": {
-      "title": "Section {{name}}"
+      "title": "Section {{name}}",
+      "tabs": {
+        "general": {
+          "title": "General"
+        },
+        "members": {
+          "title": "Members"
+        },
+        "sessions": {
+          "title": "Sessions"
+        }
+      }
     },
     "profile": {
       "dialog": {

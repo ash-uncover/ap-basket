@@ -10,7 +10,7 @@ import {
 
 import DataStates from 'lib/constants/DataStates'
 
-import { Table, TableRow, TableCell } from 'components/fiori/Table'
+import { Table, TableRow, TableCell } from 'components/fiori/table/Table'
 
 import './SectionMembers.css'
 import { useSelector } from 'react-redux'

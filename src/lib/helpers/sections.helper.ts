@@ -9,8 +9,6 @@ import SectionsSelectors from "store/rest/sections/sections.selectors"
 import SectionsSlice from "store/rest/sections/sections.slice"
 import SessionsSelectors from "store/rest/sessions/sessions.selectors"
 import { SessionState } from "store/rest/sessions/sessions.state"
-import { UserState } from "store/rest/users/users.state"
-import { useUser } from "./users.helper"
 
 export const getSection = async (dispatch, token:string, id:string) => {
   dispatch(SectionsSlice.actions.getSectionRequest({ id }))

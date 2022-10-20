@@ -1,0 +1,7 @@
+.section {
+  & .section-content {
+    & .section-title {
+      margin: 1rem 0;
+    }
+  }
+}
