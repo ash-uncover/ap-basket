@@ -24,8 +24,8 @@ export const DEFAULT_SECTION: SectionState = {
   membersStatus: DataStates.NEVER,
   membersError: null,
 
-  eventsStatus: DataStates.NEVER,
-  eventsError: null,
+  sessionsStatus: DataStates.NEVER,
+  sessionsError: null,
 }
 
 // REDUCERS //
@@ -101,6 +101,41 @@ export const getSectionMembersFailure: CaseReducer<SectionsSliceState, PayloadAc
   }
 }
 
+// getSectionSessions //
+
+export type getSectionSessionsRequestPayload = {
+  id: string,
+}
+export const getSectionSessionsRequest: CaseReducer<SectionsSliceState, PayloadAction<getSectionSessionsRequestPayload>> = (state, action) => {
+  state.data[action.payload.id] = {
+    ...(state.data[action.payload.id] || DEFAULT_SECTION),
+    sessionsStatus: DataStates.FETCHING,
+    sessionsError: null
+  }
+}
+export type getSectionSessionsSuccessPayload = {
+  id: string,
+  data: any,
+}
+export const getSectionSessionsSuccess: CaseReducer<SectionsSliceState, PayloadAction<getSectionSessionsSuccessPayload>> = (state, action) => {
+  state.data[action.payload.id] = {
+    ...(state.data[action.payload.id] || DEFAULT_SECTION),
+    sessionsStatus: DataStates.SUCCESS,
+    sessionsError: null,
+  }
+}
+export type getSectionSessionsFailurePayload = {
+  id: string,
+  error: string,
+}
+export const getSectionSessionsFailure: CaseReducer<SectionsSliceState, PayloadAction<getSectionSessionsFailurePayload>> = (state, action) => {
+  state.data[action.payload.id] = {
+    ...(state.data[action.payload.id] || DEFAULT_SECTION),
+    sessionsStatus: DataStates.FAILURE,
+    sessionsError: action.payload.error
+  }
+}
+
 // SLICE //
 
 const SectionsSlice = createSlice({
@@ -115,6 +150,10 @@ const SectionsSlice = createSlice({
     getSectionMembersRequest,
     getSectionMembersSuccess,
     getSectionMembersFailure,
+
+    getSectionSessionsRequest,
+    getSectionSessionsSuccess,
+    getSectionSessionsFailure,
   },
 })
 

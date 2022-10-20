@@ -14,6 +14,6 @@ export type SectionState = {
   membersStatus: string,
   membersError: string,
 
-  eventsStatus: string,
-  eventsError: string,
+  sessionsStatus: string,
+  sessionsError: string,
 }

@@ -2,11 +2,13 @@ import { combineReducers } from 'redux'
 
 import MembersSlice from 'store/rest/members/members.slice'
 import SectionsSlice from 'store/rest/sections/sections.slice'
+import SessionsSlice from 'store/rest/sessions/sessions.slice'
 import UsersSlice from 'store/rest/users/users.slice'
 
 export const reducer = combineReducers({
     members: MembersSlice.reducer,
     sections: SectionsSlice.reducer,
+    sessions: SessionsSlice.reducer,
     users: UsersSlice.reducer,
 })
 
