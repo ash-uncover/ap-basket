@@ -5,10 +5,14 @@ import { SessionState } from 'store/rest/sessions/sessions.state'
 
 const SessionsSelectors = {
   sessions: (state: RootSliceState) => Object.values(state.rest.sessions.data),
-  session: (id: string) => (state: RootSliceState): SessionState => state.rest.sessions.data[id] || DEFAULT_SESSION,
+
+  session: (sessionId: string) => (state: RootSliceState): SessionState => {
+    return state.rest.sessions.data[sessionId] || DEFAULT_SESSION(sessionId)
+  },
 
   sectionSessions: (id: string) => (state: RootSliceState): SessionState[] => {
-    return SessionsSelectors.sessions(state).filter(session => session.data?.sectionId === id)
+    return SessionsSelectors.sessions(state)
+      .filter(session => session.data?.sectionId === id)
   },
 }
 

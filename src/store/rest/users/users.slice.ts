@@ -16,17 +16,20 @@ const initialState: UsersSliceState = {
   data: {},
 }
 
-export const DEFAULT_USER: UserState = {
-  data: null,
-  dataStatus: DataStates.NEVER,
-  dataError: null,
+export const DEFAULT_USER = (userId: string): UserState => {
+  return {
+    data: { id: userId },
+    dataStatus: DataStates.NEVER,
+    dataError: null,
 
-  membersStatus: DataStates.NEVER,
-  membersError: null,
+    membersStatus: DataStates.NEVER,
+    membersError: null,
 
-  participantsStatus: DataStates.NEVER,
-  participantsError: null,
+    participantsStatus: DataStates.NEVER,
+    participantsError: null,
+  }
 }
+
 
 
 // REDUCERS //
@@ -38,7 +41,7 @@ export type getUserRequestPayload = {
 }
 const getUserRequest: CaseReducer<UsersSliceState, PayloadAction<getUserRequestPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_USER),
+    ...(state.data[action.payload.id] || DEFAULT_USER(action.payload.id)),
     dataStatus: DataStates.FETCHING,
     dataError: null
   }
@@ -49,7 +52,7 @@ export type getUserSuccessPayload = {
 }
 export const getUserSuccess: CaseReducer<UsersSliceState, PayloadAction<getUserSuccessPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_USER),
+    ...(state.data[action.payload.id] || DEFAULT_USER(action.payload.id)),
     data: action.payload.data,
     dataStatus: DataStates.SUCCESS,
     dataError: null,
@@ -61,7 +64,7 @@ export type getUserFailurePayload = {
 }
 export const getUserFailure: CaseReducer<UsersSliceState, PayloadAction<getUserFailurePayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_USER),
+    ...(state.data[action.payload.id] || DEFAULT_USER(action.payload.id)),
     dataStatus: DataStates.FAILURE,
     dataError: action.payload.error
   }
@@ -74,7 +77,7 @@ export type getUserMembersRequestPayload = {
 }
 export const getUserMembersRequest: CaseReducer<UsersSliceState, PayloadAction<getUserMembersRequestPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_USER),
+    ...(state.data[action.payload.id] || DEFAULT_USER(action.payload.id)),
     membersStatus: DataStates.FETCHING,
     membersError: null
   }
@@ -85,7 +88,7 @@ export type getUserMembersSuccessPayload = {
 }
 export const getUserMembersSuccess: CaseReducer<UsersSliceState, PayloadAction<getUserMembersSuccessPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_USER),
+    ...(state.data[action.payload.id] || DEFAULT_USER(action.payload.id)),
     membersStatus: DataStates.SUCCESS,
     membersError: null,
   }
@@ -96,7 +99,7 @@ export type getUserMembersFailurePayload = {
 }
 export const getUserMembersFailure: CaseReducer<UsersSliceState, PayloadAction<getUserMembersFailurePayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_USER),
+    ...(state.data[action.payload.id] || DEFAULT_USER(action.payload.id)),
     membersStatus: DataStates.FAILURE,
     membersError: action.payload.error
   }
@@ -109,7 +112,7 @@ export type getUserParticipantsRequestPayload = {
 }
 export const getUserParticipantsRequest: CaseReducer<UsersSliceState, PayloadAction<getUserParticipantsRequestPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_USER),
+    ...(state.data[action.payload.id] || DEFAULT_USER(action.payload.id)),
     participantsStatus: DataStates.FETCHING,
     participantsError: null
   }
@@ -120,7 +123,7 @@ export type getUserParticipantsSuccessPayload = {
 }
 export const getUserParticipantsSuccess: CaseReducer<UsersSliceState, PayloadAction<getUserParticipantsSuccessPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_USER),
+    ...(state.data[action.payload.id] || DEFAULT_USER(action.payload.id)),
     participantsStatus: DataStates.SUCCESS,
     participantsError: null,
   }
@@ -131,7 +134,7 @@ export type getUserParticipantsFailurePayload = {
 }
 export const getUserParticipantsFailure: CaseReducer<UsersSliceState, PayloadAction<getUserParticipantsFailurePayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_USER),
+    ...(state.data[action.payload.id] || DEFAULT_USER(action.payload.id)),
     participantsStatus: DataStates.FAILURE,
     participantsError: action.payload.error
   }

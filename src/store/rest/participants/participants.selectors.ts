@@ -5,7 +5,10 @@ import { ParticipantState } from 'store/rest/participants/participants.state'
 
 const ParticipantsSelectors = {
   participants: (state: RootSliceState) => Object.values(state.rest.participants.data),
-  participant: (id: string) => (state: RootSliceState): ParticipantState => state.rest.participants.data[id] || DEFAULT_PARTICIPANT,
+
+  participant: (participantId: string) => (state: RootSliceState): ParticipantState => {
+    return state.rest.participants.data[participantId] || DEFAULT_PARTICIPANT(participantId)
+  },
 
   sessionParticipants: (sessionId: string) => (state: RootSliceState): ParticipantState[] => {
     return ParticipantsSelectors.participants(state)

@@ -17,13 +17,15 @@ const initialState: SessionsSliceState = {
   data: {},
 }
 
-export const DEFAULT_SESSION: SessionState = {
-  data: null,
-  dataStatus: DataStates.NEVER,
-  dataError: null,
+export const DEFAULT_SESSION = (sessionId: string): SessionState => {
+  return {
+    data: { id: sessionId },
+    dataStatus: DataStates.NEVER,
+    dataError: null,
 
-  participantsStatus: DataStates.NEVER,
-  participantsError: null,
+    participantsStatus: DataStates.NEVER,
+    participantsError: null,
+  }
 }
 
 // REDUCERS //
@@ -35,7 +37,7 @@ export type getSessionRequestPayload = {
 }
 export const getSessionRequest: CaseReducer<SessionsSliceState, PayloadAction<getSessionRequestPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_SESSION),
+    ...(state.data[action.payload.id] || DEFAULT_SESSION(action.payload.id)),
     dataStatus: DataStates.FETCHING,
     dataError: null
   }
@@ -46,7 +48,7 @@ export type getSessionSuccessPayload = {
 }
 export const getSessionSuccess: CaseReducer<SessionsSliceState, PayloadAction<getSessionSuccessPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_SESSION),
+    ...(state.data[action.payload.id] || DEFAULT_SESSION(action.payload.id)),
     data: action.payload.data,
     dataStatus: DataStates.SUCCESS,
     dataError: null,
@@ -58,7 +60,7 @@ export type getSessionFailurePayload = {
 }
 export const getSessionFailure: CaseReducer<SessionsSliceState, PayloadAction<getSessionFailurePayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_SESSION),
+    ...(state.data[action.payload.id] || DEFAULT_SESSION(action.payload.id)),
     dataStatus: DataStates.FAILURE,
     dataError: action.payload.error
   }
@@ -71,7 +73,7 @@ export type getSessionParticipantsRequestPayload = {
 }
 export const getSessionParticipantsRequest: CaseReducer<SessionsSliceState, PayloadAction<getSessionParticipantsRequestPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_SESSION),
+    ...(state.data[action.payload.id] || DEFAULT_SESSION(action.payload.id)),
     participantsStatus: DataStates.FETCHING,
     participantsError: null
   }
@@ -82,7 +84,7 @@ export type getSessionParticipantsSuccessPayload = {
 }
 export const getSessionParticipantsSuccess: CaseReducer<SessionsSliceState, PayloadAction<getSessionParticipantsSuccessPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_SESSION),
+    ...(state.data[action.payload.id] || DEFAULT_SESSION(action.payload.id)),
     participantsStatus: DataStates.SUCCESS,
     participantsError: null,
   }
@@ -93,7 +95,7 @@ export type getSessionParticipantsFailurePayload = {
 }
 export const getSessionParticipantsFailure: CaseReducer<SessionsSliceState, PayloadAction<getSessionParticipantsFailurePayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_SESSION),
+    ...(state.data[action.payload.id] || DEFAULT_SESSION(action.payload.id)),
     participantsStatus: DataStates.FAILURE,
     participantsError: action.payload.error
   }
@@ -104,7 +106,7 @@ export const getSessionParticipantsFailure: CaseReducer<SessionsSliceState, Payl
 export const getSectionSessionsSuccess: CaseReducer<SessionsSliceState, PayloadAction<getSectionSessionsSuccessPayload>> = (state, action) => {
   action.payload.data.forEach(session => {
     state.data[session.id] = {
-      ...(state.data[session.id] || DEFAULT_SESSION),
+      ...(state.data[session.id] || DEFAULT_SESSION(action.payload.id)),
       data: session,
       dataStatus: DataStates.SUCCESS,
       dataError: null

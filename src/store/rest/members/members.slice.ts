@@ -18,10 +18,12 @@ const initialState: MembersSliceState = {
   data: {},
 }
 
-export const DEFAULT_MEMBER: MemberState = {
-  data: null,
-  dataStatus: DataStates.NEVER,
-  dataError: null,
+export const DEFAULT_MEMBER = (memberId: string): MemberState => {
+  return {
+    data: { id: memberId },
+    dataStatus: DataStates.NEVER,
+    dataError: null,
+  }
 }
 
 // REDUCERS //
@@ -33,7 +35,7 @@ export type getMemberRequestPayload = {
 }
 export const getMemberRequest: CaseReducer<MembersSliceState, PayloadAction<getMemberRequestPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_MEMBER),
+    ...(state.data[action.payload.id] || DEFAULT_MEMBER(action.payload.id)),
     dataStatus: DataStates.FETCHING,
     dataError: null
   }
@@ -44,7 +46,7 @@ export type getMemberSuccessPayload = {
 }
 export const getMemberSuccess: CaseReducer<MembersSliceState, PayloadAction<getMemberSuccessPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_MEMBER),
+    ...(state.data[action.payload.id] || DEFAULT_MEMBER(action.payload.id)),
     data: action.payload.data,
     dataStatus: DataStates.SUCCESS,
     dataError: null,
@@ -56,7 +58,7 @@ export type getMemberFailurePayload = {
 }
 export const getMemberFailure: CaseReducer<MembersSliceState, PayloadAction<getMemberFailurePayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_MEMBER),
+    ...(state.data[action.payload.id] || DEFAULT_MEMBER(action.payload.id)),
     dataStatus: DataStates.FAILURE,
     dataError: action.payload.error
   }
@@ -67,7 +69,7 @@ export const getMemberFailure: CaseReducer<MembersSliceState, PayloadAction<getM
 export const getSectionMembersSuccess: CaseReducer<MembersSliceState, PayloadAction<getSectionMembersSuccessPayload>> = (state, action) => {
   action.payload.data.forEach(member => {
     state.data[member.id] = {
-      ...(state.data[member.id] || DEFAULT_MEMBER),
+      ...(state.data[member.id] || DEFAULT_MEMBER(action.payload.id)),
       data: member,
       dataStatus: DataStates.SUCCESS,
       dataError: null
@@ -80,7 +82,7 @@ export const getSectionMembersSuccess: CaseReducer<MembersSliceState, PayloadAct
 export const getUserMembersSuccess: CaseReducer<MembersSliceState, PayloadAction<getUserMembersSuccessPayload>> = (state, action) => {
   action.payload.data.forEach(member => {
     state.data[member.id] = {
-      ...(state.data[member.id] || DEFAULT_MEMBER),
+      ...(state.data[member.id] || DEFAULT_MEMBER(action.payload.id)),
       data: member,
       dataStatus: DataStates.SUCCESS,
       dataError: null

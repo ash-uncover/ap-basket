@@ -18,10 +18,12 @@ const initialState: ParticipantsSliceState = {
   data: {},
 }
 
-export const DEFAULT_PARTICIPANT: ParticipantState = {
-  data: null,
-  dataStatus: DataStates.NEVER,
-  dataError: null,
+export const DEFAULT_PARTICIPANT = (participantId: string): ParticipantState => {
+  return {
+    data: { id: participantId },
+    dataStatus: DataStates.NEVER,
+    dataError: null,
+  }
 }
 
 // REDUCERS //
@@ -33,7 +35,7 @@ export type getParticipantRequestPayload = {
 }
 export const getParticipantRequest: CaseReducer<ParticipantsSliceState, PayloadAction<getParticipantRequestPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_PARTICIPANT),
+    ...(state.data[action.payload.id] || DEFAULT_PARTICIPANT(action.payload.id)),
     dataStatus: DataStates.FETCHING,
     dataError: null
   }
@@ -44,7 +46,7 @@ export type getParticipantSuccessPayload = {
 }
 export const getParticipantSuccess: CaseReducer<ParticipantsSliceState, PayloadAction<getParticipantSuccessPayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_PARTICIPANT),
+    ...(state.data[action.payload.id] || DEFAULT_PARTICIPANT(action.payload.id)),
     data: action.payload.data,
     dataStatus: DataStates.SUCCESS,
     dataError: null,
@@ -56,7 +58,7 @@ export type getParticipantFailurePayload = {
 }
 export const getParticipantFailure: CaseReducer<ParticipantsSliceState, PayloadAction<getParticipantFailurePayload>> = (state, action) => {
   state.data[action.payload.id] = {
-    ...(state.data[action.payload.id] || DEFAULT_PARTICIPANT),
+    ...(state.data[action.payload.id] || DEFAULT_PARTICIPANT(action.payload.id)),
     dataStatus: DataStates.FAILURE,
     dataError: action.payload.error
   }
@@ -67,7 +69,7 @@ export const getParticipantFailure: CaseReducer<ParticipantsSliceState, PayloadA
 export const getSessionParticipantsSuccess: CaseReducer<ParticipantsSliceState, PayloadAction<getSessionParticipantsSuccessPayload>> = (state, action) => {
   action.payload.data.forEach(participant => {
     state.data[participant.id] = {
-      ...(state.data[participant.id] || DEFAULT_PARTICIPANT),
+      ...(state.data[participant.id] || DEFAULT_PARTICIPANT(action.payload.id)),
       data: participant,
       dataStatus: DataStates.SUCCESS,
       dataError: null
@@ -80,7 +82,7 @@ export const getSessionParticipantsSuccess: CaseReducer<ParticipantsSliceState, 
 export const getUserParticipantsSuccess: CaseReducer<ParticipantsSliceState, PayloadAction<getUserParticipantsSuccessPayload>> = (state, action) => {
   action.payload.data.forEach(participant => {
     state.data[participant.id] = {
-      ...(state.data[participant.id] || DEFAULT_PARTICIPANT),
+      ...(state.data[participant.id] || DEFAULT_PARTICIPANT(action.payload.id)),
       data: participant,
       dataStatus: DataStates.SUCCESS,
       dataError: null

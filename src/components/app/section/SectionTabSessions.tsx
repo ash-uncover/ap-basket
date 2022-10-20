@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useSection, useSectionSessions } from 'lib/helpers/sections.helper'
-import { useSession } from 'lib/helpers/sessions.helper'
+import { useSession, useSessionParticipants, useSessionUsers } from 'lib/helpers/sessions.helper'
 
 import {
   BusyIndicator,
@@ -45,8 +45,6 @@ const SectionTabSessions = ({ id }) => {
       const now = new Date()
       const sessionsSort = sessions.data.reduce((acc, session) => {
         const date = new Date(session.data.date)
-        console.log(now)
-        console.log(date)
         if (date > now) {
           acc.future.push(session)
         } else {
@@ -64,7 +62,8 @@ const SectionTabSessions = ({ id }) => {
             <Table
               borderedVertical={true}
               columns={[
-                { key: 'date', name: 'date' },
+                { key: 'date', name: 'Date' },
+                { key: 'participants', name: 'Participants' },
               ]}
             >
               {sessionsSort.future.map((session) => (
@@ -83,6 +82,7 @@ const SectionTabSessions = ({ id }) => {
               borderedVertical={true}
               columns={[
                 { key: 'date', name: 'date' },
+                { key: 'participants', name: 'Participants' },
               ]}
             >
               {sessionsSort.past.map((session) => (
@@ -107,6 +107,8 @@ const SectionSession = ({ id }) => {
   const { t } = useTranslation()
 
   const session = useSession(id)
+  const participants = useSessionParticipants(id)
+  const users = useSessionUsers(id)
 
   // Rendering //
 
@@ -137,6 +139,11 @@ const SectionSession = ({ id }) => {
           <TableCell>
             <span>
               {session.data.date}
+            </span>
+          </TableCell>
+          <TableCell>
+            <span>
+              {participants.data?.length}
             </span>
           </TableCell>
         </TableRow>

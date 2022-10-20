@@ -4,7 +4,9 @@ import { DEFAULT_SECTION } from 'store/rest/sections/sections.slice'
 import { SectionState } from 'store/rest/sections/sections.state'
 
 const SectionsSelectors = {
-  section: (id: string) => (state: RootSliceState): SectionState => state.rest.sections.data[id] || DEFAULT_SECTION,
+  section: (sectionId: string) => (state: RootSliceState): SectionState => {
+    return state.rest.sections.data[sectionId] || DEFAULT_SECTION(sectionId)
+  },
 }
 
 export default SectionsSelectors

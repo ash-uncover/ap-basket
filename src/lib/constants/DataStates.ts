@@ -1,4 +1,4 @@
-const DataStates = {
+export const DataStates = {
   NEVER: 'NEVER',
   FETCHING_FIRST: 'FETCHING_FIRST',
   FETCHING: 'FETCHING',
