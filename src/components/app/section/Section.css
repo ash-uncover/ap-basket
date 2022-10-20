@@ -3,5 +3,8 @@
     & .section-title {
       margin: 1rem 0;
     }
+    & .fd-panel__content {
+      border-bottom: none;
+    }
   }
 }

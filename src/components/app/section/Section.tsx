@@ -25,13 +25,13 @@ const SECTION_TAB = {
     id: 'general',
     title: 'app.section.tabs.general.title'
   },
-  MEMBERS: {
-    id: 'members',
-    title: 'app.section.tabs.members.title'
-  },
   SESSIONS: {
     id: 'sessions',
     title: 'app.section.tabs.sessions.title'
+  },
+  MEMBERS: {
+    id: 'members',
+    title: 'app.section.tabs.members.title'
   },
 }
 const SECTION_TABS = Object.values(SECTION_TAB)

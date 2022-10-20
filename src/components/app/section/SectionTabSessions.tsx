@@ -42,6 +42,18 @@ const SectionTabSessions = ({ id }) => {
       )
     }
     default: {
+      const now = new Date()
+      const sessionsSort = sessions.data.reduce((acc, session) => {
+        const date = new Date(session.data.date)
+        console.log(now)
+        console.log(date)
+        if (date > now) {
+          acc.future.push(session)
+        } else {
+          acc.past.push(session)
+        }
+        return acc
+      }, { future: [], past: [] })
       return (
         <div className=''>
           <Panel
@@ -55,7 +67,7 @@ const SectionTabSessions = ({ id }) => {
                 { key: 'date', name: 'date' },
               ]}
             >
-              {sessions.data.map((session) => (
+              {sessionsSort.future.map((session) => (
                 <SectionSession
                   key={session.data.id}
                   id={session.data.id}
@@ -73,7 +85,7 @@ const SectionTabSessions = ({ id }) => {
                 { key: 'date', name: 'date' },
               ]}
             >
-              {sessions.data.map((session) => (
+              {sessionsSort.past.map((session) => (
                 <SectionSession
                   key={session.data.id}
                   id={session.data.id}
