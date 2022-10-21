@@ -20,13 +20,13 @@ import DataStates from 'lib/constants/DataStates'
 
 import './SectionTabMembers.css'
 
-const SectionTabMembers = ({ id }) => {
+const SectionTabMembers = ({ sectionId }) => {
 
   // Hooks //
 
   const { t } = useTranslation()
 
-  const members = useSectionMembers(id)
+  const members = useSectionMembers(sectionId)
 
   // Rendering //
 

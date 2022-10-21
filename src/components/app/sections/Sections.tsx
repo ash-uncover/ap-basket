@@ -4,19 +4,19 @@ import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 import { useSection, useSectionMembers } from 'lib/helpers/sections.helper'
-import { useUserMembers } from 'lib/helpers/users.helper'
+import { useUserMembers, useUserSections } from 'lib/helpers/users.helper'
 
 import AuthSelectors from 'store/auth/auth.selectors'
 
 import {
   BusyIndicator,
-  Tile,
   Title,
 } from 'fundamental-react'
 
-import DataStates from 'lib/constants/DataStates'
+import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
 
 import './Sections.css'
+import { Tile } from 'components/fiori/tile/Tile'
 
 const Sections = ({ }) => {
 
@@ -26,30 +26,43 @@ const Sections = ({ }) => {
 
   const userId = useSelector(AuthSelectors.userId)
   const members = useUserMembers(userId)
+  const sections = useUserSections(userId)
+  const status = mergeDataStates([members.status, sections.status])
 
   // Rendering //
 
   const renderSections = () => {
-    switch (members.status) {
+    switch (status) {
       case DataStates.NEVER:
       case DataStates.FETCHING:
       case DataStates.FETCHING_FIRST: {
         return (
-          <div>{t('loading.default')}</div>
+          <Tile title={t('loading.default')} />
         )
       }
       case DataStates.FAILURE: {
         return (
-          <div>{t('ERROR')}</div>
+          <Tile title={t('ERROR')} />
         )
       }
       default: {
-        if (members.data.length === 0) {
+        if (!sections?.data?.length) {
           return (
-            <div>{t('app.sections.noneR')}</div>
+            <div>{t('app.sections.none')}</div>
           )
         }
-        return members.data.map(member => <SectionTile key={member.data.id} id={member.data.sectionId} />)
+        sections?.data?.sort((section1, section2) => {
+          return section1.data.name.localeCompare(section2.data.name)
+        })
+        return sections?.data?.map(section => {
+          return (
+            <SectionTile
+              key={section.data.id}
+              sectionId={section.data.id}
+              members={members.data.length}
+            />
+          )
+        })
       }
     }
   }
@@ -66,19 +79,19 @@ const Sections = ({ }) => {
   )
 }
 
-const SectionTile = ({ id }) => {
+const SectionTile = ({ sectionId, members }) => {
 
   // Hooks //
 
   const { t } = useTranslation()
 
-  const section = useSection(id)
+  const section = useSection(sectionId)
   const navigate = useNavigate()
 
   // Events //
 
   const onClick = () => {
-    navigate(`/sections/${id}`);
+    navigate(`/sections/${sectionId}`);
   }
 
   // Rendering //
@@ -88,66 +101,27 @@ const SectionTile = ({ id }) => {
     case DataStates.FETCHING:
     case DataStates.FETCHING_FIRST: {
       return (
-        <Tile>
-          <Tile.Content>
-            <BusyIndicator show size='m' />
-          </Tile.Content>
+        <Tile title={'loading'}>
+          <BusyIndicator show size='m' />
         </Tile>
       )
     }
     case DataStates.FAILURE: {
       return (
-        <div>error</div>
-      )
-    }
-    default: {
-      return (
-        <Tile onClick={onClick}>
-          <Tile.Header>
-            {section.data.name}
-          </Tile.Header>
-          <Tile.Content>
-          </Tile.Content>
-          <SectionTileFooter id={id} />
+        <Tile title={'error'}>
+
         </Tile>
       )
     }
-  }
-}
-
-const SectionTileFooter = ({ id }) => {
-
-  // Hooks //
-
-  const { t } = useTranslation()
-
-  const members = useSectionMembers(id)
-
-  // Rendering //
-
-  switch (members.status) {
-    case DataStates.NEVER:
-    case DataStates.FETCHING:
-    case DataStates.FETCHING_FIRST: {
-      return (
-        <Tile.Footer>
-          <BusyIndicator show size='xs' />
-        </Tile.Footer>
-      )
-    }
-    case DataStates.FAILURE: {
-      return (
-        <Tile.Footer />
-      )
-    }
     default: {
       return (
-        <Tile.Footer>
-          {t('app.sections.members', { count: members.data.length })}
-        </Tile.Footer>
+        <Tile
+          title={section.data.name}
+          footer={t('app.sections.members', { count: members })}
+          onClick={onClick}
+        />
       )
     }
   }
 }
-
 export default Sections

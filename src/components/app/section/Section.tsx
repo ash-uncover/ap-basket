@@ -1,24 +1,18 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useSection, useSectionMembers } from 'lib/helpers/sections.helper'
+import { useSection } from 'lib/helpers/sections.helper'
 
 import {
   BusyIndicator,
-  Tile,
   Title,
 } from 'fundamental-react'
+import { IconTabBar } from 'components/fiori/icontabbar/IconTabBar'
 
 import DataStates from 'lib/constants/DataStates'
 
-import { useUser } from 'lib/helpers/users.helper'
-
 import './Section.css'
-import SectionTabMembers from 'components/app/section/SectionTabMembers'
-import Table from 'components/fiori/table/Table'
-import SectionTabSessions from './SectionTabSessions'
-import { IconTabBar } from 'components/fiori/icontabbar/IconTabBar'
-import SectionTabGeneral from './SectionTabGeneral'
+import { useMatch, useNavigate } from 'react-router-dom'
 
 const SECTION_TAB = {
   GENERAL: {
@@ -36,39 +30,27 @@ const SECTION_TAB = {
 }
 const SECTION_TABS = Object.values(SECTION_TAB)
 
-const Section = ({ sectionId }) => {
+const Section = ({ sectionId, children }) => {
 
   // Hooks //
 
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  const match = useMatch('/sections/:sectionId/:tabId')
+  console.log(match)
+
 
   const [selectedTab, setSelectedTab] = useState(SECTION_TAB.GENERAL.id)
   const section = useSection(sectionId)
 
   // Events//
 
-  const onTabSelect = (id) => {
-    setSelectedTab(id)
+  const onTabSelect = (tabId) => {
+    setSelectedTab(tabId)
+    navigate(`/sections/${sectionId}/${tabId}`)
   }
 
   // Rendering //
-
-  const renderTab = () => {
-    switch (selectedTab) {
-      case SECTION_TAB.GENERAL.id: {
-        return <SectionTabGeneral sectionId={sectionId} />
-      }
-      case SECTION_TAB.MEMBERS.id: {
-        return <SectionTabMembers id={sectionId} />
-      }
-      case SECTION_TAB.SESSIONS.id: {
-        return <SectionTabSessions id={sectionId} />
-      }
-      default: {
-        return null;
-      }
-    }
-  }
 
   switch (section.dataStatus) {
     case DataStates.NEVER:
@@ -80,7 +62,7 @@ const Section = ({ sectionId }) => {
     }
     case DataStates.FAILURE: {
       return (
-        <div>error</div>
+          <div>error</div>
       )
     }
     default: {
@@ -90,7 +72,7 @@ const Section = ({ sectionId }) => {
             {t('app.section.title', { name: section.data.name })}
           </Title>
           <IconTabBar
-            selectedTab={selectedTab}
+            selectedTab={match?.params.tabId || SECTION_TAB.GENERAL.id}
             tabs={SECTION_TABS.map(tab => ({
               ...tab,
               title: t(tab.title)
@@ -101,7 +83,7 @@ const Section = ({ sectionId }) => {
             <Title className='section-title' level={2}>
               {t(SECTION_TABS.find(tab => tab.id === selectedTab)?.title)}
             </Title>
-            {renderTab()}
+            {children}
           </section>
         </div>
       )

@@ -18,13 +18,13 @@ import DataStates from 'lib/constants/DataStates'
 import './SectionTabSessions.css'
 import { Panel } from 'components/fiori/panel/Panel'
 
-const SectionTabSessions = ({ id }) => {
+const SectionTabSessions = ({ sectionId }) => {
 
   // Hooks //
 
   const { t } = useTranslation()
 
-  const sessions = useSectionSessions(id)
+  const sessions = useSectionSessions(sectionId)
 
   // Rendering //
 

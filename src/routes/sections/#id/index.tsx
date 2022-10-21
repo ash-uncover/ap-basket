@@ -1,6 +1,7 @@
-import Section from 'components/app/section/Section'
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { Outlet, useParams } from 'react-router-dom'
+
+import Section from 'components/app/section/Section'
 
 const RouteSection = () => {
 
@@ -12,7 +13,9 @@ const RouteSection = () => {
   // Rendering //
 
   return (
-    <Section sectionId={sectionId} />
+    <Section sectionId={sectionId}>
+      <Outlet />
+    </Section>
   )
 }
 
