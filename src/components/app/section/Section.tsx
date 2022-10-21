@@ -37,8 +37,6 @@ const Section = ({ sectionId, children }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const match = useMatch('/sections/:sectionId/:tabId')
-  console.log(match)
-
 
   const [selectedTab, setSelectedTab] = useState(SECTION_TAB.GENERAL.id)
   const section = useSection(sectionId)

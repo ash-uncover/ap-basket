@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useMatch, useNavigate } from 'react-router-dom'
 import { useSection } from 'lib/helpers/sections.helper'
 import { useUserMembers, useUserSections } from 'lib/helpers/users.helper'
 
@@ -111,7 +111,7 @@ const SectionSideNav = ({ sectionId, onItemSelect }) => {
   // Hooks //
 
   const section = useSection(sectionId)
-  const location = useLocation()
+  const match = useMatch('/sections/:sectionId/*')
 
   // Events //
 
@@ -138,7 +138,7 @@ const SectionSideNav = ({ sectionId, onItemSelect }) => {
         <VerticalNavigationItem
           key={href}
           id={href}
-          selected={location.pathname === href}
+          selected={match?.params.sectionId === sectionId}
           text={section.data.name}
           onItemSelect={onItemSelect}
         />
