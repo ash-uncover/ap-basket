@@ -36,14 +36,14 @@ const SECTION_TAB = {
 }
 const SECTION_TABS = Object.values(SECTION_TAB)
 
-const Section = ({ id }) => {
+const Section = ({ sectionId }) => {
 
   // Hooks //
 
   const { t } = useTranslation()
 
   const [selectedTab, setSelectedTab] = useState(SECTION_TAB.GENERAL.id)
-  const section = useSection(id)
+  const section = useSection(sectionId)
 
   // Events//
 
@@ -56,13 +56,13 @@ const Section = ({ id }) => {
   const renderTab = () => {
     switch (selectedTab) {
       case SECTION_TAB.GENERAL.id: {
-        return <SectionTabGeneral id={id} />
+        return <SectionTabGeneral sectionId={sectionId} />
       }
       case SECTION_TAB.MEMBERS.id: {
-        return <SectionTabMembers id={id} />
+        return <SectionTabMembers id={sectionId} />
       }
       case SECTION_TAB.SESSIONS.id: {
-        return <SectionTabSessions id={id} />
+        return <SectionTabSessions id={sectionId} />
       }
       default: {
         return null;

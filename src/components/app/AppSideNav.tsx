@@ -3,13 +3,14 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useSection } from 'lib/helpers/sections.helper'
-import { useUserMembers } from 'lib/helpers/users.helper'
+import { useUserMembers, useUserSections } from 'lib/helpers/users.helper'
 
 import AuthSelectors from 'store/auth/auth.selectors'
 
-import { VerticalNavigation, VerticalNavigationItem } from 'components/fiori/verticalnavigation/VerticalNavigation'
+import { VerticalNavigation } from 'components/fiori/verticalnavigation/VerticalNavigation'
+import { VerticalNavigationItem } from 'components/fiori/verticalnavigation/VerticalNavigationItem'
 
-import DataStates from 'lib/constants/DataStates'
+import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
 
 import './AppSideNav.css'
 
@@ -52,10 +53,12 @@ const SectionsSideNav = ({ onItemSelect }) => {
 
   const userId = useSelector(AuthSelectors.userId)
   const members = useUserMembers(userId)
+  const sections = useUserSections(userId)
+  const status = mergeDataStates([members.status, sections.status])
 
   // Rendering //
 
-  switch (members.status) {
+  switch (status) {
     case DataStates.NEVER:
     case DataStates.FETCHING:
     case DataStates.FETCHING_FIRST: {
@@ -75,6 +78,9 @@ const SectionsSideNav = ({ onItemSelect }) => {
       )
     }
     default: {
+      sections?.data?.sort((section1, section2) => {
+        return section1.data.name.localeCompare(section2.data.name)
+      })
       return (
         <VerticalNavigationItem
           key='/sections'
@@ -85,11 +91,11 @@ const SectionsSideNav = ({ onItemSelect }) => {
           text={'Sections'}
           onItemSelect={onItemSelect}
         >
-          {members.data.map((member) => {
+          {sections?.data?.map((section) => {
             return (
               <SectionSideNav
-                key={member.data.sectionId}
-                id={member.data.sectionId}
+                key={section.data.id}
+                id={section.data.id}
                 onItemSelect={onItemSelect}
               />
             )

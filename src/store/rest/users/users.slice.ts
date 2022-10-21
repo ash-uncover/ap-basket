@@ -30,8 +30,6 @@ export const DEFAULT_USER = (userId: string): UserState => {
   }
 }
 
-
-
 // REDUCERS //
 
 // getUser //

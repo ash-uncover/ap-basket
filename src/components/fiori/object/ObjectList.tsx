@@ -28,7 +28,7 @@ export const ObjectList = ({
       role='list'
       aria-labelledby={ariaLabeledBy}
     >
-      {items.map((item, index) => {
+      {items?.map((item, index) => {
         return (
           <ObjectListItem key={`item-${index}`} {...item} />
         )

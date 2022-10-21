@@ -67,6 +67,7 @@ export type ObjectListItemProperties = {
   title?: string
   info?: any
   attributes?: any[]
+  children?: ReactElement | ReactElement[]
 }
 export type ObjectListItemHeaderProperties = {
   avatar?: ReactElement
@@ -86,6 +87,7 @@ export const ObjectListItem = ({
   title,
   info,
   attributes,
+  children,
 }: ObjectListItemProperties) => {
 
   // Rendering //
@@ -106,23 +108,25 @@ export const ObjectListItem = ({
             {intro}
           </div>
           : null}
-        <ObjectListItemHeader
-          avatar={<Avatar {...avatar} size='s' />}
-          left={
-            <ObjectIdentifier
-              className='fd-object-list__object-identifier'
-              title={title}
-            />
-          }
-          right={
-            <ObjectListItemInfo
-              type={info.type}
-              props={info.props}
-            />
-          }
-        />
+        {info ?
+          <ObjectListItemHeader
+            avatar={<Avatar {...avatar} size='s' />}
+            left={
+              <ObjectIdentifier
+                className='fd-object-list__object-identifier'
+                title={title}
+              />
+            }
+            right={
+              <ObjectListItemInfo
+                type={info.type}
+                props={info.props}
+              />
+            }
+          />
+          : null}
         <div className='fd-object-list__content'>
-          {attributes.map((attribute, index) => {
+          {attributes?.map((attribute, index) => {
             return (
               <ObjectListItemRow key={`attribute-${index}`}>
                 <ObjectListItemRowLeft>
@@ -142,6 +146,7 @@ export const ObjectListItem = ({
               </ObjectListItemRow>
             )
           })}
+          {children}
         </div>
       </div>
     </li>

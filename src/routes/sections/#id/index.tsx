@@ -12,7 +12,7 @@ const RouteSection = () => {
   // Rendering //
 
   return (
-    <Section id={sectionId} />
+    <Section sectionId={sectionId} />
   )
 }
 
