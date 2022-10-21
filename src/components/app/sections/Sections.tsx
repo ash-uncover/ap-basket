@@ -59,7 +59,6 @@ const Sections = ({ }) => {
             <SectionTile
               key={section.data.id}
               sectionId={section.data.id}
-              members={members.data.length}
             />
           )
         })
@@ -68,7 +67,7 @@ const Sections = ({ }) => {
   }
 
   return (
-    <div className='app-content sections'>
+    <div className='app-content sections fd-page'>
       <Title level={1}>
         {t('app.sections.title')}
       </Title>
@@ -79,13 +78,16 @@ const Sections = ({ }) => {
   )
 }
 
-const SectionTile = ({ sectionId, members }) => {
+const SectionTile = ({ sectionId }) => {
 
   // Hooks //
 
   const { t } = useTranslation()
 
   const section = useSection(sectionId)
+  const members = useSectionMembers(sectionId)
+  const status = mergeDataStates([members.status, section.dataStatus])
+
   const navigate = useNavigate()
 
   // Events //
@@ -96,7 +98,7 @@ const SectionTile = ({ sectionId, members }) => {
 
   // Rendering //
 
-  switch (section.dataStatus) {
+  switch (status) {
     case DataStates.NEVER:
     case DataStates.FETCHING:
     case DataStates.FETCHING_FIRST: {
@@ -117,7 +119,7 @@ const SectionTile = ({ sectionId, members }) => {
       return (
         <Tile
           title={section.data.name}
-          footer={t('app.sections.members', { count: members })}
+          footer={t('app.sections.members', { count: members?.data?.length })}
           onClick={onClick}
         />
       )

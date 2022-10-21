@@ -1,4 +1,12 @@
 .section {
+  & .app-page-header {
+    & .fd-icon-tab-bar {
+      margin: 0 -2rem;
+      & .fd-icon-tab-bar__header {
+        padding: 0 2rem;
+      }
+    }
+  }
   & .section-content {
     & .section-title {
       margin: 1rem 0;
@@ -6,11 +14,11 @@
     & .fd-panel__content {
       border-bottom: none;
     }
-  }
-  & .fd-object-list__item {
-    border: 1px solid grey;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
-    margin: 1rem 0;
+    & .fd-object-list__item {
+      border: 1px solid grey;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      margin: 1rem 0;
+    }
   }
 }

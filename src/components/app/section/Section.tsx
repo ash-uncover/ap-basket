@@ -11,8 +11,9 @@ import { IconTabBar } from 'components/fiori/icontabbar/IconTabBar'
 
 import DataStates from 'lib/constants/DataStates'
 
-import './Section.css'
 import { useMatch, useNavigate } from 'react-router-dom'
+
+import './Section.css'
 
 const SECTION_TAB = {
   GENERAL: {
@@ -60,23 +61,25 @@ const Section = ({ sectionId, children }) => {
     }
     case DataStates.FAILURE: {
       return (
-          <div>error</div>
+        <div>error</div>
       )
     }
     default: {
       return (
-        <div className='section app-content'>
-          <Title level={1}>
-            {t('app.section.title', { name: section.data.name })}
-          </Title>
-          <IconTabBar
-            selectedTab={match?.params.tabId || SECTION_TAB.GENERAL.id}
-            tabs={SECTION_TABS.map(tab => ({
-              ...tab,
-              title: t(tab.title)
-            }))}
-            onTabSelect={onTabSelect}
-          />
+        <div className='section app-content fd-page'>
+          <div className='app-page-header'>
+            <Title level={1}>
+              {t('app.section.title', { name: section.data.name })}
+            </Title>
+            <IconTabBar
+              selectedTab={match?.params.tabId || SECTION_TAB.GENERAL.id}
+              tabs={SECTION_TABS.map(tab => ({
+                ...tab,
+                title: t(tab.title)
+              }))}
+              onTabSelect={onTabSelect}
+            />
+          </div>
           <section className='section-content'>
             <Title className='section-title' level={2}>
               {t(SECTION_TABS.find(tab => tab.id === selectedTab)?.title)}

@@ -16,7 +16,7 @@ export const TileContainer = ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '2rem',
+        gap: '3rem',
         padding: '2rem',
       }}
     >
