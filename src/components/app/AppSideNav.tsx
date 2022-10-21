@@ -95,7 +95,7 @@ const SectionsSideNav = ({ onItemSelect }) => {
             return (
               <SectionSideNav
                 key={section.data.id}
-                id={section.data.id}
+                sectionId={section.data.id}
                 onItemSelect={onItemSelect}
               />
             )
@@ -106,11 +106,11 @@ const SectionsSideNav = ({ onItemSelect }) => {
   }
 }
 
-const SectionSideNav = ({ id, onItemSelect }) => {
+const SectionSideNav = ({ sectionId, onItemSelect }) => {
 
   // Hooks //
 
-  const section = useSection(id)
+  const section = useSection(sectionId)
   const location = useLocation()
 
   // Events //
@@ -118,7 +118,7 @@ const SectionSideNav = ({ id, onItemSelect }) => {
 
   // Rendering //
 
-  const href = `/sections/${id}`
+  const href = `/sections/${sectionId}`
 
   switch (section.dataStatus) {
     case DataStates.NEVER:

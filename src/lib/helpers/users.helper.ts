@@ -114,7 +114,6 @@ export const useUserSections = (userId: string): { data: SectionState[], status:
   }, [user.membersStatus])
 
   const sections = useSelector(SectionsSelectors.userSections(userId))
-  const sectionsStatus = mergeDataStates(sections.map(section => section.dataStatus))
   useEffect(() => {
     sections.forEach(section => {
       if ([DataStates.NEVER, DataStates.OUTDATED].includes(section.dataStatus)) {
@@ -123,13 +122,11 @@ export const useUserSections = (userId: string): { data: SectionState[], status:
     })
   }, [sections])
 
-  // console.log(sections)
-  // console.log(sectionsStatus)
   return {
     data: sections,
     status: mergeDataStates([
       user.membersStatus,
-      sectionsStatus
+      ...sections.map(section => section.dataStatus)
     ]),
     error: user.membersError
   }

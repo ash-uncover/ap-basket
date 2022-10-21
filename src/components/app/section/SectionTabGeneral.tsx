@@ -60,6 +60,7 @@ const SectionTabGeneral = ({ sectionId }) => {
             {sessionsFuture.map(session => {
               return (
                 <SectionTabGeneralSession
+                  key={session.data.id}
                   sectionId={sectionId}
                   sessionId={session.data.id}
                 />
