@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react'
+import { TableRow } from './TableRow'
 
 /*
   <Table
@@ -8,36 +9,54 @@ import React, { ReactElement } from 'react'
       { key: 'email', name: 'Email' },
       { key: 'date', name: 'Join Date' },
     ]}
-    data={[
-      { id: 'user1', firstName: 'Titi', lastName: 'Fifi' },
-      { firstName: 'Toto', lastName: 'Fofo' },
-      { firstName: 'Tata' }
-    ]}
+    rows=[
+      { data: { id: 'user1', firstName: 'Titi', lastName: 'Fifi' } },
+      { data: { firstName: 'Toto', lastName: 'Fofo' } },
+      { data: { firstName: 'Tata' } },
+    ]
   />
  */
 export type TableProperties = {
   borderedHorizontal?: boolean
   borderedVertical?: boolean
-  columns: TableColumn[]
-  data?: any[]
+  indicator?: boolean
+  columns: TableColumnProperties[]
+  rows?: TableRowProperties[]
   children?: ReactElement | ReactElement[]
 }
-export type TableColumn = {
+export type TableColumnProperties = {
   key: string
   name?: string
   type?: TableCellType
   indicator?: TableCellIndicator
   render?: (value: any) => ReactElement
 }
+export type TableRowProperties = {
+  className?: string
+  indicator?: TableCellIndicator
+  data: TableRowDataProperties
+}
+export type TableRowDataProperties = {
+  id: string
+  [key: string]: any
+}
 
 export type TableCellType = 'status-indicator' | 'checkbox'
 export type TableCellIndicator = 'valid' | 'warning' | 'error' | 'information'
 
+export const TableCellIndicators: { [key: string]: TableCellIndicator } = {
+  VALID: 'valid',
+  WARNING: 'warning',
+  ERROR: 'error',
+  INFORMATION: 'information'
+}
+
 export const Table = ({
   borderedHorizontal,
   borderedVertical,
+  indicator,
   columns,
-  data,
+  rows,
   children,
 }: TableProperties) => {
 
@@ -55,28 +74,43 @@ export const Table = ({
     <table className={classes.join(' ')}>
       <thead className='fd-table__header'>
         <TableRow>
-          {columns.map(column => (
-            <TableHeaderCell
-              key={column.key}
-              type={column.type}
-            >
-              <span>{column.name}</span>
-            </TableHeaderCell>
-          ))}
+          <>
+            {indicator ?
+              <TableCell
+                type='status-indicator'
+              />
+              : null}
+            {columns.map(column => (
+              <TableHeaderCell
+                key={column.key}
+                type={column.type}
+              >
+                <span>{column.name}</span>
+              </TableHeaderCell>
+            ))}
+          </>
         </TableRow>
       </thead>
       <tbody className='fd-table__body'>
-        {data?.map((row, index) => (
+        {rows?.map((row, index) => (
           <TableRow
-            key={row.id || `row-index-${index}` }
+            key={row.data.id}
           >
-            {columns.map(column => (
-              <TableCell
-                key={column.key}
-              >
-                {column.render ? column.render(row[column.key]) : <span>{row[column.key]}</span>}
-              </TableCell>
-            ))}
+            <>
+              {indicator ?
+                <TableCell
+                  type='status-indicator'
+                  indicator={row.indicator}
+                />
+                : null}
+              {columns.map(column => (
+                <TableCell
+                  key={column.key}
+                >
+                  {column.render ? column.render(row.data[column.key]) : <span>{row.data[column.key]}</span>}
+                </TableCell>
+              ))}
+            </>
           </TableRow>
         ))}
         {children}
@@ -85,23 +119,12 @@ export const Table = ({
   )
 }
 
-export const TableRow = ({
-  children
-}: { children: ReactElement | ReactElement[]}) => {
 
-  // Rendering //
-
-  return (
-    <tr className='fd-table__row'>
-      {children}
-    </tr>
-  )
-}
 
 export const TableHeaderCell = ({
   children,
   type
-}: { children: ReactElement | ReactElement[], type?: TableCellType}) => {
+}: { children: ReactElement | ReactElement[], type?: TableCellType }) => {
 
   // Rendering //
 

@@ -3,9 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-import { useSection, useSectionMembers } from 'lib/helpers/sections.helper'
-import { useUserMembers, useUserSections } from 'lib/helpers/users.helper'
-
 import AuthSelectors from 'store/auth/auth.selectors'
 
 import {
@@ -17,6 +14,8 @@ import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
 
 import './Sections.css'
 import { Tile } from 'components/fiori/tile/Tile'
+import { useUserMembers, useUserSections } from 'lib/helpers/hooks/users.hooks'
+import { useSection, useSectionMembers } from 'lib/helpers/hooks/sections.hooks'
 
 const Sections = ({ }) => {
 

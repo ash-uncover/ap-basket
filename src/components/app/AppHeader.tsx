@@ -9,12 +9,11 @@ import {
   Shellbar,
 } from 'fundamental-react'
 
-import { logout } from 'lib/helpers/auth.helper'
-
 import UsersSelectors from 'store/rest/users/users.selectors'
 import AuthSelectors from 'store/auth/auth.selectors'
 
 import './AppHeader.css'
+import { logout } from 'lib/helpers/rest/auth.rest.helper'
 
 const AppHeader = () => {
 

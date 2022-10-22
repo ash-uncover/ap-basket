@@ -1,22 +1,15 @@
 import React from 'react'
-import { useSectionMembers } from 'lib/helpers/sections.helper'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-import { useUser } from 'lib/helpers/users.helper'
-
 import AuthSelectors from 'store/auth/auth.selectors'
 
-import {
-  BusyIndicator,
-} from 'fundamental-react'
-import {
-  Table,
-  TableRow,
-  TableCell
-} from 'components/fiori/table/Table'
+import { useSectionMembers, useSectionUsers } from 'lib/helpers/hooks/sections.hooks'
 
-import DataStates from 'lib/constants/DataStates'
+import { BusyIndicator } from 'fundamental-react'
+import { Table } from 'components/fiori/table/Table'
+
+import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
 
 import './SectionTabMembers.css'
 
@@ -26,11 +19,14 @@ const SectionTabMembers = ({ sectionId }) => {
 
   const { t } = useTranslation()
 
+  const userId = useSelector(AuthSelectors.userId)
   const members = useSectionMembers(sectionId)
+  const users = useSectionUsers(sectionId)
+  const status = mergeDataStates([members.status, users.status])
 
   // Rendering //
 
-  switch (members.status) {
+  switch (status) {
     case DataStates.NEVER:
     case DataStates.FETCHING:
     case DataStates.FETCHING_FIRST: {
@@ -44,105 +40,30 @@ const SectionTabMembers = ({ sectionId }) => {
       )
     }
     default: {
+      const userData = users.data
+        .map((user) => {
+          const member = members.data.find(member => member.data.userId === user.data.id)
+          return {
+            ...member.data,
+            ...user.data
+          }
+        }).sort((user1, user2) => {
+          return user1.firstName.localeCompare(user2.firstName)
+        })
       return (
-        <div className=''>
-          <Table
-            borderedVertical={true}
-            columns={[
-              { key: 'indicator', type: 'status-indicator' },
-              { key: 'firstName', name: 'First Name' },
-              { key: 'lastName', name: 'Last Name' },
-              { key: 'email', name: 'Email' },
-            ]}
-          >
-            {members.data.map((member) => (
-              <SectionMember
-                key={member.data.id}
-                id={member.data.userId}
-              />
-            ))}
-          </Table>
-        </div>
-      )
-    }
-  }
-}
-
-const SectionMember = ({ id }) => {
-
-  // Hooks //
-
-  const { t } = useTranslation()
-
-  const user = useUser(id)
-  const userId = useSelector(AuthSelectors.userId)
-
-  const isCurrentUser = userId === id
-
-  // Rendering //
-
-  switch (user.dataStatus) {
-    case DataStates.NEVER:
-    case DataStates.FETCHING:
-    case DataStates.FETCHING_FIRST: {
-      return (
-        <TableRow>
-          <TableCell>
-            <BusyIndicator show size='l' />
-          </TableCell>
-        </TableRow>
-      )
-    }
-    case DataStates.FAILURE: {
-      return (
-        <TableRow>
-          <TableCell>
-            <span>error</span>
-          </TableCell>
-        </TableRow>
-      )
-    }
-    default: {
-      return (
-        <TableRow>
-          <TableCell
-            type='status-indicator'
-            indicator={isCurrentUser ? 'information' : null}
-          />
-          <TableCell>
-            {isCurrentUser ?
-              <strong>
-                {user.data.firstName}
-              </strong>
-              :
-              <span>
-                {user.data.firstName}
-              </span>
-            }
-          </TableCell>
-          <TableCell>
-            {isCurrentUser ?
-              <strong>
-                {user.data.lastName}
-              </strong>
-              :
-              <span>
-                {user.data.lastName}
-              </span>
-            }
-          </TableCell>
-          <TableCell>
-            {isCurrentUser ?
-              <strong>
-                {user.data.email}
-              </strong>
-              :
-              <span>
-                {user.data.email}
-              </span>
-            }
-          </TableCell>
-        </TableRow>
+        <Table
+          borderedVertical={true}
+          indicator
+          columns={[
+            { key: 'firstName', name: t('entities.user.firstName') },
+            { key: 'lastName', name: t('entities.user.lastName') },
+            { key: 'email', name: t('entities.user.email') },
+          ]}
+          rows={userData.map(user => ({
+            data: user,
+            indicator: userId === user.id ? 'information' : null
+          }))}
+        />
       )
     }
   }

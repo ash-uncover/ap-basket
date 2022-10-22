@@ -1,22 +1,18 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useSection, useSectionSessions } from 'lib/helpers/sections.helper'
-import { useSession, useSessionParticipants, useSessionUsers } from 'lib/helpers/sessions.helper'
+import { useSectionSessions } from 'lib/helpers/hooks/sections.hooks'
+import { useSession, useSessionParticipants, useSessionUsers } from 'lib/helpers/hooks/sessions.hooks'
 
-import {
-  BusyIndicator,
-} from 'fundamental-react'
-import {
-  Table,
-  TableRow,
-  TableCell
-} from 'components/fiori/table/Table'
+import { BusyIndicator } from 'fundamental-react'
+
+import { Table, TableCell } from 'components/fiori/table/Table'
+import { Panel } from 'components/fiori/panel/Panel'
+import { TableRow } from 'components/fiori/table/TableRow'
 
 import DataStates from 'lib/constants/DataStates'
 
 import './SectionTabSessions.css'
-import { Panel } from 'components/fiori/panel/Panel'
 
 const SectionTabSessions = ({ sectionId }) => {
 
@@ -62,8 +58,14 @@ const SectionTabSessions = ({ sectionId }) => {
             <Table
               borderedVertical={true}
               columns={[
-                { key: 'date', name: 'Date' },
-                { key: 'participants', name: 'Participants' },
+                {
+                  key: 'date',
+                  name: 'Date'
+                },
+                {
+                  key: 'participants',
+                  name: 'Participants'
+                },
               ]}
             >
               {sessionsSort.future.map((session) => (

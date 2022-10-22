@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useSection } from 'lib/helpers/sections.helper'
-
 import {
   BusyIndicator,
   Title,
@@ -14,6 +12,7 @@ import DataStates from 'lib/constants/DataStates'
 import { useMatch, useNavigate } from 'react-router-dom'
 
 import './Section.css'
+import { useSection } from 'lib/helpers/hooks/sections.hooks'
 
 const SECTION_TAB = {
   GENERAL: {

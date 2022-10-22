@@ -5,6 +5,22 @@
     "default": "Loading...",
     "data": "Loading data..."
   },
+  "entities": {
+    "member": {
+      "key": "Member",
+      "date": "Join Date"
+    },
+    "section": {
+      "key": "Section",
+      "name": "Name"
+    },
+    "user": {
+      "key": "User",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email"
+    }
+  },
   "app": {
     "header": {
       "user": {

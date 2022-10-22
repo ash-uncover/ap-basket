@@ -1,9 +1,9 @@
 import React from 'react'
-
 import { useSelector } from 'react-redux'
 import { useLocation, useMatch, useNavigate } from 'react-router-dom'
-import { useSection } from 'lib/helpers/sections.helper'
-import { useUserMembers, useUserSections } from 'lib/helpers/users.helper'
+
+import { useUserMembers, useUserSections } from 'lib/helpers/hooks/users.hooks'
+import { useSection } from 'lib/helpers/hooks/sections.hooks'
 
 import AuthSelectors from 'store/auth/auth.selectors'
 

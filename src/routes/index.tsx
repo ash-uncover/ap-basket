@@ -7,12 +7,12 @@ import {
 } from 'fundamental-react'
 
 import authSelectors from 'store/auth/auth.selectors'
-import { login } from 'lib/helpers/auth.helper'
 import AppHeader from 'components/app/AppHeader'
 import AppFooter from 'components/app/AppFooter'
 import AppMain from 'components/app/AppMain'
 import AppBusy from 'components/app/AppBusy'
 import AppSideNav from 'components/app/AppSideNav'
+import { login } from 'lib/helpers/rest/auth.rest.helper'
 
 const RouteRoot = () => {
 

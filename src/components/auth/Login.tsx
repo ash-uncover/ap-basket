@@ -13,8 +13,7 @@ import {
 } from 'fundamental-react'
 
 import authSelectors from 'store/auth/auth.selectors'
-
-import { login } from 'lib/helpers/auth.helper'
+import { login } from 'lib/helpers/rest/auth.rest.helper'
 
 const Login = () => {
 

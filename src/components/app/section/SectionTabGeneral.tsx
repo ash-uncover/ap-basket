@@ -2,12 +2,9 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import { useSection, useSectionMembers, useSectionSessions } from 'lib/helpers/sections.helper'
+import { useSection, useSectionMembers, useSectionSessions } from 'lib/helpers/hooks/sections.hooks'
 
-import {
-  BusyIndicator,
-} from 'fundamental-react'
-
+import { BusyIndicator } from 'fundamental-react'
 
 import { Tile } from 'components/fiori/tile/Tile'
 import { TileContainer } from 'components/fiori/tile/TileContainer'

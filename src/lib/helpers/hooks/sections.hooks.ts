@@ -1,56 +1,17 @@
-import DataStates, { mergeDataStates } from "lib/constants/DataStates"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import RestService from "services/rest.service"
+
+import DataStates, { mergeDataStates } from "lib/constants/DataStates"
 import AuthSelectors from "store/auth/auth.selectors"
 import MembersSelectors from "store/rest/members/members.selectors"
 import { MemberState } from "store/rest/members/members.state"
 import SectionsSelectors from "store/rest/sections/sections.selectors"
-import SectionsSlice from "store/rest/sections/sections.slice"
 import SessionsSelectors from "store/rest/sessions/sessions.selectors"
 import { SessionState } from "store/rest/sessions/sessions.state"
-
-export const getSection = async (dispatch, token:string, id:string) => {
-  dispatch(SectionsSlice.actions.getSectionRequest({ id }))
-
-  try {
-    const data = await RestService.api.sections.get(token, id)
-    dispatch(SectionsSlice.actions.getSectionSuccess({ id, data }))
-    return data
-
-  } catch (error) {
-    dispatch(SectionsSlice.actions.getSectionFailure({ id, error }))
-    throw error
-  }
-}
-
-export const getSectionMembers = async (dispatch, token:string, id:string) => {
-  dispatch(SectionsSlice.actions.getSectionMembersRequest({ id }))
-
-  try {
-    const data = await RestService.api.sections.members.get(token, id)
-    dispatch(SectionsSlice.actions.getSectionMembersSuccess({ id, data }))
-    return data
-
-  } catch (error) {
-    dispatch(SectionsSlice.actions.getSectionMembersFailure({ id, error }))
-    throw error
-  }
-}
-
-export const getSectionSessions = async (dispatch, token:string, id:string) => {
-  dispatch(SectionsSlice.actions.getSectionSessionsRequest({ id }))
-
-  try {
-    const data = await RestService.api.sections.sessions.get(token, id)
-    dispatch(SectionsSlice.actions.getSectionSessionsSuccess({ id, data }))
-    return data
-
-  } catch (error) {
-    dispatch(SectionsSlice.actions.getSectionSessionsFailure({ id, error }))
-    throw error
-  }
-}
+import UsersSelectors from "store/rest/users/users.selectors"
+import { UserState } from "store/rest/users/users.state"
+import { getSection, getSectionMembers, getSectionSessions } from "../rest/sections.rest.helper"
+import { getUser } from "../rest/users.rest.helper"
 
 export const useSection = (id:string) => {
   const dispatch = useDispatch()
@@ -95,5 +56,36 @@ export const useSectionSessions = (id:string): { data:SessionState[], status:str
     data: sessions,
     status: section.sessionsStatus,
     error: section.sessionsError
+  }
+}
+
+export const useSectionUsers = (sectionId: string): { data: UserState[], status: string, error: string } => {
+  const dispatch = useDispatch()
+  const token = useSelector(AuthSelectors.token)
+  const section = useSelector(SectionsSelectors.section(sectionId))
+
+  const members = useSelector(MembersSelectors.userMembers(sectionId))
+  useEffect(() => {
+    if ([DataStates.NEVER, DataStates.OUTDATED].includes(section.membersStatus)) {
+      getSectionMembers(dispatch, token, sectionId)
+    }
+  }, [section.membersStatus])
+
+  const users = useSelector(UsersSelectors.sectionUsers(sectionId))
+  useEffect(() => {
+    users.forEach(user => {
+      if ([DataStates.NEVER, DataStates.OUTDATED].includes(user.dataStatus)) {
+        getUser(dispatch, token, user.data.id)
+      }
+    })
+  }, [users])
+
+  return {
+    data: users,
+    status: mergeDataStates([
+      section.membersStatus,
+      ...users.map(user => user.dataStatus)
+    ]),
+    error: section.membersError
   }
 }

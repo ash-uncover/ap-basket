@@ -1,6 +1,6 @@
 import RestService from 'services/rest.service'
 import AuthSlice from 'store/auth/auth.slice'
-import { getUser } from 'lib/helpers/users.helper'
+import { getUser } from './users.rest.helper'
 
 type loginArgs = {
   username: string,

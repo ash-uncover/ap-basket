@@ -2,45 +2,16 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
-import RestService from 'services/rest.service'
 import AuthSelectors from 'store/auth/auth.selectors'
 
 import ParticipantsSelectors from 'store/rest/participants/participants.selectors'
 import { ParticipantState } from 'store/rest/participants/participants.state'
 
 import SessionsSelectors from 'store/rest/sessions/sessions.selectors'
-import SessionsSlice from 'store/rest/sessions/sessions.slice'
 import { UserState } from 'store/rest/users/users.state'
 import UsersSelectors from 'store/rest/users/users.selectors'
-import { getUser } from './users.helper'
-
-export const getSession = async (dispatch, token: string, id: string) => {
-  dispatch(SessionsSlice.actions.getSessionRequest({ id }))
-
-  try {
-    const data = await RestService.api.sessions.get(token, id)
-    dispatch(SessionsSlice.actions.getSessionSuccess({ id, data }))
-    return data
-
-  } catch (error) {
-    dispatch(SessionsSlice.actions.getSessionFailure({ id, error }))
-    throw error
-  }
-}
-
-export const getSessionParticipants = async (dispatch, token: string, id: string) => {
-  dispatch(SessionsSlice.actions.getSessionParticipantsRequest({ id }))
-
-  try {
-    const data = await RestService.api.sessions.participants.get(token, id)
-    dispatch(SessionsSlice.actions.getSessionParticipantsSuccess({ id, data }))
-    return data
-
-  } catch (error) {
-    dispatch(SessionsSlice.actions.getSessionParticipantsFailure({ id, error }))
-    throw error
-  }
-}
+import { getSession, getSessionParticipants } from '../rest/sessions.rest.helper'
+import { getUser } from '../rest/users.rest.helper'
 
 export const useSession = (id: string) => {
   const dispatch = useDispatch()

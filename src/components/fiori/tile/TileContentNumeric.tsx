@@ -23,8 +23,6 @@ export const TileContentNumeric = ({
 
   // Rendering //
 
-  console.log(semantic)
-
   const classes = ['fd-numeric-content']
   if (size) {
     classes.push(`fd-numeric-content--${size}`)

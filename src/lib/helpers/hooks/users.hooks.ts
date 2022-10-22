@@ -1,7 +1,6 @@
 import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import RestService from 'services/rest.service'
 import AuthSelectors from 'store/auth/auth.selectors'
 import MembersSelectors from 'store/rest/members/members.selectors'
 import { MemberState } from 'store/rest/members/members.state'
@@ -10,50 +9,9 @@ import { ParticipantState } from 'store/rest/participants/participants.state'
 import SectionsSelectors from 'store/rest/sections/sections.selectors'
 import { SectionState } from 'store/rest/sections/sections.state'
 import UsersSelectors from 'store/rest/users/users.selectors'
-import UsersSlice from 'store/rest/users/users.slice'
-import { getSection } from './sections.helper'
+import { getUser, getUserMembers, getUserParticipants } from 'lib/helpers/rest/users.rest.helper'
+import { getSection } from 'lib/helpers/rest/sections.rest.helper'
 
-export const getUser = async (dispatch, token: string, id: string) => {
-  dispatch(UsersSlice.actions.getUserRequest({ id }))
-
-  try {
-    const data = await RestService.api.users.get(token, id)
-    dispatch(UsersSlice.actions.getUserSuccess({ id, data }))
-    return data
-
-  } catch (error) {
-    dispatch(UsersSlice.actions.getUserFailure({ id, error }))
-    throw error
-  }
-}
-
-export const getUserMembers = async (dispatch, token: string, id: string) => {
-  dispatch(UsersSlice.actions.getUserMembersRequest({ id }))
-
-  try {
-    const data = await RestService.api.users.members.get(token, id)
-    dispatch(UsersSlice.actions.getUserMembersSuccess({ id, data }))
-    return data
-
-  } catch (error) {
-    dispatch(UsersSlice.actions.getUserMembersFailure({ id, error }))
-    throw error
-  }
-}
-
-export const getUserParticipants = async (dispatch, token: string, id: string) => {
-  dispatch(UsersSlice.actions.getUserParticipantsRequest({ id }))
-
-  try {
-    const data = await RestService.api.users.participants.get(token, id)
-    dispatch(UsersSlice.actions.getUserParticipantsSuccess({ id, data }))
-    return data
-
-  } catch (error) {
-    dispatch(UsersSlice.actions.getUserParticipantsFailure({ id, error }))
-    throw error
-  }
-}
 
 export const useUser = (userId: string) => {
   const dispatch = useDispatch()
