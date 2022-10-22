@@ -45,7 +45,9 @@ const SectionTabMembers = ({ sectionId }) => {
           const member = members.data.find(member => member.data.userId === user.data.id)
           return {
             ...member.data,
-            ...user.data
+            ...user.data,
+            isAdmin: member.data.roles?.includes('sectionAdmin'),
+            isSelf: userId === user.data.id
           }
         }).sort((user1, user2) => {
           return user1.firstName.localeCompare(user2.firstName)
@@ -54,14 +56,26 @@ const SectionTabMembers = ({ sectionId }) => {
         <Table
           borderedVertical={true}
           indicator
-          columns={[
-            { key: 'firstName', name: t('entities.user.firstName') },
-            { key: 'lastName', name: t('entities.user.lastName') },
-            { key: 'email', name: t('entities.user.email') },
-          ]}
+          columns={[{
+            key: 'firstName',
+            name: t('entities.user.firstName'),
+            formatter: (user) => user.isSelf ? <strong>{user.firstName}</strong> : user.firstName
+          }, {
+            key: 'lastName',
+            name: t('entities.user.lastName'),
+            formatter: (user) => user.isSelf ? <strong>{user.lastName}</strong> : user.lastName
+          }, {
+            key: 'email',
+            name: t('entities.user.email'),
+            formatter: (user) => user.isSelf ? <strong>{user.email}</strong> : user.email
+          }, {
+            key: 'isAdmin',
+            name: t('entities.member.roles'),
+            render: (user) => <span>{user.isAdmin ? 'admin' : ''}</span>
+          }]}
           rows={userData.map(user => ({
             data: user,
-            indicator: userId === user.id ? 'information' : null
+            indicator: user.isSelf ? 'information' : null
           }))}
         />
       )

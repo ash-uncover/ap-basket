@@ -8,7 +8,8 @@
   "entities": {
     "member": {
       "key": "Member",
-      "date": "Join Date"
+      "date": "Join Date",
+      "roles": "Roles"
     },
     "section": {
       "key": "Section",

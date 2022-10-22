@@ -30,6 +30,7 @@ export type TableColumnProperties = {
   type?: TableCellType
   indicator?: TableCellIndicator
   render?: (value: any) => ReactElement
+  formatter?: (value: any) => string | ReactElement
 }
 export type TableRowProperties = {
   className?: string
@@ -97,19 +98,24 @@ export const Table = ({
             key={row.data.id}
           >
             <>
-              {indicator ?
-                <TableCell
-                  type='status-indicator'
-                  indicator={row.indicator}
-                />
+              {indicator
+                ? (
+                  <TableCell
+                    type='status-indicator'
+                    indicator={row.indicator}
+                  />
+                )
                 : null}
-              {columns.map(column => (
-                <TableCell
-                  key={column.key}
-                >
-                  {column.render ? column.render(row.data[column.key]) : <span>{row.data[column.key]}</span>}
-                </TableCell>
-              ))}
+              {columns.map((column) => {
+                const rendered = column.render || ((data) => (<span>{column.formatter ? column.formatter(data) : data[column.key]}</span>))
+                return (
+                  <TableCell
+                    key={column.key}
+                  >
+                    {rendered(row.data)}
+                  </TableCell>
+                )
+              })}
             </>
           </TableRow>
         ))}
