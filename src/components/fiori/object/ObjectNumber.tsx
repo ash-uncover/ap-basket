@@ -1,15 +1,15 @@
 import React from 'react'
 
+import { Semantic } from 'components/fiori/constants/Semantic'
 
 export type ObjectNumberProperties = {
   value: string
   unit: string
   bold?: boolean
   large?: boolean
-  semantic?: string
+  semantic?: Semantic
   className?: string
 }
-export type ObjectNumberSematic = 'postive' | 'negative' | 'critical' | 'informative'
 
 export const ObjectNumber = ({
   value,

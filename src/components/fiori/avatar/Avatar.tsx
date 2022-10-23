@@ -1,19 +1,19 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
+
+import { AccentColor } from 'components/fiori/constants/AccentColor'
+import { Size } from 'components/fiori/constants/Size'
 
 export type AvatarProperties = {
   label: string
   icon?: string
   initials?: string
-  size?: AvatarSize
-  accentColor?: AvatarColor
+  size?: Size
+  accentColor?: AccentColor
   shell?: boolean
   bordered?: boolean
   transparent?: boolean
   circle?: boolean
 }
-
-export type AvatarColor = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
-export type AvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl'
 
 export const Avatar = ({
   label,
@@ -36,7 +36,7 @@ export const Avatar = ({
     classes.push(`fd-avatar--${size}`)
   }
   if (accentColor) {
-    classes.push(`fd-avatar--accent-color-${accentColor}`)
+    classes.push(`fd-avatar--${accentColor}`)
   }
   if (shell) {
     classes.push('fd-avatar--shell')

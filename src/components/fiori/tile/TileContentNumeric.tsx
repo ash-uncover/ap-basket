@@ -1,23 +1,17 @@
-import React, { ReactElement } from 'react'
-import { TileSize, TileSizes } from './Tile'
+import React from 'react'
+
+import { Size, Sizes } from 'components/fiori/constants/Size'
+import { Semantic } from 'components/fiori/constants/Semantic'
 
 export type TileContentNumericProperties = {
   value: string
-  size?: TileSize
-  semantic?: TileContentNumericSemantic
-}
-
-export type TileContentNumericSemantic = 'positive' | 'negative' | 'critical' | 'informative'
-export const TileContentNumericSemantics: { [key: string]: TileContentNumericSemantic } = {
-  POSITIVE: 'positive',
-  NEGATIVE: 'negative',
-  CRITICAL: 'critical',
-  INFORMATIVE: 'informative',
+  size?: Size
+  semantic?: Semantic
 }
 
 export const TileContentNumeric = ({
   value,
-  size = TileSizes.LARGE,
+  size = Sizes.LARGE,
   semantic,
 }: TileContentNumericProperties) => {
 

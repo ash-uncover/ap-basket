@@ -42,7 +42,7 @@ const SectionTabMembers = ({ sectionId }) => {
     default: {
       const userData = users.data
         .map((user) => {
-          const member = members.data.find(member => member.data.userId === user.data.id)
+          const member = members.data?.find(member => member.data.userId === user.data.id)
           return {
             ...member.data,
             ...user.data,

@@ -1,12 +1,28 @@
 html, body, #reactroot {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 
 #reactroot {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+}
+
+.justify-end {
+  justify-content: end;
+}
+
+.gap-xs {
+  gap: 0.5rem;
+}
+
+.gap-s {
+  gap: 1rem;
+}
+
+.gap-m {
+  gap: 2rem;
 }

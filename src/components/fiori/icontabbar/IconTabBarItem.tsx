@@ -1,14 +1,15 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
+
+import { Semantic } from 'components/fiori/constants/Semantic'
 
 export type IconTabBarItemProperties = {
   id: string
   badge?: boolean
   selected?: boolean
-  semantic?: IconTabBarItemSemantic
+  semantic?: Semantic
   title: string
   onTabSelect?: (id: string) => void
 }
-export type IconTabBarItemSemantic = 'positive' | 'information' | 'negative' | 'critical'
 
 export const IconTabBarItem = ({
   id,

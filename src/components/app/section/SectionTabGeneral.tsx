@@ -7,12 +7,12 @@ import { useSection, useSectionMembers, useSectionSessions } from 'lib/helpers/h
 import { BusyIndicator } from 'fundamental-react'
 
 import { Tile } from 'components/fiori/tile/Tile'
-import { TileContainer } from 'components/fiori/tile/TileContainer'
-import { TileContentNumeric, TileContentNumericSemantics } from 'components/fiori/tile/TileContentNumeric'
+import { TileContentNumeric } from 'components/fiori/tile/TileContentNumeric'
 
 import DataStates from 'lib/constants/DataStates'
 
 import './SectionTabGeneral.css'
+import { Semantics } from 'components/fiori/constants/Semantic'
 
 const SectionTabGeneral = ({ sectionId }) => {
 
@@ -55,7 +55,7 @@ const SectionTabGeneral = ({ sectionId }) => {
           >
             <TileContentNumeric
               value={`${members?.data?.length}`}
-              semantic={TileContentNumericSemantics.INFORMATIVE}
+              semantic={Semantics.INFORMATIVE}
             />
           </Tile>
         )
@@ -97,7 +97,7 @@ const SectionTabGeneral = ({ sectionId }) => {
             >
               <TileContentNumeric
                 value={`${sessionsFuture?.length}`}
-                semantic={TileContentNumericSemantics.POSITIVE}
+                semantic={Semantics.POSITIVE}
               />
             </Tile>
             <Tile
@@ -108,7 +108,7 @@ const SectionTabGeneral = ({ sectionId }) => {
             >
               <TileContentNumeric
                 value={`${sessions?.data?.length}`}
-                semantic={TileContentNumericSemantics.INFORMATIVE}
+                semantic={Semantics.INFORMATIVE}
               />
             </Tile>
           </>

@@ -2,6 +2,7 @@
   flex-grow: 1;
   flex-shrink: 1;
   display: flex;
+  height: 0;
 
   & .app-content {
     width: 0;

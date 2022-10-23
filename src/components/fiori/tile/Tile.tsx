@@ -1,21 +1,17 @@
 import React, { ReactElement } from 'react'
 
+import { Badge } from 'components/fiori/badge/Badge'
+import { Size, Sizes } from 'components/fiori/constants/Size'
+
 export type TileProperties = {
   className?: string
   badge?: string
   title: string
   subTitle?: string
   footer?: string
-  size?: TileSize
+  size?: Size
   children?: ReactElement | ReactElement[]
   onClick?: () => void
-}
-export type TileSize = 's' | 'm' | 'l'
-
-export const TileSizes: { [key: string]: TileSize } = {
-  SMALL: 's',
-  MEDIUM: 'm',
-  LARGE: 'l',
 }
 
 export const Tile = ({
@@ -24,7 +20,7 @@ export const Tile = ({
   title,
   subTitle,
   footer,
-  size = TileSizes.LARGE,
+  size = Sizes.LARGE,
   children,
   onClick,
 }: TileProperties) => {
@@ -52,11 +48,7 @@ export const Tile = ({
       tabIndex={0}
       onClick={onClicked}
     >
-      {badge ?
-        <div className='fd-badge'>
-          {badge}
-        </div>
-        : null}
+      {badge ? <Badge text={badge} /> : null}
       <div className='fd-tile__header'>
         <div className='fd-tile__title'>
           {title}
