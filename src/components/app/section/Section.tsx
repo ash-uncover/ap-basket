@@ -64,7 +64,14 @@ const Section = ({ sectionId, children }) => {
     default: {
       return (
         <div className='section app-content fd-page'>
-          <div className='app-page-header'>
+          <div
+            className='app-page-header'
+            style={{
+              margin: '-2rem -2rem 0 -2rem',
+              padding: '2rem 2rem 0 2rem',
+              pointerEvents: 'none'
+            }}
+          >
             <Title level={1}>
               {t('app.section.title', { name: section.data.name })}
             </Title>

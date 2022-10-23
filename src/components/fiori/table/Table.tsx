@@ -19,6 +19,7 @@ import { TableRow } from './TableRow'
 export type TableProperties = {
   borderedHorizontal?: boolean
   borderedVertical?: boolean
+  compact?: boolean
   indicator?: boolean
   columns: TableColumnProperties[]
   rows?: TableRowProperties[]
@@ -55,6 +56,7 @@ export const TableCellIndicators: { [key: string]: TableCellIndicator } = {
 export const Table = ({
   borderedHorizontal,
   borderedVertical,
+  compact,
   indicator,
   columns,
   rows,
@@ -69,6 +71,9 @@ export const Table = ({
   }
   if (!borderedHorizontal) {
     classes.push('fd-table--no-horizontal-borders')
+  }
+  if (compact) {
+    classes.push('fd-table--compact')
   }
 
   return (

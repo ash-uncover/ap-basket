@@ -211,6 +211,7 @@ const SectionSessionLoaded = ({
     })
 
   const renderFooter = () => {
+    
     return (
       <>
         <Button
@@ -245,6 +246,7 @@ const SectionSessionLoaded = ({
           <Table
             borderedVertical={true}
             indicator
+            compact
             columns={[{
               key: 'firstName',
               name: t('entities.user.firstName'),

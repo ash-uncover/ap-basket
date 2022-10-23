@@ -1,10 +1,7 @@
 .section {
   & .app-page-header {
     & .fd-icon-tab-bar {
-      margin: 0 -2rem;
-      & .fd-icon-tab-bar__header {
-        padding: 0 2rem;
-      }
+      pointer-events: all;
     }
   }
   & .section-content {
