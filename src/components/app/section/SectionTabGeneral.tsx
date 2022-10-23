@@ -118,10 +118,16 @@ const SectionTabGeneral = ({ sectionId }) => {
   }
 
   return (
-    <TileContainer>
+    <div
+      style={{
+        display: 'flex',
+        gap: '3rem',
+        padding: '2rem'
+      }}
+    >
       {renderTilesSessions()}
       {renderTileMembers()}
-    </TileContainer>
+    </div>
   )
 }
 

@@ -13,6 +13,8 @@ import { TableRow } from 'components/fiori/table/TableRow'
 import DataStates from 'lib/constants/DataStates'
 
 import './SectionTabSessions.css'
+import { Tile } from 'components/fiori/tile/Tile'
+import { TileContainer } from 'components/fiori/tile/TileContainer'
 
 const SectionTabSessions = ({ sectionId }) => {
 
@@ -39,15 +41,21 @@ const SectionTabSessions = ({ sectionId }) => {
     }
     default: {
       const now = new Date()
+      sessions.data
+        .sort((session1, session2) => {
+          const date1 = new Date(session1.data.date)
+          const date2 = new Date(session2.data.date)
+          return date1 === date2 ? 0 : date1 > date2 ? -1 : 1
+        })
       const sessionsSort = sessions.data.reduce((acc, session) => {
-        const date = new Date(session.data.date)
-        if (date > now) {
-          acc.future.push(session)
-        } else {
-          acc.past.push(session)
-        }
-        return acc
-      }, { future: [], past: [] })
+          const date = new Date(session.data.date)
+          if (date > now) {
+            acc.future.push(session)
+          } else {
+            acc.past.push(session)
+          }
+          return acc
+        }, { future: [], past: [] })
       return (
         <div className=''>
           <Panel
@@ -55,18 +63,13 @@ const SectionTabSessions = ({ sectionId }) => {
             expanded
             title='Incoming Sessions'
           >
-            <Table
-              borderedVertical={true}
-              columns={[
-                {
-                  key: 'date',
-                  name: 'Date'
-                },
-                {
-                  key: 'participants',
-                  name: 'Participants'
-                },
-              ]}
+            <div
+              style= {{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '2rem',
+                padding: '1rem 0',
+              }}
             >
               {sessionsSort.future.map((session) => (
                 <SectionSession
@@ -74,26 +77,18 @@ const SectionTabSessions = ({ sectionId }) => {
                   id={session.data.id}
                 />
               ))}
-            </Table>
+            </div>
           </Panel>
           <Panel
             expandable
             title='Past Sessions'
           >
-            <Table
-              borderedVertical={true}
-              columns={[
-                { key: 'date', name: 'date' },
-                { key: 'participants', name: 'Participants' },
-              ]}
-            >
-              {sessionsSort.past.map((session) => (
-                <SectionSession
-                  key={session.data.id}
-                  id={session.data.id}
-                />
-              ))}
-            </Table>
+            {sessionsSort.past.map((session) => (
+              <SectionSession
+                key={session.data.id}
+                id={session.data.id}
+              />
+            ))}
           </Panel>
 
         </div>
@@ -119,36 +114,23 @@ const SectionSession = ({ id }) => {
     case DataStates.FETCHING:
     case DataStates.FETCHING_FIRST: {
       return (
-        <TableRow>
-          <TableCell>
-            <BusyIndicator show size='l' />
-          </TableCell>
-        </TableRow>
+        <TileContainer>
+          <BusyIndicator show size='xs' />
+        </TileContainer>
       )
     }
     case DataStates.FAILURE: {
       return (
-        <TableRow>
-          <TableCell>
-            <span>error</span>
-          </TableCell>
-        </TableRow>
+        <TileContainer>
+          error
+        </TileContainer>
       )
     }
     default: {
       return (
-        <TableRow>
-          <TableCell>
-            <span>
-              {session.data.date}
-            </span>
-          </TableCell>
-          <TableCell>
-            <span>
-              {participants.data?.length}
-            </span>
-          </TableCell>
-        </TableRow>
+        <TileContainer>
+          data
+        </TileContainer>
       )
     }
   }

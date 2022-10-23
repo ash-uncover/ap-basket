@@ -38,13 +38,11 @@ const Section = ({ sectionId, children }) => {
   const navigate = useNavigate()
   const match = useMatch('/sections/:sectionId/:tabId')
 
-  const [selectedTab, setSelectedTab] = useState(SECTION_TAB.GENERAL.id)
   const section = useSection(sectionId)
 
   // Events//
 
   const onTabSelect = (tabId) => {
-    setSelectedTab(tabId)
     navigate(`/sections/${sectionId}/${tabId}`)
   }
 
@@ -81,7 +79,7 @@ const Section = ({ sectionId, children }) => {
           </div>
           <section className='section-content'>
             <Title className='section-title' level={2}>
-              {t(SECTION_TABS.find(tab => tab.id === selectedTab)?.title)}
+              {t((SECTION_TABS.find(tab => tab.id === match?.params.tabId) || SECTION_TAB.GENERAL)?.title)}
             </Title>
             {children}
           </section>

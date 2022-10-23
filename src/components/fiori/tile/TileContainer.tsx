@@ -1,23 +1,32 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useRef } from 'react'
 
-export type TileContainerProperties= {
-  children?: ReactElement | ReactElement[]
+export type TileContainerProperties = {
+  className?: string
+  children?: string | ReactElement | ReactElement[]
 }
 
 export const TileContainer = ({
-  children
-}) => {
+  className,
+  children,
+}: TileContainerProperties) => {
 
   // Rendering //
 
+  const classes = ['fd-tile fd-tile-container']
+  if (className) {
+    classes.push(className)
+  }
+
   return (
     <div
+      className={classes.join(' ')}
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '3rem',
-        padding: '2rem',
+        minHeight: 0,
+        maxHeight: 'none',
+        height: 'auto',
+        minWidth: 0,
+        maxWidth: 'none',
+        width: '100%',
       }}
     >
       {children}
