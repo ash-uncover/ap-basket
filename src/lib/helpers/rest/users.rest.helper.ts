@@ -5,7 +5,7 @@ export const getUser = async (dispatch, token: string, id: string) => {
   dispatch(UsersSlice.actions.getUserRequest({ id }))
 
   try {
-    const data = await RestService.api.users.get(token, id)
+    const data = await RestService.api.users.$userId.get(token, id)
     dispatch(UsersSlice.actions.getUserSuccess({ id, data }))
     return data
 
@@ -19,7 +19,7 @@ export const getUserMembers = async (dispatch, token: string, id: string) => {
   dispatch(UsersSlice.actions.getUserMembersRequest({ id }))
 
   try {
-    const data = await RestService.api.users.members.get(token, id)
+    const data = await RestService.api.users.$userId.members.get(token, id)
     dispatch(UsersSlice.actions.getUserMembersSuccess({ id, data }))
     return data
 
@@ -33,7 +33,7 @@ export const getUserParticipants = async (dispatch, token: string, id: string) =
   dispatch(UsersSlice.actions.getUserParticipantsRequest({ id }))
 
   try {
-    const data = await RestService.api.users.participants.get(token, id)
+    const data = await RestService.api.users.$userId.participants.get(token, id)
     dispatch(UsersSlice.actions.getUserParticipantsSuccess({ id, data }))
     return data
 

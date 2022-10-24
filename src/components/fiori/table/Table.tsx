@@ -180,5 +180,3 @@ export const TableCell = ({
     </td>
   )
 }
-
-export default Table

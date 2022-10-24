@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 
-import SectionTabGeneral from 'components/app/section/SectionTabGeneral'
+import SectionTabGeneral from 'components/app/section/general/SectionTabGeneral'
 
 const RouteSectionGeneral = () => {
 

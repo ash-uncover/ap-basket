@@ -5,7 +5,7 @@ export const getSession = async (dispatch, token: string, id: string) => {
   dispatch(SessionsSlice.actions.getSessionRequest({ id }))
 
   try {
-    const data = await RestService.api.sessions.get(token, id)
+    const data = await RestService.api.sessions.$sessionId.get(token, id)
     dispatch(SessionsSlice.actions.getSessionSuccess({ id, data }))
     return data
 
@@ -19,7 +19,7 @@ export const getSessionParticipants = async (dispatch, token: string, id: string
   dispatch(SessionsSlice.actions.getSessionParticipantsRequest({ id }))
 
   try {
-    const data = await RestService.api.sessions.participants.get(token, id)
+    const data = await RestService.api.sessions.$sessionId.participants.get(token, id)
     dispatch(SessionsSlice.actions.getSessionParticipantsSuccess({ id, data }))
     return data
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 
-import SectionTabMembers from 'components/app/section/SectionTabMembers'
+import SectionTabMembers from 'components/app/section/members/SectionTabMembers'
 
 const RouteSectionMembers = () => {
 

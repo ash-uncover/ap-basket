@@ -1,6 +1,11 @@
 import CONFIG from 'configuration'
+import { MEMBER } from 'lib/utils/entities/members.utils'
+import { PARTICIPANT } from 'lib/utils/entities/participants.utils'
+import { SECTION } from 'lib/utils/entities/sections.utils'
+import { SESSION } from 'lib/utils/entities/sessions.utils'
+import { USER } from 'lib/utils/entities/users.utils'
 
-export const getAuth = async (token:string) => {
+export const getAuth = async (token: string) => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/auth`
   const headers = new Headers()
   headers.set('accept', 'application/json')
@@ -20,7 +25,7 @@ export const getAuth = async (token:string) => {
   }
 }
 
-export const deleteAuth = async (token:string) => {
+export const deleteAuth = async (token: string) => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/auth`
   const headers = new Headers()
   headers.set('accept', 'application/json')
@@ -38,7 +43,29 @@ export const deleteAuth = async (token:string) => {
   }
 }
 
-export const getSection = async (token:string, id:string) => {
+export const putParticipantStatus = async (token: string, id: string, body: any): Promise<PARTICIPANT> => {
+  const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/participants/${id}/status`
+  const headers = new Headers()
+  headers.set('accept', 'application/json')
+  headers.set('authorization', `Basic ${token}`)
+  headers.set('content-type', 'application/json; charset=UTF-8')
+  const request: RequestInit = {
+    method: 'PUT',
+    headers,
+    body
+  }
+
+  try {
+    const response = await fetch(url, request)
+    const data = await response.json()
+    return data
+
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const getSection = async (token: string, id: string): Promise<SECTION> => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/sections/${id}`
   const headers = new Headers()
   headers.set('accept', 'application/json')
@@ -58,7 +85,7 @@ export const getSection = async (token:string, id:string) => {
   }
 }
 
-export const getSectionMembers = async (token:string, id:string) => {
+export const getSectionMembers = async (token: string, id: string): Promise<MEMBER[]> => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/sections/${id}/members`
   const headers = new Headers()
   headers.set('accept', 'application/json')
@@ -78,7 +105,7 @@ export const getSectionMembers = async (token:string, id:string) => {
   }
 }
 
-export const getSectionSessions = async (token:string, id:string) => {
+export const getSectionSessions = async (token: string, id: string): Promise<SESSION[]> => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/sections/${id}/sessions`
   const headers = new Headers()
   headers.set('accept', 'application/json')
@@ -98,7 +125,7 @@ export const getSectionSessions = async (token:string, id:string) => {
   }
 }
 
-export const getSession = async (token:string, id:string) => {
+export const getSession = async (token: string, id: string): Promise<SESSION> => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/sessions/${id}`
   const headers = new Headers()
   headers.set('accept', 'application/json')
@@ -118,7 +145,7 @@ export const getSession = async (token:string, id:string) => {
   }
 }
 
-export const getSessionParticipants = async (token:string, sessionId:string) => {
+export const getSessionParticipants = async (token: string, sessionId: string): Promise<PARTICIPANT[]> => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/sessions/${sessionId}/participants`
   const headers = new Headers()
   headers.set('accept', 'application/json')
@@ -138,7 +165,7 @@ export const getSessionParticipants = async (token:string, sessionId:string) => 
   }
 }
 
-export const getUser = async (token:string, id:string) => {
+export const getUser = async (token: string, id: string): Promise<USER> => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/users/${id}`
   const headers = new Headers()
   headers.set('accept', 'application/json')
@@ -158,7 +185,7 @@ export const getUser = async (token:string, id:string) => {
   }
 }
 
-export const getUserMembers = async (token:string, userId:string) => {
+export const getUserMembers = async (token: string, userId: string): Promise<MEMBER[]> => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/users/${userId}/members`
   const headers = new Headers()
   headers.set('accept', 'application/json')
@@ -178,7 +205,7 @@ export const getUserMembers = async (token:string, userId:string) => {
   }
 }
 
-export const getUserParticipants = async (token:string, userId:string) => {
+export const getUserParticipants = async (token: string, userId: string): Promise<PARTICIPANT[]> => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/users/${userId}/participants`
   const headers = new Headers()
   headers.set('accept', 'application/json')
@@ -204,29 +231,43 @@ const RestService = {
       get: getAuth,
       delete: deleteAuth,
     },
+    participants: {
+      post: null,
+      $participantId: {
+        status: {
+          put: putParticipantStatus
+        }
+      }
+    },
     sections: {
-      get: getSection,
-      members: {
-        get: getSectionMembers,
-      },
-      sessions: {
-        get: getSectionSessions,
-      },
+      $sectionId: {
+        get: getSection,
+        members: {
+          get: getSectionMembers,
+        },
+        sessions: {
+          get: getSectionSessions,
+        },
+      }
     },
     sessions: {
-      get: getSession,
-      participants: {
-        get: getSessionParticipants,
-      },
+      $sessionId: {
+        get: getSession,
+        participants: {
+          get: getSessionParticipants,
+        },
+      }
     },
     users: {
-      get: getUser,
-      members: {
-        get: getUserMembers,
-      },
-      participants: {
-        get: getUserParticipants,
-      },
+      $userId: {
+        get: getUser,
+        members: {
+          get: getUserMembers,
+        },
+        participants: {
+          get: getUserParticipants,
+        },
+      }
     },
   }
 }

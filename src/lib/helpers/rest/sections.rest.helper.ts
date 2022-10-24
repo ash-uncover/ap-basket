@@ -13,7 +13,7 @@ export const getSection = async (dispatch, token: string, id: string) => {
   dispatch(SectionsSlice.actions.getSectionRequest({ id }))
 
   try {
-    const data = await RestService.api.sections.get(token, id)
+    const data = await RestService.api.sections.$sectionId.get(token, id)
     dispatch(SectionsSlice.actions.getSectionSuccess({ id, data }))
     return data
 
@@ -27,7 +27,7 @@ export const getSectionMembers = async (dispatch, token: string, id: string) => 
   dispatch(SectionsSlice.actions.getSectionMembersRequest({ id }))
 
   try {
-    const data = await RestService.api.sections.members.get(token, id)
+    const data = await RestService.api.sections.$sectionId.members.get(token, id)
     dispatch(SectionsSlice.actions.getSectionMembersSuccess({ id, data }))
     return data
 
@@ -41,7 +41,7 @@ export const getSectionSessions = async (dispatch, token: string, id: string) =>
   dispatch(SectionsSlice.actions.getSectionSessionsRequest({ id }))
 
   try {
-    const data = await RestService.api.sections.sessions.get(token, id)
+    const data = await RestService.api.sections.$sectionId.sessions.get(token, id)
     dispatch(SectionsSlice.actions.getSectionSessionsSuccess({ id, data }))
     return data
 
