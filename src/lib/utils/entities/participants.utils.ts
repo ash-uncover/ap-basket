@@ -1,19 +1,37 @@
-import { SESSION } from './sessions.utils'
+import { AccentColors } from 'components/fiori/constants/AccentColor'
+import { formatDateTimeShort } from 'lib/utils/date.utils'
+import { SESSION } from 'lib/utils/entities/sessions.utils'
 
 export type PARTICIPANT = {
+  id: string,
   sessionId: string,
   userId: string,
   status: string,
-  date: Date,
+  statusDate: Date,
 }
 
 export const PARTICIPATION_STATE = {
-  UNKNOW: 'UNKNOW',
-  ACCEPTED: 'ACCEPTED',
-  DECLINED: 'DECLINED',
-  CANCELED: 'CANCELED',
-  ATTENDED: 'ATTENDED',
-  UNATTENDED: 'UNATTENDED'
+  ACCEPTED: {
+    key: 'ACCEPTED',
+    text: 'entities.participation.status.accepted',
+    accentColor: AccentColors.COLOR_8,
+
+  },
+  DECLINED: {
+    key: 'DECLINED',
+    text: 'entities.participation.status.declined',
+    accentColor: AccentColors.COLOR_2,
+  },
+  ATTENDED: {
+    key: 'ATTENDED',
+    text: 'entities.participation.status.attended',
+    accentColor: AccentColors.COLOR_10,
+  },
+  UNATTENDED: {
+    key: 'UNATTENDED',
+    text: 'entities.participation.status.unattended',
+    accentColor: AccentColors.COLOR_10,
+  }
 }
 
 export const getParticipantByUserId = (
@@ -23,7 +41,7 @@ export const getParticipantByUserId = (
   return participants.find(participant => participant.userId === userId)
 }
 
-export const getParticipationState = (
+export const getParticipationStatus = (
   session: SESSION,
   participant: PARTICIPANT
 ) => {
@@ -32,13 +50,12 @@ export const getParticipationState = (
   const isFuture = now < date
 
   switch (participant?.status) {
-    case PARTICIPATION_STATE.ACCEPTED: {
-      return isFuture ? participant.status : PARTICIPATION_STATE.ATTENDED
+    case PARTICIPATION_STATE.ACCEPTED.key: {
+      return isFuture ? PARTICIPATION_STATE.ACCEPTED : PARTICIPATION_STATE.ATTENDED
     }
-    case PARTICIPATION_STATE.DECLINED:
-    case PARTICIPATION_STATE.CANCELED: {
-      return isFuture ? participant.status : PARTICIPATION_STATE.UNATTENDED
+    case PARTICIPATION_STATE.DECLINED.key: {
+      return isFuture ? PARTICIPATION_STATE.DECLINED : PARTICIPATION_STATE.UNATTENDED
     }
   }
-  return PARTICIPATION_STATE.UNKNOW
+  return null
 }

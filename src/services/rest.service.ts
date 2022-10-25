@@ -43,7 +43,44 @@ export const deleteAuth = async (token: string) => {
   }
 }
 
-export const putParticipantStatus = async (token: string, id: string, body: any): Promise<PARTICIPANT> => {
+export type postParticipantPayload = {
+  userId: string,
+  sessionId: string,
+  status: string,
+}
+export const postParticipant = async (
+  token: string,
+  payload: postParticipantPayload
+): Promise<PARTICIPANT> => {
+  const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/participants`
+  const headers = new Headers()
+  headers.set('accept', 'application/json')
+  headers.set('authorization', `Basic ${token}`)
+  headers.set('content-type', 'application/json; charset=UTF-8')
+  const request: RequestInit = {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload)
+  }
+
+  try {
+    const response = await fetch(url, request)
+    const data = await response.json()
+    return data
+
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export type putParticipantStatusPayload = {
+  status: string,
+}
+export const putParticipantStatus = async (
+  token: string,
+  id: string,
+  payload: putParticipantStatusPayload
+): Promise<PARTICIPANT> => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/participants/${id}/status`
   const headers = new Headers()
   headers.set('accept', 'application/json')
@@ -52,7 +89,7 @@ export const putParticipantStatus = async (token: string, id: string, body: any)
   const request: RequestInit = {
     method: 'PUT',
     headers,
-    body
+    body: JSON.stringify(payload)
   }
 
   try {
@@ -232,7 +269,7 @@ const RestService = {
       delete: deleteAuth,
     },
     participants: {
-      post: null,
+      post: postParticipant,
       $participantId: {
         status: {
           put: putParticipantStatus

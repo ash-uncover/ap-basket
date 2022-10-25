@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 import { useSession, useSessionParticipants, useSessionUsers } from 'lib/helpers/hooks/sessions.hooks'
@@ -11,10 +11,15 @@ import { BusyIndicator } from 'fundamental-react'
 import { Button } from 'components/fiori/button/Button'
 import { ButtonStyles } from 'components/fiori/constants/ButtonStyle'
 import { Card } from 'components/fiori/card/Card'
+import { InfoLabel } from 'components/fiori/infolabel/InfoLabel'
 import { TileContainer } from 'components/fiori/tile/TileContainer'
 import { Table } from 'components/fiori/table/Table'
 
+import { getParticipationStatus, PARTICIPATION_STATE } from 'lib/utils/entities/participants.utils'
+import { formatDateTimeLong, formatDateTimeShort } from 'lib/utils/date.utils'
+
 import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
+import { putParticipantStatus } from 'lib/helpers/rest/participants.rest.helper'
 
 export const SectionSession = ({ id }) => {
 
@@ -37,13 +42,11 @@ export const SectionSession = ({ id }) => {
     case DataStates.FETCHING_FIRST: return <SectionSessionLoading />
     case DataStates.FAILURE: return <SectionSessionError />
     default: {
-      const date = session.data.date
       return (
         <SectionSessionLoaded
           participants={participants.data}
-          participantsMax={session.data.maxParticipants}
           users={users}
-          date={date}
+          session={session}
         />
       )
     }
@@ -67,17 +70,18 @@ const SectionSessionError = () => {
 }
 
 const SectionSessionLoaded = ({
-  date,
+  session,
   participants,
-  participantsMax,
   users,
 }) => {
 
   // Hooks //
 
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const userId = useSelector(AuthSelectors.userId)
+  const token = useSelector(AuthSelectors.token)
 
   const [expanded, setEpanded] = useState(false)
 
@@ -87,50 +91,111 @@ const SectionSessionLoaded = ({
     setEpanded(!expanded)
   }
 
+  const onAccept = (participationId: string) => {
+    putParticipantStatus(dispatch, token, participationId, 'ACCEPTED')
+  }
+
+  const onDecline = (participationId: string) => {
+    putParticipantStatus(dispatch, token, participationId, 'DECLINED')
+  }
+
+  const onAcceptFirst = () => {
+
+  }
+
+  const onDeclineFirst = () => {
+
+  }
+
   // Rendering //
 
   const now = new Date()
-  const dateObj = new Date(date)
-  const isFuture = dateObj > now
+  const sessionDate = new Date(session.data.date)
+  const isFuture = sessionDate > now
 
-  const dateOptions: Intl.DateTimeFormatOptions = {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }
-  const timeOptions: Intl.DateTimeFormatOptions = {
-    hour: '2-digit',
-    minute: '2-digit',
-  }
+  const participantsAcccepted = participants.filter(participant => participant.data.status === 'ACCEPTED')
 
   const userData = users.data
     .map((user) => {
-      const member = participants.find(participant => participant.data.userId === user.data.id)
+      const participant = participants.find(participant => participant.data.userId === user.data.id)
       return {
-        ...member.data,
+        ...participant.data,
+        participationId: participant.data.id,
         ...user.data,
-        isAdmin: member.data.roles?.includes('sectionAdmin'),
+        isAdmin: participant.data.roles?.includes('sectionAdmin'),
         isSelf: userId === user.data.id
       }
-    }).sort((user1, user2) => {
-      return user1.firstName.localeCompare(user2.firstName)
+    })
+    .sort((user1, user2) => {
+      if (user1.status === user2.status) {
+        return user1.statusDate.localeCompare(user2.statusDate)
+      }
+      return user1.status.localeCompare(user2.status)
     })
 
   const renderFooter = () => {
-
-    return (
-      <>
-        <Button
-          text='Register'
-          style={ButtonStyles.POSITIVE}
-        />
-        <Button
-          text='I wont come'
-          style={ButtonStyles.NEGATIVE}
-        />
-      </>
-    )
+    const participant = participants.find(participant => participant.data.userId === userId)
+    const status = getParticipationStatus(session.data, participant?.data)
+    switch (status) {
+      case PARTICIPATION_STATE.ACCEPTED: {
+        return (
+          <>
+            <span>
+              {t('app.session.participation.accepted')}
+            </span>
+            <Button
+              text={t('app.session.action.decline')}
+              style={ButtonStyles.NEGATIVE}
+              onClick={() => onDecline(participant.data.id)}
+            />
+          </>
+        )
+      }
+      case PARTICIPATION_STATE.DECLINED: {
+        return (
+          <>
+            <span>
+              {t('app.session.participation.declined')}
+            </span>
+            <Button
+              text={t('app.session.action.register')}
+              style={ButtonStyles.POSITIVE}
+              onClick={() => onAccept(participant.data.id)}
+            />
+          </>
+        )
+      }
+      case PARTICIPATION_STATE.ATTENDED: {
+        return (
+          <span>
+            {t('app.session.participation.attended')}
+          </span>
+        )
+      }
+      case PARTICIPATION_STATE.UNATTENDED: {
+        return (
+          <span>
+            {t('app.session.participation.unattended')}
+          </span>
+        )
+      }
+      default: {
+        return (
+          <>
+            <Button
+              text={t('app.session.action.register')}
+              style={ButtonStyles.POSITIVE}
+              onClick={onAcceptFirst}
+            />
+            <Button
+              text={t('app.session.action.decline')}
+              style={ButtonStyles.NEGATIVE}
+              onClick={onDeclineFirst}
+            />
+          </>
+        )
+      }
+    }
   }
 
   return (
@@ -139,8 +204,8 @@ const SectionSessionLoaded = ({
         text: isFuture ? 'future' : 'completed'
       }}
       header={{
-        title: `${dateObj.toLocaleDateString('en-US', dateOptions)} at ${dateObj.toLocaleTimeString('en-US', timeOptions)}`,
-        titleCounter: `${participants.length} / ${participantsMax} Participants`,
+        title: formatDateTimeLong(sessionDate),
+        titleCounter: `${participantsAcccepted.length} / ${session.data.maxParticipants} Participants`,
         onClick: participants.length ? onToggleCardExpand : () => { }
       }}
       footer={{
@@ -162,6 +227,22 @@ const SectionSessionLoaded = ({
               key: 'lastName',
               name: t('entities.user.lastName'),
               formatter: (user) => user.isSelf ? <strong>{user.lastName}</strong> : user.lastName
+            }, {
+              key: 'status',
+              name: t('entities.participants.status'),
+              render: (user) => {
+                const status = getParticipationStatus(session.data, user)
+                return (
+                  <InfoLabel
+                    accentColor={t(status.accentColor)}
+                    text={t(status.text)}
+                  />
+                )
+              }
+            }, {
+              key: 'statusDate',
+              name: t('entities.participants.statusDate'),
+              formatter: (user) => user.isSelf ? <strong>{formatDateTimeShort(new Date(user.statusDate))}</strong> : formatDateTimeShort(new Date(user.statusDate))
             }]}
             rows={userData.map(user => ({
               data: user,

@@ -11,6 +11,19 @@
       "date": "Join Date",
       "roles": "Roles"
     },
+    "participants": {
+      "status": "Status",
+      "statusDate": "Date"
+    },
+    "participation": {
+      "status": {
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "attended": "Attended",
+        "unattended": "Unattended"
+      },
+      "statusDate": "{{status}} on {{date}}"
+    },
     "section": {
       "key": "Section",
       "name": "Name"
@@ -50,6 +63,18 @@
         "sessions": {
           "title": "Sessions"
         }
+      }
+    },
+    "session": {
+      "action": {
+        "register": "Register",
+        "decline": "Decline"
+      },
+      "participation": {
+        "accepted": "You are registered to this session",
+        "declined": "You declined this session",
+        "attended": "You participated to this session",
+        "unattended": "You did not attend this session"
       }
     },
     "profile": {
