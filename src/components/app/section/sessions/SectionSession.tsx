@@ -19,7 +19,7 @@ import { getParticipationStatus, PARTICIPATION_STATE } from 'lib/utils/entities/
 import { formatDateTimeLong, formatDateTimeShort } from 'lib/utils/date.utils'
 
 import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
-import { putParticipantStatus } from 'lib/helpers/rest/participants.rest.helper'
+import { postParticipant, putParticipantStatus } from 'lib/helpers/rest/participants.rest.helper'
 
 export const SectionSession = ({ id }) => {
 
@@ -92,19 +92,31 @@ const SectionSessionLoaded = ({
   }
 
   const onAccept = (participationId: string) => {
-    putParticipantStatus(dispatch, token, participationId, 'ACCEPTED')
+    putParticipantStatus(dispatch, token, participationId, {
+      status: 'ACCEPTED'
+    })
   }
 
   const onDecline = (participationId: string) => {
-    putParticipantStatus(dispatch, token, participationId, 'DECLINED')
+    putParticipantStatus(dispatch, token, participationId, {
+      status: 'DECLINED'
+    })
   }
 
   const onAcceptFirst = () => {
-
+    postParticipant(dispatch, token, {
+      userId,
+      sessionId: session.data.id,
+      status: 'ACCEPTED'
+    })
   }
 
   const onDeclineFirst = () => {
-
+    postParticipant(dispatch, token, {
+      userId,
+      sessionId: session.data.id,
+      status: 'DECLINED'
+    })
   }
 
   // Rendering //

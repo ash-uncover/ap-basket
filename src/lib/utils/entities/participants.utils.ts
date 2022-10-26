@@ -57,5 +57,5 @@ export const getParticipationStatus = (
       return isFuture ? PARTICIPATION_STATE.DECLINED : PARTICIPATION_STATE.UNATTENDED
     }
   }
-  return null
+  return isFuture ? null : PARTICIPATION_STATE.UNATTENDED
 }
