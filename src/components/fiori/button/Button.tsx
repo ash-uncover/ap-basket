@@ -8,6 +8,7 @@ export type ButtonProperties = {
   text?: string
   badge?: string
   selected?: boolean
+  compact?: boolean
   onClick?: () => void
 }
 
@@ -18,6 +19,7 @@ export const Button = ({
   text,
   badge,
   selected,
+  compact,
   onClick,
 }: ButtonProperties) => {
 
@@ -38,6 +40,9 @@ export const Button = ({
   }
   if (selected) {
     classes.push('is-selected')
+  }
+  if (compact) {
+    classes.push('fd-button--compact')
   }
 
   return (

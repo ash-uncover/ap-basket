@@ -1,28 +1,38 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-
+import { useDispatch } from 'react-redux'
 import { useSectionSessions } from 'lib/helpers/hooks/sections.hooks'
+
+import AppSlice from 'store/app/app.slice'
 
 import { BusyIndicator } from 'fundamental-react'
 
+import { Button } from 'components/fiori/button/Button'
+import { ButtonStyles } from 'components/fiori/constants/ButtonStyle'
+import { Dialog } from 'components/app/dialogs/Dialogs'
 import { Panel } from 'components/fiori/panel/Panel'
+import { Toolbar } from 'components/fiori/toolbar/Toolbar'
 
 import { SectionSession } from 'components/app/section/sessions/SectionSession'
 
 import DataStates from 'lib/constants/DataStates'
 
 import './SectionTabSessions.css'
-import { Toolbar } from 'components/fiori/toolbar/Toolbar'
-import { Button } from 'components/fiori/button/Button'
-import { ButtonStyles } from 'components/fiori/constants/ButtonStyle'
 
 const SectionTabSessions = ({ sectionId }) => {
 
   // Hooks //
 
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const sessions = useSectionSessions(sectionId)
+
+  // Events //
+
+  const onCreateSession = () => {
+    dispatch(AppSlice.actions.setDialog({ dialog: Dialog.SESSION_CREATE }))
+  }
 
   // Rendering //
 
@@ -67,6 +77,7 @@ const SectionTabSessions = ({ sectionId }) => {
                 <Button
                   text='New Session'
                   style={ButtonStyles.TRANSPARENT}
+                  onClick={onCreateSession}
                 />
               </Toolbar>
             }

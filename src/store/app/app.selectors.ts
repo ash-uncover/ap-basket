@@ -5,6 +5,7 @@ const AppSelectors = {
   busyMessage: (state: RootSliceState) => state.app.busyMessage,
   language: (state: RootSliceState) => state.app.language,
   theme: (state: RootSliceState) => state.app.theme,
+  dialog: (state: RootSliceState) => state.app.dialog,
 }
 
 export default AppSelectors

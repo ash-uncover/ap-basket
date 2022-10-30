@@ -4,6 +4,7 @@ type AppSliceState = {
   init: boolean,
   language: string,
   theme: string,
+  dialog: string | null,
 }
 
 export default AppSliceState

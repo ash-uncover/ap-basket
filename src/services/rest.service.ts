@@ -162,6 +162,36 @@ export const getSectionSessions = async (token: string, id: string): Promise<SES
   }
 }
 
+export type postSessionPayload = {
+  sectionId: string,
+  maxParticipants: number,
+  date: Date,
+}
+export const postSession = async (
+  token: string,
+  payload: postSessionPayload
+): Promise<SESSION> => {
+  const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/sessions`
+  const headers = new Headers()
+  headers.set('accept', 'application/json')
+  headers.set('authorization', `Basic ${token}`)
+  headers.set('content-type', 'application/json; charset=UTF-8')
+  const request: RequestInit = {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload)
+  }
+
+  try {
+    const response = await fetch(url, request)
+    const data = await response.json()
+    return data
+
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const getSession = async (token: string, id: string): Promise<SESSION> => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/sessions/${id}`
   const headers = new Headers()

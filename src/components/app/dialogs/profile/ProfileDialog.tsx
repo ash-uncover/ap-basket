@@ -65,7 +65,7 @@ const ProfileDialog = ({
       <FormGroup>
         <FormItem isHorizontal>
           <FormLabel htmlFor='userFirstName'>
-          {t('app.profile.dialog.fields.firstName')}
+            {t('app.profile.dialog.fields.firstName')}
           </FormLabel>
           <FormInput
             id='userFirstName'
@@ -77,7 +77,7 @@ const ProfileDialog = ({
       <FormGroup>
         <FormItem isHorizontal>
           <FormLabel htmlFor='userLastName'>
-          {t('app.profile.dialog.fields.lastName')}
+            {t('app.profile.dialog.fields.lastName')}
           </FormLabel>
           <FormInput
             id='userLastName'
@@ -89,7 +89,7 @@ const ProfileDialog = ({
       <FormGroup>
         <FormItem isHorizontal>
           <FormLabel htmlFor='userEmail'>
-          {t('app.profile.dialog.fields.email')}
+            {t('app.profile.dialog.fields.email')}
           </FormLabel>
           <FormInput
             id='userEmail'
