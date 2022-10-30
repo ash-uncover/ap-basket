@@ -12,6 +12,9 @@ import { SectionSession } from 'components/app/section/sessions/SectionSession'
 import DataStates from 'lib/constants/DataStates'
 
 import './SectionTabSessions.css'
+import { Toolbar } from 'components/fiori/toolbar/Toolbar'
+import { Button } from 'components/fiori/button/Button'
+import { ButtonStyles } from 'components/fiori/constants/ButtonStyle'
 
 const SectionTabSessions = ({ sectionId }) => {
 
@@ -59,6 +62,14 @@ const SectionTabSessions = ({ sectionId }) => {
             expandable
             expanded
             title='Incoming Sessions'
+            toolbar={
+              <Toolbar transparent clear>
+                <Button
+                  text='New Session'
+                  style={ButtonStyles.TRANSPARENT}
+                />
+              </Toolbar>
+            }
           >
             <div
               style={{

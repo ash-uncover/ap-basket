@@ -5,6 +5,7 @@ export type PanelProperties = {
   expanded?: boolean
   expandable?: boolean
   title: string
+  toolbar?: ReactElement
   children?: string | ReactElement | ReactElement[]
 }
 
@@ -13,6 +14,7 @@ export const Panel = ({
   expanded,
   expandable,
   title,
+  toolbar,
   children,
 }: PanelProperties) => {
 
@@ -63,6 +65,7 @@ export const Panel = ({
         >
           {title}
         </h4>
+        {toolbar ? toolbar : null}
       </div>
 
       <div

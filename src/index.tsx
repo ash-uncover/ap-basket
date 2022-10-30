@@ -14,8 +14,15 @@ import store from 'store'
 // Import components
 import Root from 'routes/__layout'
 
-const container = document.getElementById('reactroot')
-const root = createRoot(container)
+const containerRoot = document.getElementById('reactroot')
+const root = createRoot(containerRoot)
+root.render(
+  <Provider store={store}>
+    <Root />
+  </Provider>
+)
+const containerDialog = document.getElementById('reactdialog')
+const dialog = createRoot(containerDialog)
 root.render(
   <Provider store={store}>
     <Root />

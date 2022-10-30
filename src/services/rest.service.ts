@@ -288,6 +288,7 @@ const RestService = {
       }
     },
     sessions: {
+      post: postSession,
       $sessionId: {
         get: getSession,
         participants: {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -69,7 +69,6 @@ const Section = ({ sectionId, children }) => {
             style={{
               margin: '-2rem -2rem 0 -2rem',
               padding: '2rem 2rem 0 2rem',
-              pointerEvents: 'none'
             }}
           >
             <Title level={1}>
@@ -85,6 +84,7 @@ const Section = ({ sectionId, children }) => {
             />
           </div>
           <section className='section-content'>
+
             <Title className='section-title' level={2}>
               {t((SECTION_TABS.find(tab => tab.id === match?.params.tabId) || SECTION_TAB.GENERAL)?.title)}
             </Title>

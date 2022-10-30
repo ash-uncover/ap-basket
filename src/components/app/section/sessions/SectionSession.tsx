@@ -121,9 +121,7 @@ const SectionSessionLoaded = ({
 
   // Rendering //
 
-  const now = new Date()
   const sessionDate = new Date(session.data.date)
-  const isFuture = sessionDate > now
 
   const participantsAcccepted = participants.filter(participant => participant.data.status === 'ACCEPTED')
 
@@ -212,9 +210,6 @@ const SectionSessionLoaded = ({
 
   return (
     <Card
-      badge={{
-        text: isFuture ? 'future' : 'completed'
-      }}
       header={{
         title: formatDateTimeLong(sessionDate),
         titleCounter: `${participantsAcccepted.length} / ${session.data.maxParticipants} Participants`,
