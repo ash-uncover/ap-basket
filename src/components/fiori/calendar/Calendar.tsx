@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { CalendarDays } from 'components/fiori/calendar/CalendarDays'
 import { CalendarMonths } from 'components/fiori/calendar/CalendarMonths'
@@ -12,17 +12,29 @@ export const DISPLAY_MODE = {
 
 export type CalendarProperties = {
   date?: Date
+  selectedDate?: Date
   compact?: boolean
+  onSelectedDateChange?: (arg: Date) => void
 }
 export const Calendar = ({
   date = new Date(),
+  selectedDate,
   compact,
+  onSelectedDateChange,
 }: CalendarProperties) => {
 
   // Hooks //
 
+  let previousMode = DISPLAY_MODE.DAYS
+
   const [displayDate, setDisplayDate] = useState(date)
-  const [displayMode, setDisplayMode] = useState(DISPLAY_MODE.MONTHS)
+  const [displayMode, setDisplayMode] = useState(DISPLAY_MODE.DAYS)
+
+  useEffect(() => {
+    if (displayMode !== DISPLAY_MODE.YEARS) {
+      previousMode = displayMode
+    }
+  }, [displayMode])
 
   // Events //
 
@@ -30,8 +42,20 @@ export const Calendar = ({
     setDisplayDate(displayDate)
   }
 
-  const onDisplayModeChange = (displayMode) => {
+  const onDisplayModeChangeDays = (displayMode) => {
     setDisplayMode(displayMode)
+  }
+
+  const onDisplayModeChangeMonths = (displayMode) => {
+    setDisplayMode(displayMode)
+  }
+
+  const onDisplayModeChangeYears = (displayMode) => {
+    if (previousMode) {
+      setDisplayMode(previousMode)
+    } else {
+      setDisplayMode(displayMode)
+    }
   }
 
   // Rendering //
@@ -42,7 +66,7 @@ export const Calendar = ({
         <CalendarMonths
           date={displayDate}
           onDisplayDateChange={onDisplayDateChange}
-          onDisplayModeChange={onDisplayModeChange}
+          onDisplayModeChange={onDisplayModeChangeMonths}
         />
       )
     }
@@ -51,7 +75,7 @@ export const Calendar = ({
         <CalendarYears
           date={displayDate}
           onDisplayDateChange={onDisplayDateChange}
-          onDisplayModeChange={onDisplayModeChange}
+          onDisplayModeChange={onDisplayModeChangeYears}
         />
       )
     }
@@ -59,9 +83,11 @@ export const Calendar = ({
       return (
         <CalendarDays
           date={displayDate}
+          selectedDate={selectedDate}
           compact={compact}
           onDisplayDateChange={onDisplayDateChange}
-          onDisplayModeChange={onDisplayModeChange}
+          onDisplayModeChange={onDisplayModeChangeDays}
+          onSelectedDateChange={onSelectedDateChange}
         />
       )
     }

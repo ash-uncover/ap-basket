@@ -12,6 +12,7 @@ const DialogsRenderer = () => {
   // Hooks //
 
   const dialog = useSelector(AppSelectors.dialog)
+  const dialogParams = useSelector(AppSelectors.dialogParams)
 
   // Rendering //
 
@@ -19,7 +20,7 @@ const DialogsRenderer = () => {
     switch (dialog) {
       case Dialog.SESSION_CREATE: {
         return (
-          <CreateSessionDialog />
+          <CreateSessionDialog {...dialogParams} />
         )
       }
       default: {

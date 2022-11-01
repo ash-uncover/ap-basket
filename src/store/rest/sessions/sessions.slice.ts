@@ -5,6 +5,7 @@ import {
 } from '@reduxjs/toolkit'
 
 import DataStates from 'lib/constants/DataStates'
+import { SESSION } from 'lib/utils/entities/sessions.utils'
 
 import { SessionsSliceState, SessionState } from 'store/rest/sessions/sessions.state'
 import { getSectionSessionsSuccessPayload } from '../sections/sections.slice'
@@ -29,6 +30,29 @@ export const DEFAULT_SESSION = (sessionId: string): SessionState => {
 }
 
 // REDUCERS //
+
+// postSession //
+
+export type postSessionRequestPayload = {
+}
+export const postSessionRequest: CaseReducer<SessionsSliceState, PayloadAction<postSessionRequestPayload>> = (state, action) => {
+}
+export type postSessionSuccessPayload = {
+  data: SESSION,
+}
+export const postSessionSuccess: CaseReducer<SessionsSliceState, PayloadAction<postSessionSuccessPayload>> = (state, action) => {
+  state.data[action.payload.data.id] = {
+    ...(state.data[action.payload.data.id] || DEFAULT_SESSION(action.payload.data.id)),
+    data: action.payload.data,
+    dataStatus: DataStates.SUCCESS,
+    dataError: null,
+  }
+}
+export type postSessionFailurePayload = {
+  error: string,
+}
+export const postSessionFailure: CaseReducer<SessionsSliceState, PayloadAction<postSessionFailurePayload>> = (state, action) => {
+}
 
 // getSession //
 
@@ -121,6 +145,10 @@ const SessionsSlice = createSlice({
   initialState,
 
   reducers: {
+    postSessionRequest,
+    postSessionSuccess,
+    postSessionFailure,
+
     getSessionRequest,
     getSessionSuccess,
     getSessionFailure,

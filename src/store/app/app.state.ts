@@ -5,6 +5,7 @@ type AppSliceState = {
   language: string,
   theme: string,
   dialog: string | null,
+  dialogParams: any | null,
 }
 
 export default AppSliceState

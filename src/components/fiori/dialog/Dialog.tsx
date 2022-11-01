@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useRef } from 'react'
 import { DialogFooter } from './DialogFooter'
 import { DialogHeader } from './DialogHeader'
 
@@ -7,7 +7,7 @@ export type DialogProperties = {
   title?: string,
   header?: any,
   footer?: any,
-  children?: ReactElement | ReactElement[]
+  children?: ReactElement | ReactElement[],
 }
 
 export const Dialog = ({
@@ -16,6 +16,14 @@ export const Dialog = ({
   footer,
   children,
 }: DialogProperties) => {
+
+  // Hooks //
+
+  const ref = useRef(null)
+
+  useEffect(() => {
+    ref.current.querySelector('[tabindex="0"]').focus()
+  }, [])
 
   // Rendering //
 
@@ -27,6 +35,7 @@ export const Dialog = ({
         role='dialog'
         aria-modal='true'
         aria-labelledby='dialog-title-1'
+        ref={ref}
       >
         {resizable ? <span className='fd-dialog__resize-handle' /> : null}
 

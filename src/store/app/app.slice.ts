@@ -18,6 +18,7 @@ const initialState: AppSliceState = {
   language: Language.DEFAULT.id,
   theme: Theme.FIORI_3.id,
   dialog: null,
+  dialogParams: null,
 }
 
 // REDUCERS //
@@ -49,15 +50,19 @@ const setTheme: CaseReducer<AppSliceState, PayloadAction<string>> = (state, acti
 
 type PayloadDialog = {
   dialog: string | null,
+  params?: any,
 }
-const setDialog: CaseReducer<AppSliceState, PayloadAction<PayloadDialog>> = (state, action) => {
+const openDialog: CaseReducer<AppSliceState, PayloadAction<PayloadDialog>> = (state, action) => {
   const {
     dialog,
+    params,
   } = action.payload
   state.dialog = dialog
+  state.dialogParams = params
 }
 const closeDialog: CaseReducer<AppSliceState, PayloadAction<void>> = (state, action) => {
   state.dialog = null
+  state.dialogParams = null
 }
 
 // SLICE //
@@ -72,7 +77,7 @@ const AppSlice = createSlice({
     setBusy,
     setLanguage,
     setTheme,
-    setDialog,
+    openDialog,
     closeDialog,
   },
 })

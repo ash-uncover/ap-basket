@@ -8,15 +8,19 @@ import { DISPLAY_MODE } from 'components/fiori/calendar/Calendar'
 
 export type CalendarDaysProperties = {
   date: Date
+  selectedDate?: Date
   compact?: boolean
   onDisplayDateChange: (arg: Date) => void
   onDisplayModeChange: (arg: string) => void
+  onSelectedDateChange?: (arg: Date) => void
 }
 export const CalendarDays = ({
   date,
+  selectedDate,
   compact,
   onDisplayDateChange,
   onDisplayModeChange,
+  onSelectedDateChange,
 }: CalendarDaysProperties) => {
 
   // Hooks //
@@ -56,13 +60,20 @@ export const CalendarDays = ({
     for (let week = 0; week < 5; week++) {
       const weekData = []
       for (let day = 1; day < 8; day++) {
-        const isYear = date.getFullYear() === now.getFullYear()
-        const isMonth = now.getMonth() === currentDate.getMonth()
-        const isDate = now.getDate() === currentDate.getDate()
+        const isNowYear = now.getFullYear() === currentDate.getFullYear()
+        const isNowMonth = now.getMonth() === currentDate.getMonth()
+        const isNowDate = now.getDate() === currentDate.getDate()
+
+        const isSelectedYear = selectedDate && selectedDate.getFullYear() === currentDate.getFullYear()
+        const isSelectedMonth = selectedDate && selectedDate.getMonth() === currentDate.getMonth()
+        const isSelectedDate = selectedDate && selectedDate.getDate() === currentDate.getDate()
+
         weekData.push({
+          date: new Date(currentDate.getTime()),
           text: currentDate.getDate(),
           otherMonth: currentDate.getMonth() !== date.getMonth(),
-          current: isYear && isMonth && isDate,
+          current: isNowYear && isNowMonth && isNowDate,
+          active: isSelectedYear && isSelectedMonth && isSelectedDate,
           weekend: weekend.includes(day),
         })
         currentDate.setDate(currentDate.getDate() + 1)
@@ -70,7 +81,7 @@ export const CalendarDays = ({
       weeks.push(weekData)
     }
     setWeeks(weeks)
-  }, [date])
+  }, [date, selectedDate])
 
 
   // Events //
@@ -171,6 +182,7 @@ export const CalendarDays = ({
                       <CalendarDaysItem
                         key={`calendar-week-${index}-day-${day.text}`}
                         {...day}
+                        onCalendarDayClicked={() => onSelectedDateChange && onSelectedDateChange(day.date)}
                       />
                     )
                   })}
@@ -238,6 +250,7 @@ type CalendarDaysItemProperties = {
   range?: boolean
   specialDay?: number
   weekend?: boolean
+  onCalendarDayClicked: () => void
 }
 const CalendarDaysItem = ({
   text,
@@ -247,6 +260,7 @@ const CalendarDaysItem = ({
   range,
   specialDay,
   weekend,
+  onCalendarDayClicked,
 }: CalendarDaysItemProperties) => {
 
   // Rendering //
@@ -282,6 +296,7 @@ const CalendarDaysItem = ({
       <span
         className='fd-calendar__text'
         role='button'
+        onClick={onCalendarDayClicked}
       >
         {text}
       </span>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from '../button/Button'
-import { ButtonStyles } from '../constants/ButtonStyle'
-import { DISPLAY_MODE } from './Calendar'
+
+import { Button } from 'components/fiori/button/Button'
+import { ButtonStyles } from 'components/fiori/constants/ButtonStyle'
+import { DISPLAY_MODE } from 'components/fiori/calendar/Calendar'
 
 export type CalendarYearsProperties = {
   date: Date
@@ -32,7 +33,6 @@ export const CalendarYears = ({
       }
       years.push(yearsRow)
     }
-    console.log(years)
     setYears(years)
   }, [date])
 

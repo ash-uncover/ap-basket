@@ -27,7 +27,7 @@ export const DialogHeader = ({
     if (Array.isArray(elements)) {
       return (
         <>
-          {elements.map(elem => renderElement(elem))}
+          {elements.map((elem, index) => renderElement(elem, `elem-${index}`))}
         </>
       )
     } else {
@@ -35,9 +35,9 @@ export const DialogHeader = ({
     }
   }
 
-  const renderElement = (element) => {
+  const renderElement = (element, key?) => {
     return (
-      <div className='fd-bar__element'>
+      <div key={key} className='fd-bar__element'>
         {element}
       </div>
     )

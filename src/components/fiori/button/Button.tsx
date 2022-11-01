@@ -9,6 +9,7 @@ export type ButtonProperties = {
   text?: string | number
   badge?: string
   selected?: boolean
+  disabled?: boolean
   compact?: boolean
   tabIndex?: number
   type?: ButtonType
@@ -25,6 +26,7 @@ export const Button = ({
   text,
   badge,
   selected,
+  disabled,
   compact,
   tabIndex,
   type = 'button',
@@ -60,6 +62,8 @@ export const Button = ({
       onClick={onClicked}
       tabIndex={tabIndex ? tabIndex : 0}
       type={type}
+      aria-disabled={disabled ? 'true' : null}
+      disabled={disabled}
     >
       {icon ?
         <i className={`sap-icon--${icon}`} role='presentation'></i>

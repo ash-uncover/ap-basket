@@ -1,35 +1,50 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 import AppSlice from 'store/app/app.slice'
+import AuthSelectors from 'store/auth/auth.selectors'
+
+import { postSession } from 'lib/helpers/rest/sessions.rest.helper'
 
 import { Button } from 'components/fiori/button/Button'
 import { ButtonStyles } from 'components/fiori/constants/ButtonStyle'
 import { Calendar } from 'components/fiori/calendar/Calendar'
 import { Dialog } from 'components/fiori/dialog/Dialog'
-import { Title } from 'components/fiori/title/Title'
-import { FormInput } from 'components/fiori/form/FormInput'
 import { FormStepInput } from 'components/fiori/form/FormStepInput'
+import { Title } from 'components/fiori/title/Title'
 
-const CreateSessionDialog = ({ }) => {
+const CreateSessionDialog = ({
+  sectionId
+}) => {
 
   // Hooks //
 
   const { t } = useTranslation()
 
   const dispatch = useDispatch()
+  const token = useSelector(AuthSelectors.token)
 
-  const [date, setDate] = useState(new Date())
-  const [maxParticipants, setMaxParticipants] = useState(1)
+  const [date, setDate] = useState(null)
+  const [maxParticipants, setMaxParticipants] = useState(10)
 
   // Events //
+
+  const onDateChange = (value) => {
+    setDate(value)
+  }
 
   const onMaxParticipantsChange = (value) => {
     setMaxParticipants(value)
   }
 
   const onValidate = () => {
+    postSession(dispatch, token, {
+      date,
+      maxParticipants,
+      sectionId
+    })
+    dispatch(AppSlice.actions.closeDialog())
   }
 
   const onCancel = () => {
@@ -55,6 +70,7 @@ const CreateSessionDialog = ({ }) => {
             text='OK'
             compact
             style={ButtonStyles.EMPHASIZED}
+            disabled={!date}
             onClick={onValidate}
           />,
           <Button
@@ -65,15 +81,31 @@ const CreateSessionDialog = ({ }) => {
         ]
       }}
     >
-      <Calendar compact />
-      <FormInput
-        label='Date'
-      />
-      <FormStepInput
-        label='Max Participants'
-        min={1}
-        value={maxParticipants}
-        onChange={onMaxParticipantsChange} />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginBottom: '1rem',
+        }}
+      >
+        <Calendar
+          compact
+          selectedDate={date}
+          onSelectedDateChange={onDateChange}
+        />
+      </div>
+      <div
+        style={{
+          padding: '0 2rem'
+        }}
+      >
+        <FormStepInput
+          label='Max Participants'
+          min={1}
+          value={maxParticipants}
+          onChange={onMaxParticipantsChange}
+        />
+      </div>
     </Dialog>
   )
 }

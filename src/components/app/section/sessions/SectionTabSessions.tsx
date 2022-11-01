@@ -31,7 +31,12 @@ const SectionTabSessions = ({ sectionId }) => {
   // Events //
 
   const onCreateSession = () => {
-    dispatch(AppSlice.actions.setDialog({ dialog: Dialog.SESSION_CREATE }))
+    dispatch(AppSlice.actions.openDialog({
+      dialog: Dialog.SESSION_CREATE,
+      params: {
+        sectionId
+      }
+    }))
   }
 
   // Rendering //

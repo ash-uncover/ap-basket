@@ -1,5 +1,19 @@
-import RestService from 'services/rest.service'
+import RestService, { postSessionPayload } from 'services/rest.service'
 import SessionsSlice from 'store/rest/sessions/sessions.slice'
+
+export const postSession = async (dispatch, token: string, payload: postSessionPayload) => {
+  dispatch(SessionsSlice.actions.postSessionRequest({}))
+
+  try {
+    const data = await RestService.api.sessions.post(token, payload)
+    dispatch(SessionsSlice.actions.postSessionSuccess({ data }))
+    return data
+
+  } catch (error) {
+    dispatch(SessionsSlice.actions.postSessionFailure({ error }))
+    throw error
+  }
+}
 
 export const getSession = async (dispatch, token: string, id: string) => {
   dispatch(SessionsSlice.actions.getSessionRequest({ id }))
