@@ -56,6 +56,9 @@ const setDialog: CaseReducer<AppSliceState, PayloadAction<PayloadDialog>> = (sta
   } = action.payload
   state.dialog = dialog
 }
+const closeDialog: CaseReducer<AppSliceState, PayloadAction<void>> = (state, action) => {
+  state.dialog = null
+}
 
 // SLICE //
 
@@ -70,6 +73,7 @@ const AppSlice = createSlice({
     setLanguage,
     setTheme,
     setDialog,
+    closeDialog,
   },
 })
 

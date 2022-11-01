@@ -3,23 +3,31 @@ import { ButtonStyle } from '../constants/ButtonStyle'
 
 export type ButtonProperties = {
   className?: string
+  ariaLabel?: string
   style?: ButtonStyle
   icon?: string
-  text?: string
+  text?: string | number
   badge?: string
   selected?: boolean
   compact?: boolean
+  tabIndex?: number
+  type?: ButtonType
   onClick?: () => void
 }
 
+export type ButtonType = 'button' | 'submit' | 'reset'
+
 export const Button = ({
   className,
+  ariaLabel,
   style,
   icon,
   text,
   badge,
   selected,
   compact,
+  tabIndex,
+  type = 'button',
   onClick,
 }: ButtonProperties) => {
 
@@ -48,7 +56,10 @@ export const Button = ({
   return (
     <button
       className={classes.join(' ')}
+      aria-label={ariaLabel}
       onClick={onClicked}
+      tabIndex={tabIndex ? tabIndex : 0}
+      type={type}
     >
       {icon ?
         <i className={`sap-icon--${icon}`} role='presentation'></i>
