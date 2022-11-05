@@ -1,4 +1,5 @@
 import React from 'react'
+import { TitleLevel, TitleLevels } from 'components/fiori/constants/TitleLevel'
 
 export type TitleProperties = {
   className?: string
@@ -7,8 +8,6 @@ export type TitleProperties = {
   wrap?: boolean
   text: string
 }
-
-export type TitleLevel = 1 | 2 | 3 | 4 | 5 | 6
 
 export const Title = ({
   className,
@@ -21,7 +20,7 @@ export const Title = ({
   // Rendering //
 
   const classes = ['fd-title']
-  classes.push(`fd-title--h${levelVisual || 1}`)
+  classes.push(`fd-title--h${levelVisual || level || TitleLevels.H1}`)
   if (className) {
     classes.push(className)
   }
@@ -30,27 +29,27 @@ export const Title = ({
   }
 
   switch (level) {
-    case 6: {
+    case TitleLevels.H6: {
       return (
         <h6 className={classes.join(' ')}>{text}</h6>
       )
     }
-    case 5: {
+    case TitleLevels.H5: {
       return (
         <h5 className={classes.join(' ')}>{text}</h5>
       )
     }
-    case 4: {
+    case TitleLevels.H4: {
       return (
         <h4 className={classes.join(' ')}>{text}</h4>
       )
     }
-    case 3: {
+    case TitleLevels.H3: {
       return (
         <h3 className={classes.join(' ')}>{text}</h3>
       )
     }
-    case 2: {
+    case TitleLevels.H2: {
       return (
         <h2 className={classes.join(' ')}>{text}</h2>
       )
