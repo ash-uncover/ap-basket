@@ -107,5 +107,3 @@ export const PageFooter = ({
     </div>
   )
 }
-
-export default Page

@@ -1,11 +1,12 @@
 import React from 'react'
-import { ButtonStyle } from '../constants/ButtonStyle'
+import { ButtonStyle } from 'components/fiori/constants/ButtonStyle'
 
 export type ButtonProperties = {
   className?: string
   ariaLabel?: string
   style?: ButtonStyle
   icon?: string
+  iconAfter?: boolean
   text?: string | number
   badge?: string
   selected?: boolean
@@ -23,6 +24,7 @@ export const Button = ({
   ariaLabel,
   style,
   icon,
+  iconAfter,
   text,
   badge,
   selected,
@@ -65,7 +67,7 @@ export const Button = ({
       aria-disabled={disabled ? 'true' : null}
       disabled={disabled}
     >
-      {icon ?
+      {icon && !iconAfter ?
         <i className={`sap-icon--${icon}`} role='presentation'></i>
         : null}
 
@@ -73,6 +75,10 @@ export const Button = ({
         <span className='fd-button__text'>
           {text}
         </span>
+        : null}
+
+      {icon && iconAfter ?
+        <i className={`sap-icon--${icon}`} role='presentation'></i>
         : null}
 
       {badge ?
