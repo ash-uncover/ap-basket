@@ -8,18 +8,12 @@ import AuthSelectors from 'store/auth/auth.selectors'
 
 import { BusyIndicator } from 'fundamental-react'
 
-import { Button } from 'components/fiori/button/Button'
-import { ButtonStyles } from 'components/fiori/constants/ButtonStyle'
-import { Card } from 'components/fiori/card/Card'
-import { InfoLabel } from 'components/fiori/infolabel/InfoLabel'
-import { TileContainer } from 'components/fiori/tile/TileContainer'
-import { Table } from 'components/fiori/table/Table'
-
 import { getParticipationStatus, PARTICIPATION_STATE } from 'lib/utils/entities/participants.utils'
 import { formatDateTimeLong, formatDateTimeShort } from 'lib/utils/date.utils'
 
 import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
 import { postParticipant, putParticipantStatus } from 'lib/helpers/rest/participants.rest.helper'
+import { Button, ButtonDesigns, Card, InfoLabel, Table, TileContainer } from '@uncover/fundamentals-react'
 
 export const SectionSession = ({ id }) => {
 
@@ -155,7 +149,7 @@ const SectionSessionLoaded = ({
             </span>
             <Button
               text={t('app.session.action.decline')}
-              style={ButtonStyles.NEGATIVE}
+              design={ButtonDesigns.NEGATIVE}
               onClick={() => onDecline(participant.data.id)}
             />
           </>
@@ -169,7 +163,7 @@ const SectionSessionLoaded = ({
             </span>
             <Button
               text={t('app.session.action.register')}
-              style={ButtonStyles.POSITIVE}
+              design={ButtonDesigns.POSITIVE}
               onClick={() => onAccept(participant.data.id)}
             />
           </>
@@ -194,12 +188,12 @@ const SectionSessionLoaded = ({
           <>
             <Button
               text={t('app.session.action.register')}
-              style={ButtonStyles.POSITIVE}
+              design={ButtonDesigns.POSITIVE}
               onClick={onAcceptFirst}
             />
             <Button
               text={t('app.session.action.decline')}
-              style={ButtonStyles.NEGATIVE}
+              design={ButtonDesigns.NEGATIVE}
               onClick={onDeclineFirst}
             />
           </>

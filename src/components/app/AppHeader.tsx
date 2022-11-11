@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-
-import ProfileDialog from 'components/app/dialogs/profile/ProfileDialog'
-import SettingsDialog from 'components/app/dialogs/settings/SettingsDialog'
-
-import {
-  Shellbar,
-} from 'fundamental-react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import UsersSelectors from 'store/rest/users/users.selectors'
 import AuthSelectors from 'store/auth/auth.selectors'
 
-import './AppHeader.css'
 import { logout } from 'lib/helpers/rest/auth.rest.helper'
+
+import {
+  ShellBar,
+} from '@uncover/fundamentals-react'
+
+import ProfileDialog from 'components/app/dialogs/profile/ProfileDialog'
+import SettingsDialog from 'components/app/dialogs/settings/SettingsDialog'
+
+import './AppHeader.css'
 
 const AppHeader = () => {
 
@@ -62,26 +63,34 @@ const AppHeader = () => {
 
   return (
     <>
-      <Shellbar
-        logo={<img alt='SAP' src='//unpkg.com/fundamental-styles/dist/images/sap-logo.png' />}
-        productTitle='AMSAP Basket'
+      <ShellBar
+        logo='/images/sap-logo.png'
+        logoAlt='AMSAP Basket'
+        title='AMSAP Basket'
         profile={{
-          userName: `${user.data.firstName} ${user.data.lastName}`,
-          initials: `${user.data.firstName.substring(0, 1)}${user.data.lastName.substring(0, 1)}`
+          name: `${user.data.firstName} ${user.data.lastName}`,
+          initials: `${user.data.firstName.substring(0, 1)}${user.data.lastName.substring(0, 1)}`,
+          menu: [
+            {
+              id: 'profile',
+              text: t('app.header.user.menu.profile'),
+              iconBefore: 'person-placeholder',
+              onItemSelected: onOpenProfileDialog,
+            },
+            {
+              id: 'settings',
+              text: t('app.header.user.menu.settings'),
+              iconBefore: 'action-settings',
+              onItemSelected: onOpenSettingsDialog,
+            },
+            {
+              id: 'logout',
+              text: t('app.header.user.menu.signout'),
+              iconBefore: 'log',
+              onItemSelected: onSignOut,
+            },
+          ]
         }}
-        profileMenu={[{
-          name: t('app.header.user.menu.profile'),
-          glyph: 'person-placeholder',
-          callback: onOpenProfileDialog
-        }, {
-          name: t('app.header.user.menu.settings'),
-          glyph: 'action-settings',
-          callback: onOpenSettingsDialog
-        }, {
-          name: t('app.header.user.menu.signout'),
-          glyph: 'log',
-          callback: onSignOut
-        }]}
       />
       <ProfileDialog
         show={showProfileDialog}

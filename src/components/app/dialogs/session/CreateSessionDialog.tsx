@@ -6,13 +6,8 @@ import AppSlice from 'store/app/app.slice'
 import AuthSelectors from 'store/auth/auth.selectors'
 
 import { postSession } from 'lib/helpers/rest/sessions.rest.helper'
+import { Button, ButtonDesigns, Calendar, Dialog, FormStepInput, Title } from '@uncover/fundamentals-react'
 
-import { Button } from 'components/fiori/button/Button'
-import { ButtonStyles } from 'components/fiori/constants/ButtonStyle'
-import { Calendar } from 'components/fiori/calendar/Calendar'
-import { Dialog } from 'components/fiori/dialog/Dialog'
-import { FormStepInput } from 'components/fiori/form/FormStepInput'
-import { Title } from 'components/fiori/title/Title'
 
 const CreateSessionDialog = ({
   sectionId
@@ -69,7 +64,7 @@ const CreateSessionDialog = ({
           <Button
             text='OK'
             compact
-            style={ButtonStyles.EMPHASIZED}
+            design={ButtonDesigns.EMPHASIZED}
             disabled={!date}
             onClick={onValidate}
           />,

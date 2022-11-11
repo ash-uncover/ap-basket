@@ -1,4 +1,4 @@
-import { AccentColors } from 'components/fiori/constants/AccentColor'
+import { AccentColors } from '@uncover/fundamentals-react'
 import { formatDateTimeShort } from 'lib/utils/date.utils'
 import { SESSION } from 'lib/utils/entities/sessions.utils'
 
@@ -15,7 +15,6 @@ export const PARTICIPATION_STATE = {
     key: 'ACCEPTED',
     text: 'entities.participation.status.accepted',
     accentColor: AccentColors.COLOR_8,
-
   },
   DECLINED: {
     key: 'DECLINED',

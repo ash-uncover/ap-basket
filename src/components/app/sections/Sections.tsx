@@ -13,9 +13,9 @@ import {
 import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
 
 import './Sections.css'
-import { Tile } from 'components/fiori/tile/Tile'
 import { useUserMembers, useUserSections } from 'lib/helpers/hooks/users.hooks'
 import { useSection, useSectionMembers } from 'lib/helpers/hooks/sections.hooks'
+import { Tile } from '@uncover/fundamentals-react'
 
 const Sections = ({ }) => {
 

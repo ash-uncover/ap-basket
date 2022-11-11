@@ -6,13 +6,10 @@ import { useSection, useSectionMembers, useSectionSessions } from 'lib/helpers/h
 
 import { BusyIndicator } from 'fundamental-react'
 
-import { Tile } from 'components/fiori/tile/Tile'
-import { TileContentNumeric } from 'components/fiori/tile/TileContentNumeric'
-
 import DataStates from 'lib/constants/DataStates'
 
 import './SectionTabGeneral.css'
-import { Semantics } from 'components/fiori/constants/Semantic'
+import { Semantics, Tile, TileContentNumeric } from '@uncover/fundamentals-react'
 
 const SectionTabGeneral = ({ sectionId }) => {
 

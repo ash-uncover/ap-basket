@@ -5,7 +5,6 @@ import {
   BusyIndicator,
   Title,
 } from 'fundamental-react'
-import { IconTabBar } from 'components/fiori/icontabbar/IconTabBar'
 
 import DataStates from 'lib/constants/DataStates'
 
@@ -13,6 +12,7 @@ import { useMatch, useNavigate } from 'react-router-dom'
 
 import './Section.css'
 import { useSection } from 'lib/helpers/hooks/sections.hooks'
+import { IconTabBar } from '@uncover/fundamentals-react'
 
 const SECTION_TAB = {
   GENERAL: {

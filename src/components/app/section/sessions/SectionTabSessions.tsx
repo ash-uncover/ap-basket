@@ -7,17 +7,14 @@ import AppSlice from 'store/app/app.slice'
 
 import { BusyIndicator } from 'fundamental-react'
 
-import { Button } from 'components/fiori/button/Button'
-import { ButtonStyles } from 'components/fiori/constants/ButtonStyle'
 import { Dialog } from 'components/app/dialogs/Dialogs'
-import { Panel } from 'components/fiori/panel/Panel'
-import { Toolbar } from 'components/fiori/toolbar/Toolbar'
 
 import { SectionSession } from 'components/app/section/sessions/SectionSession'
 
 import DataStates from 'lib/constants/DataStates'
 
 import './SectionTabSessions.css'
+import { Button, ButtonDesigns, Panel, Toolbar } from '@uncover/fundamentals-react'
 
 const SectionTabSessions = ({ sectionId }) => {
 
@@ -81,7 +78,7 @@ const SectionTabSessions = ({ sectionId }) => {
               <Toolbar transparent clear>
                 <Button
                   text='New Session'
-                  style={ButtonStyles.TRANSPARENT}
+                  design={ButtonDesigns.TRANSPARENT}
                   onClick={onCreateSession}
                 />
               </Toolbar>

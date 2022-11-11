@@ -1,20 +1,22 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { useLocation, useMatch, useNavigate } from 'react-router-dom'
+import React from "react"
+import { useSelector } from "react-redux"
+import { useLocation, useMatch, useNavigate } from "react-router-dom"
 
-import { useUserMembers, useUserSections } from 'lib/helpers/hooks/users.hooks'
-import { useSection } from 'lib/helpers/hooks/sections.hooks'
+import { useUserMembers, useUserSections } from "lib/helpers/hooks/users.hooks"
+import { useSection } from "lib/helpers/hooks/sections.hooks"
 
-import AuthSelectors from 'store/auth/auth.selectors'
+import AuthSelectors from "store/auth/auth.selectors"
 
-import { VerticalNavigation } from 'components/fiori/verticalnavigation/VerticalNavigation'
-import { VerticalNavigationItem } from 'components/fiori/verticalnavigation/VerticalNavigationItem'
+import DataStates, { mergeDataStates } from "lib/constants/DataStates"
 
-import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
+import {
+  VerticalNavigation,
+  VerticalNavigationItem,
+} from "@uncover/fundamentals-react"
 
-import './AppSideNav.css'
+import "./AppSideNav.css"
 
-const AppSideNav = ({ }) => {
+const AppSideNav = ({}) => {
 
   // Hooks //
 
@@ -29,26 +31,20 @@ const AppSideNav = ({ }) => {
   // Rendering //
 
   return (
-    <VerticalNavigation
-      label=''
-      itemsLabel=''
-    >
+    <VerticalNavigation label="" itemsLabel="">
       <VerticalNavigationItem
-        id='/'
-        glyph='home'
-        selected={location.pathname === '/'}
-        text={'Home'}
+        id="/"
+        glyph="home"
+        selected={location.pathname === "/"}
+        text={"Home"}
         onItemSelect={onItemSelect}
       />
-      <SectionsSideNav
-        onItemSelect={onItemSelect}
-      />
+      <SectionsSideNav onItemSelect={onItemSelect} />
     </VerticalNavigation>
   )
 }
 
 const SectionsSideNav = ({ onItemSelect }) => {
-
   // Hooks //
 
   const userId = useSelector(AuthSelectors.userId)
@@ -64,18 +60,16 @@ const SectionsSideNav = ({ onItemSelect }) => {
     case DataStates.FETCHING_FIRST: {
       return (
         <VerticalNavigationItem
-          key='/sections-loading'
-          id='/sections'
-          glyph='company-view'
-          selected={location.pathname === '/sections'}
-          text={'Sections'}
+          key="/sections-loading"
+          id="/sections"
+          glyph="company-view"
+          selected={location.pathname === "/sections"}
+          text={"Sections"}
         />
       )
     }
     case DataStates.FAILURE: {
-      return (
-        <div>error</div>
-      )
+      return <div>error</div>
     }
     default: {
       sections?.data?.sort((section1, section2) => {
@@ -83,12 +77,12 @@ const SectionsSideNav = ({ onItemSelect }) => {
       })
       return (
         <VerticalNavigationItem
-          key='/sections'
-          id='/sections'
-          glyph='company-view'
+          key="/sections"
+          id="/sections"
+          glyph="company-view"
           expanded={true}
-          selected={location.pathname === '/sections'}
-          text={'Sections'}
+          selected={location.pathname === "/sections"}
+          text={"Sections"}
           onItemSelect={onItemSelect}
         >
           {sections?.data?.map((section) => {
@@ -107,14 +101,12 @@ const SectionsSideNav = ({ onItemSelect }) => {
 }
 
 const SectionSideNav = ({ sectionId, onItemSelect }) => {
-
   // Hooks //
 
   const section = useSection(sectionId)
-  const match = useMatch('/sections/:sectionId/*')
+  const match = useMatch("/sections/:sectionId/*")
 
   // Events //
-
 
   // Rendering //
 
@@ -124,14 +116,10 @@ const SectionSideNav = ({ sectionId, onItemSelect }) => {
     case DataStates.NEVER:
     case DataStates.FETCHING:
     case DataStates.FETCHING_FIRST: {
-      return (
-        <div>loading</div>
-      )
+      return <div>loading</div>
     }
     case DataStates.FAILURE: {
-      return (
-        <div>error</div>
-      )
+      return <div>error</div>
     }
     default: {
       return (

@@ -7,11 +7,11 @@ import AuthSelectors from 'store/auth/auth.selectors'
 import { useSectionMembers, useSectionUsers } from 'lib/helpers/hooks/sections.hooks'
 
 import { BusyIndicator } from 'fundamental-react'
-import { Table } from 'components/fiori/table/Table'
 
 import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
 
 import './SectionTabMembers.css'
+import { Table } from '@uncover/fundamentals-react'
 
 const SectionTabMembers = ({ sectionId }) => {
 
