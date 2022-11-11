@@ -16,7 +16,7 @@ const initialState: AppSliceState = {
   busyMessage: '',
   init: false,
   language: Language.DEFAULT.id,
-  theme: Theme.FIORI_3.id,
+  theme: Theme.HORIZON.id,
   dialog: null,
   dialogParams: null,
 }
