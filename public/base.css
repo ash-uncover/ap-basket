@@ -6,7 +6,6 @@ html, body, #reactroot {
   user-select: none;
 }
 
-
 #reactroot {
   display: flex;
   flex-direction: column;

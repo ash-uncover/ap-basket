@@ -1,10 +1,14 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import AppSelectors from 'store/app/app.selectors'
+import ProfileDialog from './profile/ProfileDialog'
 import CreateSessionDialog from './session/CreateSessionDialog'
+import SettingsDialog from './settings/SettingsDialog'
 
 export const Dialog = {
-  SESSION_CREATE: 'SESSION_CREATE'
+  PROFILE_PROFILE: 'PROFILE_PROFILE',
+  PROFILE_SETTINGS: 'PROFILE_SETTINGS',
+  SESSION_CREATE: 'SESSION_CREATE',
 }
 
 const DialogsRenderer = () => {
@@ -18,14 +22,10 @@ const DialogsRenderer = () => {
 
   const renderDialog = () => {
     switch (dialog) {
-      case Dialog.SESSION_CREATE: {
-        return (
-          <CreateSessionDialog {...dialogParams} />
-        )
-      }
-      default: {
-        return null
-      }
+      case Dialog.PROFILE_PROFILE: return <ProfileDialog {...dialogParams} />
+      case Dialog.PROFILE_SETTINGS: return <SettingsDialog {...dialogParams} />
+      case Dialog.SESSION_CREATE: return <CreateSessionDialog {...dialogParams} />
+      default: return null
     }
   }
 
@@ -40,6 +40,7 @@ const DialogsRenderer = () => {
           left: 0,
           right: 0,
           bottom: 0,
+          zIndex: 100,
         }}
       >
         {dialogRender}

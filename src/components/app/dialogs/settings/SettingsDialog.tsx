@@ -2,15 +2,6 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-import {
-  Button,
-  Dialog,
-  Select,
-  FormGroup,
-  FormItem,
-  FormLabel,
-} from 'fundamental-react'
-
 import appSelectors from 'store/app/app.selectors'
 
 import { Themes } from 'lib/theme'
@@ -19,12 +10,20 @@ import { Languages } from 'lib/language'
 import { changeLanguage } from 'services/laguage.service'
 import { changeTheme } from 'services/theme.service'
 
-import './SettingsDialog.css'
+import AppSlice from 'store/app/app.slice'
 
-const SettingsDialog = ({
-  show,
-  onClose
-}) => {
+import {
+  Button,
+  ButtonDesigns,
+  Dialog,
+  FormSelect,
+  Title,
+  TitleLevels,
+} from '@uncover/fundamentals-react'
+
+// import './SettingsDialog.css'
+
+const SettingsDialog = () => {
 
   // Hooks //
 
@@ -36,12 +35,16 @@ const SettingsDialog = ({
 
   // Events //
 
-  const onLanguageChange = (event, language) => {
+  const onLanguageChange = (language) => {
     changeLanguage(dispatch, language.key)
   }
 
-  const onThemeChange = (event, theme) => {
+  const onThemeChange = (theme) => {
     changeTheme(dispatch, theme.key)
+  }
+
+  const onClose = () => {
+    dispatch(AppSlice.actions.closeDialog())
   }
 
   // Rendering //
@@ -49,47 +52,57 @@ const SettingsDialog = ({
   return (
     <Dialog
       className='settings-dialog'
-      actions={[(
-        <Button
-          option='emphasized'
-          onClick={onClose}
-        >
-          {t('OK')}
-        </Button>
-      )]}
-      show={show}
-      title={t('app.settings.dialog.title')}
+      header={{
+        left: [
+          <Title
+            text={t('app.settings.dialog.title')}
+            level={TitleLevels.H5}
+          />
+        ]
+      }}
+      footer={{
+        right: [(
+          <Button
+            design={ButtonDesigns.EMPHASIZED}
+            text={t('OK')}
+            onClick={onClose}
+          />
+        )]
+      }}
     >
+      <div
+        className='fd-form-group'
+        style={{
+          height: '300px',
+          padding: '0 2rem',
+        }}>
+        <FormSelect
+          label={t('app.settings.dialog.fields.language')}
+          placeholder={'Language'}
+          selectedKey={language}
+          items={Languages.map(({ id, name }) => {
+            return {
+              key: id,
+              text: name
+            }
+          })}
+          onChange={onLanguageChange}
+        />
 
-      <FormGroup>
-        <FormItem>
-          <FormLabel>
-            {t('app.settings.dialog.fields.language')}
-          </FormLabel>
-          <Select
-            aria-label='Primary'
-            selectedKey={language}
-            options={Languages.map(({ id, name }) => ({ key: id, text: name }))}
-            onSelect={onLanguageChange}
-          />
-        </FormItem>
-      </FormGroup>
+        <FormSelect
+          label={t('app.settings.dialog.fields.theme')}
+          placeholder={'Theme'}
+          items={Themes.map(({ id, name }) => {
+            return {
+              key: id,
+              text: name
+            }
+          })}
+          onChange={onThemeChange}
+        />
+      </div>
 
-      <FormGroup>
-        <FormItem>
-          <FormLabel>
-            {t('app.settings.dialog.fields.theme')}
-          </FormLabel>
-          <Select
-            aria-label='Primary'
-            selectedKey={theme}
-            options={Themes.map(({ id, name }) => ({ key: id, text: name }))}
-            onSelect={onThemeChange}
-          />
-        </FormItem>
-      </FormGroup>
-
-    </Dialog>
+    </Dialog >
 
   )
 }

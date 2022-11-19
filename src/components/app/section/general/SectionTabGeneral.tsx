@@ -4,12 +4,15 @@ import { useNavigate } from 'react-router-dom'
 
 import { useSection, useSectionMembers, useSectionSessions } from 'lib/helpers/hooks/sections.hooks'
 
-import { BusyIndicator } from 'fundamental-react'
-
 import DataStates from 'lib/constants/DataStates'
 
 import './SectionTabGeneral.css'
-import { Semantics, Tile, TileContentNumeric } from '@uncover/fundamentals-react'
+import {
+  BusyIndicator,
+  Semantics,
+  Tile,
+  TileContentNumeric
+} from '@uncover/fundamentals-react'
 
 const SectionTabGeneral = ({ sectionId }) => {
 
@@ -31,7 +34,7 @@ const SectionTabGeneral = ({ sectionId }) => {
       case DataStates.FETCHING_FIRST: {
         return (
           <Tile title='Members'>
-            <BusyIndicator show size='s' />
+            <BusyIndicator size='s' />
           </Tile>
         )
       }
@@ -67,7 +70,7 @@ const SectionTabGeneral = ({ sectionId }) => {
       case DataStates.FETCHING_FIRST: {
         return (
           <Tile title='Sessions'>
-            <BusyIndicator show size='s' />
+            <BusyIndicator size='s' />
           </Tile>
         )
       }

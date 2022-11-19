@@ -6,12 +6,24 @@ import AppSlice from 'store/app/app.slice'
 import AuthSelectors from 'store/auth/auth.selectors'
 
 import { postSession } from 'lib/helpers/rest/sessions.rest.helper'
-import { Button, ButtonDesigns, Calendar, Dialog, FormStepInput, Title } from '@uncover/fundamentals-react'
 
+import {
+  Button,
+  ButtonDesigns,
+  Calendar,
+  Dialog,
+  FormStepInput,
+  Title,
+  TitleLevels,
+} from '@uncover/fundamentals-react'
+
+interface CreateSessionDialogProperties {
+  sectionId: string
+}
 
 const CreateSessionDialog = ({
   sectionId
-}) => {
+}: CreateSessionDialogProperties) => {
 
   // Hooks //
 
@@ -53,8 +65,8 @@ const CreateSessionDialog = ({
       header={{
         left: [
           <Title
-            level={2}
-            levelVisual={6}
+            level={TitleLevels.H2}
+            levelVisual={TitleLevels.H5}
             text={'Create Session'}
           />
         ]

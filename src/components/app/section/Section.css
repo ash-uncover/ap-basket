@@ -1,14 +1,4 @@
 .section {
-  & .app-page-header {
-    background: var(--sapObjectHeader_Background);
-    & .fd-icon-tab-bar {
-      pointer-events: all;
-      & .fd-icon-tab-bar__header {
-        margin: 0 -2rem;
-        padding: 0 2rem;
-      }
-    }
-  }
   & .section-content {
     & .section-title {
       margin: 1rem 0;

@@ -1,28 +1,25 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
-
-import {
-  Avatar,
-  Button,
-  Dialog,
-  FormGroup,
-  FormInput,
-  FormItem,
-  FormLabel,
-} from 'fundamental-react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import AuthSelectors from 'store/auth/auth.selectors'
 import UsersSelectors from 'store/rest/users/users.selectors'
 
-import './ProfileDialog.css'
+import AppSlice from 'store/app/app.slice'
 
-const ProfileDialog = ({
-  show,
-  onClose
-}) => {
+import {
+  Avatar,
+  Button,
+  ButtonDesigns,
+  Dialog,
+  FormInput,
+} from '@uncover/fundamentals-react'
+
+const ProfileDialog = () => {
 
   // Hooks //
+
+  const dispatch = useDispatch()
 
   const { t } = useTranslation()
 
@@ -31,72 +28,64 @@ const ProfileDialog = ({
 
   // Events //
 
+  const onClose = () => {
+    dispatch(AppSlice.actions.closeDialog())
+  }
+
   // Rendering //
 
   return (
     <Dialog
-      className='profile-dialog'
-      actions={[(
-        <Button
-          option='emphasized'
-          onClick={onClose}
-        >
-          {t('OK')}
-        </Button>
-      )]}
-      show={show}
+      style={{
+        width: '500px'
+      }}
       title={t('app.profile.dialog.title')}
+      footer={{
+        right: [(
+          <Button
+            design={ButtonDesigns.EMPHASIZED}
+            text={t('OK')}
+            onClick={onClose}
+          />
+        )]
+      }}
     >
       <div className='fd-dialog__content-centered'
         style={{
           display: 'flex',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          padding: '1rem',
         }}
       >
         <Avatar
           circle
           label={`${user.data.firstName} ${user.data.lastName}`}
+          initials={`${user.data.firstName.substring(0, 1)}${user.data.lastName.substring(0, 1)}`}
           size='xl'
-        >
-          {`${user.data.firstName.substring(0, 1)}${user.data.lastName.substring(0, 1)}`}
-        </Avatar>
+        />
       </div>
 
-      <FormGroup>
-        <FormItem isHorizontal>
-          <FormLabel htmlFor='userFirstName'>
-            {t('app.profile.dialog.fields.firstName')}
-          </FormLabel>
-          <FormInput
-            id='userFirstName'
-            value={user.data.firstName}
-          />
-        </FormItem>
-      </FormGroup>
-
-      <FormGroup>
-        <FormItem isHorizontal>
-          <FormLabel htmlFor='userLastName'>
-            {t('app.profile.dialog.fields.lastName')}
-          </FormLabel>
-          <FormInput
-            id='userLastName'
-            value={user.data.lastName}
-          />
-        </FormItem>
-      </FormGroup>
-
-      <FormGroup>
-        <FormItem isHorizontal>
-          <FormLabel htmlFor='userEmail'>
-            {t('app.profile.dialog.fields.email')}
-          </FormLabel>
-          <FormInput
-            id='userEmail'
-            value={user.data.email}
-          />
-        </FormItem>
-      </FormGroup>
+      <div
+        className='fd-form-group'
+        style={{
+          padding: '0 2rem'
+        }}>
+        <FormInput
+          label={t('app.profile.dialog.fields.firstName')}
+          readOnly
+          value={user.data.firstName}
+        />
+        <FormInput
+          label={t('app.profile.dialog.fields.lastName')}
+          readOnly
+          value={user.data.lastName}
+        />
+        <FormInput
+          label={t('app.profile.dialog.fields.email')}
+          readOnly
+          value={user.data.email}
+        />
+      </div>
 
     </Dialog>
   )

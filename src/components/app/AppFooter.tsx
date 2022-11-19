@@ -2,7 +2,7 @@ import React from 'react'
 
 import {
   Bar,
-} from 'fundamental-react'
+} from '@uncover/fundamentals-react'
 
 import './AppFooter.css'
 

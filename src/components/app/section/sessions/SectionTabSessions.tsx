@@ -5,16 +5,21 @@ import { useSectionSessions } from 'lib/helpers/hooks/sections.hooks'
 
 import AppSlice from 'store/app/app.slice'
 
-import { BusyIndicator } from 'fundamental-react'
-
 import { Dialog } from 'components/app/dialogs/Dialogs'
 
 import { SectionSession } from 'components/app/section/sessions/SectionSession'
 
 import DataStates from 'lib/constants/DataStates'
 
-import './SectionTabSessions.css'
-import { Button, ButtonDesigns, Panel, Toolbar } from '@uncover/fundamentals-react'
+import {
+  BusyIndicator,
+  Button,
+  ButtonDesigns,
+  Panel,
+  Toolbar
+} from '@uncover/fundamentals-react'
+
+  import './SectionTabSessions.css'
 
 const SectionTabSessions = ({ sectionId }) => {
 
@@ -43,7 +48,7 @@ const SectionTabSessions = ({ sectionId }) => {
     case DataStates.FETCHING:
     case DataStates.FETCHING_FIRST: {
       return (
-        <BusyIndicator show size='l' />
+        <BusyIndicator size='l' />
       )
     }
     case DataStates.FAILURE: {

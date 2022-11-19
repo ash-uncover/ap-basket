@@ -7,8 +7,12 @@ import AuthSelectors from 'store/auth/auth.selectors'
 
 import {
   BusyIndicator,
+  Page,
+  PageBody,
+  PageHeader,
   Title,
-} from 'fundamental-react'
+  TitleLevels,
+} from '@uncover/fundamentals-react'
 
 import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
 
@@ -66,14 +70,19 @@ const Sections = ({ }) => {
   }
 
   return (
-    <div className='app-content sections fd-page'>
-      <Title level={1}>
-        {t('app.sections.title')}
-      </Title>
-      <div className='sections-container'>
-        {renderSections()}
-      </div>
-    </div>
+    <Page className='app-content fd-page'>
+      <PageHeader>
+        <Title
+          level={TitleLevels.H1}
+          text={t('app.sections.title')}
+        />
+      </PageHeader>
+      <PageBody>
+        <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', padding: '2rem' }}>
+          {renderSections()}
+        </div>
+      </PageBody>
+    </Page >
   )
 }
 

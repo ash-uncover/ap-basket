@@ -1,18 +1,30 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-
-import {
-  BusyIndicator,
-  Title,
-} from 'fundamental-react'
+import { useMatch, useNavigate } from 'react-router-dom'
+import { useSection } from 'lib/helpers/hooks/sections.hooks'
 
 import DataStates from 'lib/constants/DataStates'
 
-import { useMatch, useNavigate } from 'react-router-dom'
+import {
+  AccentColors,
+  BusyIndicator,
+  BusyIndicatorSizes,
+  Button,
+  InfoLabel,
+  ObjectMarker,
+  ObjectNumber,
+  ObjectStatus,
+  Page,
+  PageHeader,
+  PageHeaderAttribute,
+  PageBody,
+  IconTabBar,
+  Semantics,
+  Title,
+  TitleLevels,
+} from '@uncover/fundamentals-react'
 
 import './Section.css'
-import { useSection } from 'lib/helpers/hooks/sections.hooks'
-import { IconTabBar } from '@uncover/fundamentals-react'
 
 const SECTION_TAB = {
   GENERAL: {
@@ -53,7 +65,7 @@ const Section = ({ sectionId, children }) => {
     case DataStates.FETCHING:
     case DataStates.FETCHING_FIRST: {
       return (
-        <BusyIndicator show size='l' />
+        <BusyIndicator size={BusyIndicatorSizes.LARGE} />
       )
     }
     case DataStates.FAILURE: {
@@ -63,17 +75,40 @@ const Section = ({ sectionId, children }) => {
     }
     default: {
       return (
-        <div className='section app-content fd-page'>
-          <div
-            className='app-page-header'
-            style={{
-              margin: '-2rem -2rem 0 -2rem',
-              padding: '2rem 2rem 0 2rem',
+        <Page className='app-content'>
+          <PageHeader
+            hideBoxShadow
+            avatar={{
+              initials: 'BA'
             }}
+            title={t('app.section.title', { name: section.data.name })}
+            actions={[
+              <Button icon='cart' compact />
+            ]}
+            subtitle='This section is so cool'
+            attributes={[
+              <PageHeaderAttribute
+                label='Marker 1'
+                semantic={Semantics.POSITIVE}
+                text='Positive Maker'
+                type='status'
+              />,
+              <PageHeaderAttribute
+                label='Marker 2'
+                semantic={Semantics.NEGATIVE}
+                text='-2345.78€'
+                type='status'
+              />,
+              <PageHeaderAttribute
+                label='My property'
+                text='Text Property are used for longer text such as description that can span a lot and require several lines to display.'
+                type='text'
+              />,
+            ]}
           >
-            <Title level={1}>
-              {t('app.section.title', { name: section.data.name })}
-            </Title>
+          </PageHeader>
+
+          <PageBody>
             <IconTabBar
               selectedTab={match?.params.tabId || SECTION_TAB.GENERAL.id}
               tabs={SECTION_TABS.map(tab => ({
@@ -82,15 +117,13 @@ const Section = ({ sectionId, children }) => {
               }))}
               onTabSelect={onTabSelect}
             />
-          </div>
-          <section className='section-content'>
-
-            <Title className='section-title' level={2}>
+            <Title className='section-title' level={TitleLevels.H2}>
               {t((SECTION_TABS.find(tab => tab.id === match?.params.tabId) || SECTION_TAB.GENERAL)?.title)}
             </Title>
             {children}
-          </section>
-        </div>
+          </PageBody>
+
+        </Page>
       )
     }
   }

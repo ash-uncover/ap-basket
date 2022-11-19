@@ -1,20 +1,18 @@
-import React from "react"
-import { useSelector } from "react-redux"
-import { useLocation, useMatch, useNavigate } from "react-router-dom"
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { useLocation, useMatch, useNavigate } from 'react-router-dom'
 
-import { useUserMembers, useUserSections } from "lib/helpers/hooks/users.hooks"
-import { useSection } from "lib/helpers/hooks/sections.hooks"
+import { useUserMembers, useUserSections } from 'lib/helpers/hooks/users.hooks'
+import { useSection } from 'lib/helpers/hooks/sections.hooks'
 
-import AuthSelectors from "store/auth/auth.selectors"
+import AuthSelectors from 'store/auth/auth.selectors'
 
-import DataStates, { mergeDataStates } from "lib/constants/DataStates"
+import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
 
 import {
   VerticalNavigation,
   VerticalNavigationItem,
-} from "@uncover/fundamentals-react"
-
-import "./AppSideNav.css"
+} from '@uncover/fundamentals-react'
 
 const AppSideNav = ({}) => {
 
@@ -31,12 +29,12 @@ const AppSideNav = ({}) => {
   // Rendering //
 
   return (
-    <VerticalNavigation label="" itemsLabel="">
+    <VerticalNavigation label='Menu' itemsLabel='Menu'>
       <VerticalNavigationItem
-        id="/"
-        glyph="home"
-        selected={location.pathname === "/"}
-        text={"Home"}
+        id='/'
+        icon='home'
+        selected={location.pathname === '/'}
+        text={'Home'}
         onItemSelect={onItemSelect}
       />
       <SectionsSideNav onItemSelect={onItemSelect} />
@@ -60,11 +58,11 @@ const SectionsSideNav = ({ onItemSelect }) => {
     case DataStates.FETCHING_FIRST: {
       return (
         <VerticalNavigationItem
-          key="/sections-loading"
-          id="/sections"
-          glyph="company-view"
-          selected={location.pathname === "/sections"}
-          text={"Sections"}
+          key='/sections-loading'
+          id='/sections'
+          icon='company-view'
+          selected={location.pathname === '/sections'}
+          text={'Sections'}
         />
       )
     }
@@ -77,12 +75,12 @@ const SectionsSideNav = ({ onItemSelect }) => {
       })
       return (
         <VerticalNavigationItem
-          key="/sections"
-          id="/sections"
-          glyph="company-view"
+          key='/sections'
+          id='/sections'
+          icon='company-view'
           expanded={true}
-          selected={location.pathname === "/sections"}
-          text={"Sections"}
+          selected={location.pathname === '/sections'}
+          text={'Sections'}
           onItemSelect={onItemSelect}
         >
           {sections?.data?.map((section) => {
@@ -104,7 +102,7 @@ const SectionSideNav = ({ sectionId, onItemSelect }) => {
   // Hooks //
 
   const section = useSection(sectionId)
-  const match = useMatch("/sections/:sectionId/*")
+  const match = useMatch('/sections/:sectionId/*')
 
   // Events //
 

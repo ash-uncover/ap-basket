@@ -6,12 +6,14 @@ import AuthSelectors from 'store/auth/auth.selectors'
 
 import { useSectionMembers, useSectionUsers } from 'lib/helpers/hooks/sections.hooks'
 
-import { BusyIndicator } from 'fundamental-react'
-
 import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
 
+import {
+  BusyIndicator,
+  Table
+} from '@uncover/fundamentals-react'
+
 import './SectionTabMembers.css'
-import { Table } from '@uncover/fundamentals-react'
 
 const SectionTabMembers = ({ sectionId }) => {
 
@@ -31,7 +33,7 @@ const SectionTabMembers = ({ sectionId }) => {
     case DataStates.FETCHING:
     case DataStates.FETCHING_FIRST: {
       return (
-        <BusyIndicator show size='l' />
+        <BusyIndicator size='l' />
       )
     }
     case DataStates.FAILURE: {

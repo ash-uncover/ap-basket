@@ -11,10 +11,8 @@ import {
   ShellBar,
 } from '@uncover/fundamentals-react'
 
-import ProfileDialog from 'components/app/dialogs/profile/ProfileDialog'
-import SettingsDialog from 'components/app/dialogs/settings/SettingsDialog'
-
-import './AppHeader.css'
+import AppSlice from 'store/app/app.slice'
+import { Dialog } from './dialogs/Dialogs'
 
 const AppHeader = () => {
 
@@ -24,35 +22,21 @@ const AppHeader = () => {
 
   const dispatch = useDispatch()
 
-  const [showProfileDialog, setShowProfileDialog] = useState(false)
-  const [showSettingsDialog, setShowSettingsDialog] = useState(false)
-
   const userId = useSelector(AuthSelectors.userId)
   const user = useSelector(UsersSelectors.user(userId))
 
   // Events
 
-  const hideProfilePopover = () => {
-    const popover = document.getElementById('fd-shellbar-profile-popover')
-    if (popover) {
-      popover.style.display = 'none'
-    }
-  }
-
   const onOpenProfileDialog = () => {
-    setShowProfileDialog(true)
-    hideProfilePopover()
-  }
-  const onCloseProfileDialog = () => {
-    setShowProfileDialog(false)
+    dispatch(AppSlice.actions.openDialog({
+      dialog: Dialog.PROFILE_PROFILE
+    }))
   }
 
   const onOpenSettingsDialog = () => {
-    setShowSettingsDialog(true)
-    hideProfilePopover()
-  }
-  const onCloseSettingsDialog = () => {
-    setShowSettingsDialog(false)
+    dispatch(AppSlice.actions.openDialog({
+      dialog: Dialog.PROFILE_SETTINGS
+    }))
   }
 
   const onSignOut = () => {
@@ -62,45 +46,35 @@ const AppHeader = () => {
   // Rendering
 
   return (
-    <>
-      <ShellBar
-        logo='/images/sap-logo.png'
-        logoAlt='AMSAP Basket'
-        title='AMSAP Basket'
-        profile={{
-          name: `${user.data.firstName} ${user.data.lastName}`,
-          initials: `${user.data.firstName.substring(0, 1)}${user.data.lastName.substring(0, 1)}`,
-          menu: [
-            {
-              id: 'profile',
-              text: t('app.header.user.menu.profile'),
-              iconBefore: 'person-placeholder',
-              onItemSelected: onOpenProfileDialog,
-            },
-            {
-              id: 'settings',
-              text: t('app.header.user.menu.settings'),
-              iconBefore: 'action-settings',
-              onItemSelected: onOpenSettingsDialog,
-            },
-            {
-              id: 'logout',
-              text: t('app.header.user.menu.signout'),
-              iconBefore: 'log',
-              onItemSelected: onSignOut,
-            },
-          ]
-        }}
-      />
-      <ProfileDialog
-        show={showProfileDialog}
-        onClose={onCloseProfileDialog}
-      />
-      <SettingsDialog
-        show={showSettingsDialog}
-        onClose={onCloseSettingsDialog}
-      />
-    </>
+    <ShellBar
+      logo='/images/sap-logo.png'
+      logoAlt='AMSAP Basket'
+      title='AMSAP Basket'
+      profile={{
+        name: `${user.data.firstName} ${user.data.lastName}`,
+        initials: `${user.data.firstName.substring(0, 1)}${user.data.lastName.substring(0, 1)}`,
+        menu: [
+          {
+            id: 'profile',
+            text: t('app.header.user.menu.profile'),
+            iconBefore: 'person-placeholder',
+            onItemSelected: onOpenProfileDialog,
+          },
+          {
+            id: 'settings',
+            text: t('app.header.user.menu.settings'),
+            iconBefore: 'action-settings',
+            onItemSelected: onOpenSettingsDialog,
+          },
+          {
+            id: 'logout',
+            text: t('app.header.user.menu.signout'),
+            iconBefore: 'log',
+            onItemSelected: onSignOut,
+          },
+        ]
+      }}
+    />
   )
 }
 
