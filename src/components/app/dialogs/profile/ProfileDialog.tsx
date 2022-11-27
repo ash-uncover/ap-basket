@@ -36,9 +36,6 @@ const ProfileDialog = () => {
 
   return (
     <Dialog
-      style={{
-        width: '500px'
-      }}
       title={t('app.profile.dialog.title')}
       footer={{
         right: [(
