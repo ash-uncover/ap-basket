@@ -13,6 +13,8 @@ import DataStates from '@uncover/js-utils/dist/DataStates'
 import { mergeDataStates } from '@uncover/js-utils/dist/DataStatesUtils'
 
 import {
+  Breadcrumb,
+  BreadcrumbItem,
   BusyIndicator,
   BusyIndicatorSizes,
   Button,
@@ -64,6 +66,13 @@ const Section = ({ sectionId, children }) => {
 
   // Events//
 
+  const handleSectionsNavigation = (path) => {
+    console.log(path)
+  }
+  const handleSectionNavigation = (path) => {
+    console.log(path)
+  }
+
   const handleEditSection = () => {
     dispatch(AppSlice.actions.openDialog({
       dialog: Dialog.SECTION_EDIT,
@@ -93,10 +102,27 @@ const Section = ({ sectionId, children }) => {
     default: {
       const adminsData = getSectionAdmins(members.data, users.data, userId)
       const isAdmin = adminsData.some(admin => admin.isSelf)
+      const tabTitle = t((SECTION_TABS.find(tab => tab.id === match?.params.tabId) || SECTION_TAB.GENERAL)?.title)
+      const buildBreadcrumbsItems = () => {
+        const items: BreadcrumbItem[] = [
+          { text: 'Sections', onItemSelected: () => navigate('/sections') },
+          { text: section.data.name, onItemSelected: () => navigate(`/sections/${sectionId}`) },
+        ]
+        if (match?.params.tabId && (match?.params.tabId !== SECTION_TAB.GENERAL.id)) {
+          items.push({ text: tabTitle })
+        }
+        return items
+      }
       return (
         <Page className='app-content'>
           <PageHeader
             hideBoxShadow
+            breadcrumb={(
+              <Breadcrumb
+                ariaLabel='breadcrumb'
+                items={buildBreadcrumbsItems()}
+              />
+            )}
             avatar={{
               initials: getSectionInitials(section.data)
             }}
@@ -134,7 +160,7 @@ const Section = ({ sectionId, children }) => {
               onTabSelect={onTabSelect}
             />
             <Title className='section-title' level={TitleLevels.H2}>
-              {t((SECTION_TABS.find(tab => tab.id === match?.params.tabId) || SECTION_TAB.GENERAL)?.title)}
+              {tabTitle}
             </Title>
             {children}
           </PageBody>
