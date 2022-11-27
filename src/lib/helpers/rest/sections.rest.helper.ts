@@ -1,12 +1,4 @@
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-
-import DataStates, { mergeDataStates } from "lib/constants/DataStates"
-import RestService from "services/rest.service"
-import AuthSelectors from "store/auth/auth.selectors"
-import MembersSelectors from "store/rest/members/members.selectors"
-import { MemberState } from "store/rest/members/members.state"
-import SectionsSelectors from "store/rest/sections/sections.selectors"
+import RestService, { putSectionPayload } from "services/rest.service"
 import SectionsSlice from "store/rest/sections/sections.slice"
 
 export const getSection = async (dispatch, token: string, id: string) => {
@@ -19,6 +11,20 @@ export const getSection = async (dispatch, token: string, id: string) => {
 
   } catch (error) {
     dispatch(SectionsSlice.actions.getSectionFailure({ id, error }))
+    throw error
+  }
+}
+
+export const putSection = async (dispatch, token: string, sectionId: string, payload: putSectionPayload) => {
+  dispatch(SectionsSlice.actions.putSectionRequest({ sectionId }))
+
+  try {
+    const data = await RestService.api.sections.$sectionId.put(token, sectionId, payload)
+    dispatch(SectionsSlice.actions.putSectionSuccess({ sectionId, data }))
+    return data
+
+  } catch (error) {
+    dispatch(SectionsSlice.actions.putSectionFailure({ sectionId, error }))
     throw error
   }
 }

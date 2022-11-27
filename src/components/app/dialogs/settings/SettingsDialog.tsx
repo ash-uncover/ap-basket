@@ -75,6 +75,9 @@ const SettingsDialog = () => {
         style={{
           height: '300px',
           padding: '0 2rem',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
         }}>
         <FormSelect
           label={t('app.settings.dialog.fields.language')}
@@ -83,7 +86,8 @@ const SettingsDialog = () => {
           items={Languages.map(({ id, name }) => {
             return {
               key: id,
-              text: name
+              text: name,
+              selected: id === language
             }
           })}
           onChange={onLanguageChange}
@@ -95,7 +99,8 @@ const SettingsDialog = () => {
           items={Themes.map(({ id, name }) => {
             return {
               key: id,
-              text: name
+              text: name,
+              selected: id === theme
             }
           })}
           onChange={onThemeChange}

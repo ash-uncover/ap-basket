@@ -71,12 +71,9 @@ const Sections = ({ }) => {
 
   return (
     <Page className='app-content fd-page'>
-      <PageHeader>
-        <Title
-          level={TitleLevels.H1}
-          text={t('app.sections.title')}
-        />
-      </PageHeader>
+      <PageHeader
+        title={t('app.sections.title')}
+      />
       <PageBody>
         <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', padding: '2rem' }}>
           {renderSections()}

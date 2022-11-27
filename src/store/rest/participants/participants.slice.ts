@@ -8,8 +8,8 @@ import DataStates from 'lib/constants/DataStates'
 import { PARTICIPANT } from 'lib/utils/entities/participants.utils'
 
 import { ParticipantsSliceState, ParticipantState } from 'store/rest/participants/participants.state'
-import { getSessionParticipantsSuccessPayload } from 'store/rest/sessions/sessions.slice'
-import { getUserParticipantsSuccessPayload } from 'store/rest/users/users.slice'
+import SessionsSlice, { getSessionParticipantsSuccessPayload } from 'store/rest/sessions/sessions.slice'
+import UsersSlice, { getUserParticipantsSuccessPayload } from 'store/rest/users/users.slice'
 
 // STATE //
 
@@ -173,9 +173,9 @@ const ParticipantsSlice = createSlice({
     putParticipantStatusFailure,
   },
 
-  extraReducers: {
-    'sessions/getSessionParticipantsSuccess': getSessionParticipantsSuccess,
-    'users/getUserParticipantsSuccess': getUserParticipantsSuccess,
+  extraReducers: (builder) => {
+    builder.addCase(SessionsSlice.actions.getSessionParticipantsSuccess, getSessionParticipantsSuccess)
+    builder.addCase(UsersSlice.actions.getUserParticipantsSuccess, getUserParticipantsSuccess)
   }
 })
 

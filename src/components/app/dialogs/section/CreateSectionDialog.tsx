@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import AppSlice from 'store/app/app.slice'
 import AuthSelectors from 'store/auth/auth.selectors'
 
-import { postSession } from 'lib/helpers/rest/sessions.rest.helper'
 
 import {
   Button,
@@ -17,13 +16,12 @@ import {
   TitleLevels,
 } from '@uncover/fundamentals-react'
 
-interface CreateSessionDialogProperties {
-  sectionId: string
+interface CreateSectionDialogProperties {
 }
 
-const CreateSessionDialog = ({
-  sectionId
-}: CreateSessionDialogProperties) => {
+const CreateSectionDialog = ({
+
+}: CreateSectionDialogProperties) => {
 
   // Hooks //
 
@@ -46,11 +44,11 @@ const CreateSessionDialog = ({
   }
 
   const onValidate = () => {
-    postSession(dispatch, token, {
-      date,
-      maxParticipants,
-      sectionId
-    })
+    // postSession(dispatch, token, {
+    //   date,
+    //   maxParticipants,
+    //   sectionId
+    // })
     dispatch(AppSlice.actions.closeDialog())
   }
 
@@ -117,4 +115,4 @@ const CreateSessionDialog = ({
   )
 }
 
-export default CreateSessionDialog
+export default CreateSectionDialog

@@ -122,6 +122,36 @@ export const getSection = async (token: string, id: string): Promise<SECTION> =>
   }
 }
 
+export type putSectionPayload = {
+  name: string,
+  description: string,
+}
+export const putSection = async (
+  token: string,
+  sectionId: string,
+  payload: putSectionPayload
+): Promise<SECTION> => {
+  const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/sections/${sectionId}`
+  const headers = new Headers()
+  headers.set('accept', 'application/json')
+  headers.set('authorization', `Basic ${token}`)
+  headers.set('content-type', 'application/json; charset=UTF-8')
+  const request: RequestInit = {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify(payload)
+  }
+
+  try {
+    const response = await fetch(url, request)
+    const data = await response.json()
+    return data
+
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const getSectionMembers = async (token: string, id: string): Promise<MEMBER[]> => {
   const url = `${CONFIG.ALPHA_BASKET_REST_URL}/rest/sections/${id}/members`
   const headers = new Headers()
@@ -309,6 +339,7 @@ const RestService = {
     sections: {
       $sectionId: {
         get: getSection,
+        put: putSection,
         members: {
           get: getSectionMembers,
         },

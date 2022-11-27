@@ -1,9 +1,13 @@
 {
   "OK": "OK",
   "ERROR": "Error",
+  "CANCEL": "Cancel",
   "loading": {
     "default": "Loading...",
     "data": "Loading data..."
+  },
+  "validation": {
+    "mandatory": "{{field}} is mandatory"
   },
   "entities": {
     "member": {
@@ -26,7 +30,8 @@
     },
     "section": {
       "key": "Section",
-      "name": "Name"
+      "name": "Name",
+      "description": "Description"
     },
     "user": {
       "key": "User",
@@ -49,10 +54,23 @@
       "none": "No sections",
       "title": "Sections",
       "members_one": "{{count}} Member",
-      "members_other": "{{count}} Members"
+      "members_other": "{{count}} Members",
+      "create": {
+        "title": "Create Section"
+      },
+      "edit": {
+        "title": "Edit Section Information"
+      }
     },
     "section": {
       "title": "Section {{name}}",
+      "actions": {
+        "edit": "Edit the section information",
+        "leave": "Leave the section"
+      },
+      "attributes": {
+        "administrators": "Administrators"
+      },
       "tabs": {
         "general": {
           "title": "General"

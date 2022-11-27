@@ -1,30 +1,33 @@
-import React from 'react'
+import React, { useDebugValue } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMatch, useNavigate } from 'react-router-dom'
-import { useSection } from 'lib/helpers/hooks/sections.hooks'
+import { useSection, useSectionMembers, useSectionUsers } from 'lib/helpers/hooks/sections.hooks'
 
-import DataStates from 'lib/constants/DataStates'
+import AuthSelectors from 'store/auth/auth.selectors'
+
+import { getUserFullName } from 'lib/utils/entities/users.utils'
+import { getSectionAdmins, getSectionInitials } from 'lib/utils/entities/sections.utils'
+
+import DataStates from '@uncover/js-utils/dist/DataStates'
+import { mergeDataStates } from '@uncover/js-utils/dist/DataStatesUtils'
 
 import {
-  AccentColors,
   BusyIndicator,
   BusyIndicatorSizes,
   Button,
-  InfoLabel,
-  ObjectMarker,
-  ObjectNumber,
-  ObjectStatus,
+  ButtonDesigns,
   Page,
   PageHeader,
-  PageHeaderAttribute,
   PageBody,
   IconTabBar,
-  Semantics,
   Title,
   TitleLevels,
 } from '@uncover/fundamentals-react'
 
 import './Section.css'
+import AppSlice from 'store/app/app.slice'
+import { Dialog } from '../dialogs/Dialogs'
 
 const SECTION_TAB = {
   GENERAL: {
@@ -47,12 +50,26 @@ const Section = ({ sectionId, children }) => {
   // Hooks //
 
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const match = useMatch('/sections/:sectionId/:tabId')
 
+  const userId = useSelector(AuthSelectors.userId)
+
   const section = useSection(sectionId)
+  const members = useSectionMembers(sectionId)
+  const users = useSectionUsers(sectionId)
+
+  const status = mergeDataStates([section.dataStatus, members.status, users.status])
 
   // Events//
+
+  const handleEditSection = () => {
+    dispatch(AppSlice.actions.openDialog({
+      dialog: Dialog.SECTION_EDIT,
+      params: { sectionId }
+    }))
+  }
 
   const onTabSelect = (tabId) => {
     navigate(`/sections/${sectionId}/${tabId}`)
@@ -60,7 +77,7 @@ const Section = ({ sectionId, children }) => {
 
   // Rendering //
 
-  switch (section.dataStatus) {
+  switch (status) {
     case DataStates.NEVER:
     case DataStates.FETCHING:
     case DataStates.FETCHING_FIRST: {
@@ -74,37 +91,36 @@ const Section = ({ sectionId, children }) => {
       )
     }
     default: {
+      const adminsData = getSectionAdmins(members.data, users.data, userId)
+      const isAdmin = adminsData.some(admin => admin.isSelf)
       return (
         <Page className='app-content'>
           <PageHeader
             hideBoxShadow
             avatar={{
-              initials: 'BA'
+              initials: getSectionInitials(section.data)
             }}
             title={t('app.section.title', { name: section.data.name })}
+            subtitle={section.data.description}
             actions={[
-              <Button icon='cart' compact />
-            ]}
-            subtitle='This section is so cool'
-            attributes={[
-              <PageHeaderAttribute
-                label='Marker 1'
-                semantic={Semantics.POSITIVE}
-                text='Positive Maker'
-                type='status'
-              />,
-              <PageHeaderAttribute
-                label='Marker 2'
-                semantic={Semantics.NEGATIVE}
-                text='-2345.78€'
-                type='status'
-              />,
-              <PageHeaderAttribute
-                label='My property'
-                text='Text Property are used for longer text such as description that can span a lot and require several lines to display.'
-                type='text'
+              isAdmin ? <Button
+                ariaLabel={t('app.section.actions.edit')}
+                design={ButtonDesigns.EMPHASIZED}
+                compact
+                icon='edit-outside'
+                onClick={handleEditSection}
+              /> : null,
+              <Button
+                ariaLabel={t('app.section.actions.leave')}
+                compact
+                icon='action'
               />,
             ]}
+            attributes={[{
+              label: t('app.section.attributes.administrators'),
+              text: adminsData.map(getUserFullName).join(', '),
+              type: 'text',
+            }]}
           >
           </PageHeader>
 

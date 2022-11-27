@@ -7,6 +7,7 @@ import AuthSelectors from 'store/auth/auth.selectors'
 import { useSectionMembers, useSectionUsers } from 'lib/helpers/hooks/sections.hooks'
 
 import DataStates, { mergeDataStates } from 'lib/constants/DataStates'
+import { getSectionUsers } from 'lib/utils/entities/sections.utils'
 
 import {
   BusyIndicator,
@@ -42,18 +43,7 @@ const SectionTabMembers = ({ sectionId }) => {
       )
     }
     default: {
-      const userData = users.data
-        .map((user) => {
-          const member = members.data?.find(member => member.data.userId === user.data.id)
-          return {
-            ...member.data,
-            ...user.data,
-            isAdmin: member.data.roles?.includes('sectionAdmin'),
-            isSelf: userId === user.data.id
-          }
-        }).sort((user1, user2) => {
-          return user1.firstName.localeCompare(user2.firstName)
-        })
+      const usersData = getSectionUsers(members.data, users.data, userId)
       return (
         <Table
           borderedVertical={true}
@@ -75,7 +65,7 @@ const SectionTabMembers = ({ sectionId }) => {
             name: t('entities.member.roles'),
             render: (user) => <span>{user.isAdmin ? 'admin' : ''}</span>
           }]}
-          rows={userData.map(user => ({
+          rows={usersData.map(user => ({
             data: user,
             indicator: user.isSelf ? 'information' : null
           }))}

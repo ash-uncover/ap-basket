@@ -19,6 +19,7 @@ const initialState: AppSliceState = {
   theme: Theme.HORIZON.id,
   dialog: null,
   dialogParams: null,
+  pageExpanded: true,
 }
 
 // REDUCERS //
@@ -65,6 +66,10 @@ const closeDialog: CaseReducer<AppSliceState, PayloadAction<void>> = (state, act
   state.dialogParams = null
 }
 
+const setPageExpanded: CaseReducer<AppSliceState, PayloadAction<boolean>> = (state, action) => {
+  state.pageExpanded = action.payload
+}
+
 // SLICE //
 
 const AppSlice = createSlice({
@@ -79,6 +84,7 @@ const AppSlice = createSlice({
     setTheme,
     openDialog,
     closeDialog,
+    setPageExpanded,
   },
 })
 

@@ -17,13 +17,13 @@ import {
   TitleLevels,
 } from '@uncover/fundamentals-react'
 
-interface CreateSessionDialogProperties {
-  sectionId: string
+interface EditSessionDialogProperties {
+  sessionId: string
 }
 
-const CreateSessionDialog = ({
-  sectionId
-}: CreateSessionDialogProperties) => {
+const EditSessionDialog = ({
+  sessionId
+}: EditSessionDialogProperties) => {
 
   // Hooks //
 
@@ -49,7 +49,7 @@ const CreateSessionDialog = ({
     postSession(dispatch, token, {
       date,
       maxParticipants,
-      sectionId
+      sectionId: sessionId
     })
     dispatch(AppSlice.actions.closeDialog())
   }
@@ -117,4 +117,4 @@ const CreateSessionDialog = ({
   )
 }
 
-export default CreateSessionDialog
+export default EditSessionDialog

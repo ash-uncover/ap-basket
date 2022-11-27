@@ -8,7 +8,7 @@ import DataStates from 'lib/constants/DataStates'
 import { SESSION } from 'lib/utils/entities/sessions.utils'
 
 import { SessionsSliceState, SessionState } from 'store/rest/sessions/sessions.state'
-import { getSectionSessionsSuccessPayload } from '../sections/sections.slice'
+import SectionsSlice, { getSectionSessionsSuccessPayload } from '../sections/sections.slice'
 
 // STATE //
 
@@ -158,8 +158,8 @@ const SessionsSlice = createSlice({
     getSessionParticipantsFailure,
   },
 
-  extraReducers: {
-    'sections/getSectionSessionsSuccess': getSectionSessionsSuccess,
+  extraReducers: (builder) => {
+    builder.addCase(SectionsSlice.actions.getSectionSessionsSuccess, getSectionSessionsSuccess)
   }
 })
 

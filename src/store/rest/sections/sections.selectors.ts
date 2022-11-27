@@ -2,7 +2,7 @@ import { RootSliceState } from 'store/state'
 
 import { DEFAULT_SECTION } from 'store/rest/sections/sections.slice'
 import { SectionState } from 'store/rest/sections/sections.state'
-import MembersSelectors from '../members/members.selectors'
+import MembersSelectors from 'store/rest/members/members.selectors'
 
 const SectionsSelectors = {
   section: (sectionId: string) => (state: RootSliceState): SectionState => {

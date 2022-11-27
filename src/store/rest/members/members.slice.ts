@@ -7,8 +7,8 @@ import {
 import DataStates from 'lib/constants/DataStates'
 
 import { MembersSliceState, MemberState } from 'store/rest/members/members.state'
-import { getSectionMembersSuccessPayload } from '../sections/sections.slice'
-import { getUserMembersSuccessPayload } from '../users/users.slice'
+import SectionsSlice, { getSectionMembersSuccessPayload } from '../sections/sections.slice'
+import UsersSlice, { getUserMembersSuccessPayload } from '../users/users.slice'
 
 // STATE //
 
@@ -103,9 +103,9 @@ const MembersSlice = createSlice({
 
   },
 
-  extraReducers: {
-    'sections/getSectionMembersSuccess': getSectionMembersSuccess,
-    'users/getUserMembersSuccess': getUserMembersSuccess,
+  extraReducers: (builder) => {
+    builder.addCase(SectionsSlice.actions.getSectionMembersSuccess, getSectionMembersSuccess)
+    builder.addCase(UsersSlice.actions.getUserMembersSuccess, getSectionMembersSuccess)
   }
 })
 
