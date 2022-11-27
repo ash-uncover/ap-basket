@@ -30,6 +30,7 @@ import {
 import './Section.css'
 import AppSlice from 'store/app/app.slice'
 import { Dialog } from '../dialogs/Dialogs'
+import AppSelectors from 'store/app/app.selectors'
 
 const SECTION_TAB = {
   GENERAL: {
@@ -54,6 +55,7 @@ const Section = ({ sectionId, children }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const expanded = useSelector(AppSelectors.pageExpanded)
   const match = useMatch('/sections/:sectionId/:tabId')
 
   const userId = useSelector(AuthSelectors.userId)
@@ -66,11 +68,8 @@ const Section = ({ sectionId, children }) => {
 
   // Events//
 
-  const handleSectionsNavigation = (path) => {
-    console.log(path)
-  }
-  const handleSectionNavigation = (path) => {
-    console.log(path)
+  const handleHeaderExpand = (expand) => {
+    dispatch(AppSlice.actions.setPageExpanded(expand))
   }
 
   const handleEditSection = () => {
@@ -117,6 +116,8 @@ const Section = ({ sectionId, children }) => {
         <Page className='app-content'>
           <PageHeader
             hideBoxShadow
+            expanded={expanded}
+            onExpand={handleHeaderExpand}
             breadcrumb={(
               <Breadcrumb
                 ariaLabel='breadcrumb'
